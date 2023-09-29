@@ -1,0 +1,339 @@
+[
+
+{
+  "id":2,
+  "text":"Master Data",
+  "value":"/RoleAdmin/master",
+  "icon":"ion ion-logo-buffer",
+  "children":[{
+    "id":3,
+    "text":"Hak Akses User",
+    "value":"/RoleAdmin/master/data-user-access",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":10,
+    "text":"Divisi",
+    "value":"/RoleAdmin/master/data-division",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":11,
+    "text":"Departemen",
+    "value":"/RoleAdmin/master/data-department",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":12,
+    "text":"Posisi",
+    "value":"/RoleAdmin/master/data-position",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":13,
+    "text":"User Karyawan",
+    "value":"/RoleAdmin/master/data-user-employee",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":16,
+    "text":"Kategori NOE",
+    "value":"/RoleAdmin/master/data-deviation",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":17,
+    "text":"Jenis Kejadian",
+    "value":"/RoleAdmin/master/data-event-incident",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":18,
+    "text":"Penilaian Risiko Deviasi",
+    "value":"/RoleAdmin/master/data-deviation-risk",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":19,
+    "text":"Sistem Lain yang terdampak",
+    "value":"/RoleAdmin/master/data-other-system",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":20,
+    "text":"Level Deviasi",
+    "value":"/RoleAdmin/master/data-deviation-level",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":21,
+    "text":"Bahan / Produk Terkait",
+    "value":"/RoleAdmin/master/data-product",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":22,
+    "text":"Lokasi",
+    "value":"/RoleAdmin/master/data-unit-location",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":35,
+    "text":"Data Caretaker",
+    "value":"/RoleAdmin/master/data-caretaker",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":47,
+    "text":"Pengaturan Header",
+    "value":"/RoleAdmin/master/data-setting-header",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":48,
+    "text":"Pengaturan Hari Libur",
+    "value":"/RoleAdmin/master/data-day-off",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":51,
+    "text":"Chat Status",
+    "value":"/RoleAdmin/master/data-chat-status",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  }]
+
+},{
+  "id":23,
+  "text":"Data NOE",
+  "value":"/RoleAdmin/noe",
+  "icon":"ion ion-md-document",
+  "children":[{
+    "id":24,
+    "text":"Laporan NOE",
+    "value":"/RoleAdmin/noe/data-noe-report",
+    "submenu": [{
+      "type":"export",
+      "text":"Export",
+      "value":"export.noe-report-export"
+    }],
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":25,
+    "text":"Verifikasi & Penilaian NOE",
+    "value":"/RoleAdmin/noe/data-noe-verification",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":26,
+    "text":"Evaluasi NOE",
+    "value":"/RoleAdmin/noe/data-noe-evaluation",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":27,
+    "text":"Perbaikan Laporan NOE",
+    "value":"/RoleAdmin/noe/data-correction-noe-report",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":28,
+    "text":"Perbaikan Verifikasi & Penilaian NOE",
+    "value":"/RoleAdmin/noe/data-correction-noe-verification",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":29,
+    "text":"Perbaikan Evaluasi NOE",
+    "value":"/RoleAdmin/noe/data-correction-noe-evaluation",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  }]
+
+},{
+  "id":30,
+  "text":"Data NOD",
+  "value":"/RoleAdmin/nod",
+  "icon":"ion ion-md-document",
+  "children":[{
+    "id":31,
+    "text":"Laporan NOD",
+    "value":"/RoleAdmin/nod/data-nod-report",
+    "submenu": [{
+      "type":"export",
+      "text":"Export",
+      "value":"export.nod-report-export"
+    }],
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":32,
+    "text":"Review NOD",
+    "value":"/RoleAdmin/nod/data-nod-review",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":33,
+    "text":"Perbaikan Laporan NOD",
+    "value":"/RoleAdmin/nod/data-correction-nod-report",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":34,
+    "text":"Perbaikan Review NOD",
+    "value":"/RoleAdmin/nod/data-correction-nod-review",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":52,
+    "text":"History Chat",
+    "value":"/RoleAdmin/nod/master-history-chat",
+    "submenu": [{
+      "type":"show",
+      "text":"Show",
+      "value":"/RoleAdmin/nod/show-master-history-chat"
+    },{
+      "type":"form",
+      "text":"Create & Edit",
+      "value":"/RoleAdmin/nod/form-question-nod-report"
+    },{
+      "type":"delete",
+      "text":"Delete",
+      "value":"/AdminVue/master-history-chat-delete"
+    }],
+    "icon":"ion ion-md-build",
+    "children":[]
+  
+  }]
+
+},{
+  "id":37,
+  "text":"Statistik Dashboard",
+  "value":"Dashboard",
+  "icon":"ion ion-logo-buffer",
+  "children":[{
+    "id":38,
+    "text":"Tabel Unit Lokasi",
+    "value":"/RoleAdmin/main/dashboard",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":39,
+    "text":"Tabel Status NOE",
+    "value":"/RoleAdmin/main/dashboard",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":40,
+    "text":"Tabel Status NOD",
+    "value":"/RoleAdmin/main/dashboard",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":41,
+    "text":"Tabel Level Deviasi",
+    "value":"/RoleAdmin/main/dashboard",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":42,
+    "text":"Unit By Unit",
+    "value":"/RoleAdmin/main/dashboard",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":43,
+    "text":"Tabel Unit Sort",
+    "value":"/RoleAdmin/main/dashboard",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":44,
+    "text":"Pareto Chart By Unit",
+    "value":"/RoleAdmin/main/dashboard",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":45,
+    "text":"Tabel Waktu NOE",
+    "value":"/RoleAdmin/main/dashboard",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  },{
+    "id":46,
+    "text":"Tabel Waktu NOD",
+    "value":"/RoleAdmin/main/dashboard",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
+  }]
+
+},{
+  "id":49,
+  "text":"Export Data",
+  "value":"/RoleAdmin/main/data-export-edms",
+  "icon":"ion ion-md-print",
+  "children":[]
+
+},{
+  "id":36,
+  "text":"Buku Manual",
+  "value":"/RoleAdmin/main/manual-book",
+  "icon":"ion ion-md-book",
+  "children":[]
+
+},{
+  "id":50,
+  "text":"Trouble Shooting",
+  "value":"/RoleAdmin/main/master-trouble-shoot",
+  "submenu": [{
+    "type":"show",
+    "text":"Show",
+    "value":"/RoleAdmin/main/show-master-trouble-shoot"
+  },{
+    "type":"form",
+    "text":"Create & Edit",
+    "value":"/RoleAdmin/main/form-master-trouble-shoot"
+  },{
+    "type":"delete",
+    "text":"Delete",
+    "value":"/AdminVue/master-trouble-shoot-delete"
+  }],
+  "icon":"ion ion-md-build",
+  "children":[]
+
+},{
+  "id":14,
+  "text":"Master Module",
+  "value":"/RoleAdmin/main/master-module",
+  "submenu": [{
+    "type":"show",
+    "text":"Show",
+    "value":"/RoleAdmin/main/show-master-module"
+  },{
+    "type":"form",
+    "text":"Create & Edit",
+    "value":"/RoleAdmin/main/form-master-module"
+  },{
+    "type":"delete",
+    "text":"Delete",
+    "value":"/AdminVue/master-module-delete"
+  }],
+  "icon":"ion ion-md-filing",
+  "children":[]
+
+},{
+  "id":15,
+  "text":"History Data",
+  "value":"/RoleAdmin/main/history-data",
+  "submenu": [{
+    "type":"show",
+    "text":"Show",
+    "value":"/RoleAdmin/main/show-history-data"
+  }],
+  "icon":"ion ion-md-time",
+  "children":[]
+
+}
+
+]
