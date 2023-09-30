@@ -768,8 +768,14 @@ export default {
     },
 
     removeDetail(index, type) {
-      if(type=='CA') this.field.NODCA.splice(index,1)
-      else this.field.NODPA.splice(index,1)
+      if(type=='CA') { 
+        this.field.NODCA.splice(index,1)
+        this.$forceUpdate()
+      }
+      else {
+        this.field.NODPA.splice(index,1)
+        this.$forceUpdate()
+      }
     },
 
     backIndex() {
