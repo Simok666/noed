@@ -480,7 +480,7 @@ export default function () {
               }
               return acc
           }, {})
-    
+          
           if(Object.keys(RelevantDept).length !== 0)
           {
             Vue.swal.fire({
@@ -506,7 +506,7 @@ export default function () {
                   })
                   .then( function (res) {
                     var resp = res.data
-                    console.log(isShow)
+                    
                     if (isShow)
                     {
                       if(url === '/AdminVue/nod-report-approve') {
@@ -550,6 +550,7 @@ export default function () {
               confirmButtonText: 'Setujui',
               reverseButtons: true
             }).then((result) => { 
+              
               if (result.value) {
                 if(isCaretaker) {
                   Vue.swal.fire({
@@ -612,12 +613,29 @@ export default function () {
                           }
                         } else {
                           if(resp.status){
-                            this.showNotifCustom('notifications-success','Notifikasi Sukses',resp.message)
+                            this.$router.push({
+                              name: 'nod/data-nod-report',
+                              params: {
+                                isNotif: true,
+                                gNotif: 'notifications-success',
+                                tNotif: 'Notifikasi Sukses',
+                                txNotif: resp.message
+                              }
+                            })
+                            
                           }else{
-                            this.showNotifCustom('notifications-danger','Notifikasi Eror',resp.message)
+                            this.$router.push({
+                              name: 'nod/data-nod-report',
+                              params: {
+                                isNotif: true,
+                                gNotif: 'notifications-danger',
+                                tNotif: 'Notifikasi Eror',
+                                txNotif: resp.message
+                              }
+                            })
+                      
                           }
-                          elmTable.refresh()
-                          elmTable.hideDetailRow(rowId)
+                  
                         }
                         this.hideLoading()
                       }.bind(this))
@@ -636,13 +654,28 @@ export default function () {
     
                     var resp = res.data
                     if(resp.status){
-                      this.showNotifCustom('notifications-success','Notifikasi Sukses',resp.message)
+                      this.$router.push({
+                        name: 'nod/data-nod-report',
+                        params: {
+                          isNotif: true,
+                          gNotif: 'notifications-success',
+                          tNotif: 'Notifikasi Sukses',
+                          txNotif: resp.message
+                        }
+                      })
+                     
                     }else{
-                      this.showNotifCustom('notifications-danger','Notifikasi Eror',resp.message)
+                      this.$router.push({
+                        name: 'nod/data-nod-report',
+                        params: {
+                          isNotif: true,
+                          gNotif: 'notifications-danger',
+                          tNotif: 'Notifikasi Eror',
+                          txNotif: resp.message
+                        }
+                      })
                     }
-                    elmTable.refresh()
-                    elmTable.hideDetailRow(rowId)
-              
+            
                     this.hideLoading()
                   }.bind(this))
                   .catch( function (e) {
