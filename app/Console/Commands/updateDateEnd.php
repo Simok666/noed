@@ -56,7 +56,7 @@ class updateDateEnd extends Command
         
         if(in_array($today, $dateEnd))
         {
-            $status = 1;
+            $status = 0;
             \Log::info('if Date End today set status still Actived');
         }
         else {

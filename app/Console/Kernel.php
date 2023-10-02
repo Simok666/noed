@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('update:datestartcaretaker')
                  ->everyFiveMinutes();
         $schedule->command('update:dateendcaretaker')
-                 ->cron('50 23 * * *');
+                 ->cron('23 59 * * *');
     }
 
     /**
