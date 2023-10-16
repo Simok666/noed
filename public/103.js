@@ -1,24 +1,24 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[103],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/correction-nod-review/form.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/correction-nod-review/form.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'form-correction-noe-evaluation',
+  name: 'form-correction-nod-review',
   metaInfo: {
-    title: 'Form Correction NOE'
+    title: 'Form Correction NOD'
   },
   components: {},
   data: function data() {
     return {
-      urlSubmit: '/AdminVue/correction-noe-evaluation-insert',
-      headerCard: 'Perbaikan Laporan NOE',
+      urlSubmit: '/AdminVue/correction-nod-review-insert',
+      headerCard: 'Perbaikan Laporan NOD',
       textBtnSubmit: 'Simpan',
       field: {
         Number: '',
@@ -40,8 +40,6 @@ __webpack_require__.r(__webpack_exports__);
       var formData = new FormData();
       formData.append("Id", this.field.Id);
       formData.append("Number", this.field.Number);
-      formData.append("IdPublish", this.field.IdPublish);
-      formData.append("SectionPublish", this.field.SectionPublish);
       formData.append("Description", this.field.Description);
       if (this.field.Attachment) {
         for (var i = 0; i < this.field.Attachment.length; i++) {
@@ -59,7 +57,7 @@ __webpack_require__.r(__webpack_exports__);
         var resp = res.data;
         if (resp.status) {
           this.$router.push({
-            name: 'noe/data-noe-evaluation',
+            name: 'nod/data-nod-review',
             params: {
               isNotif: true,
               gNotif: 'notifications-success',
@@ -85,13 +83,11 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
     getData: function getData(Id) {
-      axios.post('/AdminVue/correction-noe-evaluation-create', {
+      axios.post('/AdminVue/correction-nod-review-create', {
         Id: Id
       }).then(function (res) {
         var resp = res.data;
-        this.field.Number = resp.data.NoeNumber;
-        this.field.IdPublish = resp.data.IdPublish;
-        this.field.SectionPublish = resp.data.SectionPublish;
+        this.field.Number = resp.data;
       }.bind(this))["catch"](function (e) {
         console.log(e);
         this.isNotif = true;
@@ -108,7 +104,7 @@ __webpack_require__.r(__webpack_exports__);
       // console.log( this.field.myFile )
     },
     backIndex: function backIndex() {
-      this.$router.push('/RoleAdmin/noe/data-noe-evaluation');
+      this.$router.push('/RoleAdmin/nod/data-nod-review');
     }
   },
   mounted: function mounted() {
@@ -123,10 +119,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue?vue&type=template&id=7470291f&":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue?vue&type=template&id=7470291f& ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/correction-nod-review/form.vue?vue&type=template&id=517d22a3&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/correction-nod-review/form.vue?vue&type=template&id=517d22a3& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -171,7 +167,7 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("No. NOE")]), _vm._v(" "), _c("b-input", {
+  }, [_vm._v("No. NOD")]), _vm._v(" "), _c("b-input", {
     staticClass: "mb-1",
     attrs: {
       name: "Number",
@@ -185,54 +181,6 @@ var render = function render() {
         _vm.$set(_vm.field, "Number", $$v);
       },
       expression: "field.Number"
-    }
-  }), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.field.IdPublish,
-      expression: "field.IdPublish"
-    }],
-    staticClass: "mb-1",
-    attrs: {
-      type: "hidden",
-      name: "IdPublish",
-      state: _vm.allErrors.IdPublish ? false : null,
-      readonly: "",
-      required: ""
-    },
-    domProps: {
-      value: _vm.field.IdPublish
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.field, "IdPublish", $event.target.value);
-      }
-    }
-  }), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.field.SectionPublish,
-      expression: "field.SectionPublish"
-    }],
-    staticClass: "mb-1",
-    attrs: {
-      type: "hidden",
-      name: "SectionPublish",
-      state: _vm.allErrors.SectionPublish ? false : null,
-      readonly: "",
-      required: ""
-    },
-    domProps: {
-      value: _vm.field.SectionPublish
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.field, "SectionPublish", $event.target.value);
-      }
     }
   }), _vm._v(" "), _vm.allErrors.Number ? _c("span", {
     staticClass: "text-danger"
@@ -262,14 +210,14 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("label", [_vm._v("Lampiran")]), _vm._v(" "), _c("label", {
     staticClass: "form-label float-right text-danger"
-  }, [_vm._v("(Max. 50 MB)")]), _vm._v(" "), _c("file-pond", {
+  }, [_vm._v("(Max. 100 MB)")]), _vm._v(" "), _c("file-pond", {
     ref: "pondMyFile",
     attrs: {
       name: "Attachment",
       "label-idle": "Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;",
       "allow-multiple": true,
       files: _vm.field.Attachment,
-      maxTotalFileSize: "50MB",
+      maxTotalFileSize: "100MB",
       "accepted-file-types": "application/*, image/*, video/*"
     },
     on: {
@@ -326,17 +274,17 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue":
-/*!****************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue ***!
-  \****************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/correction-nod-review/form.vue":
+/*!************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/correction-nod-review/form.vue ***!
+  \************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _form_vue_vue_type_template_id_7470291f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=7470291f& */ "./resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue?vue&type=template&id=7470291f&");
-/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _form_vue_vue_type_template_id_517d22a3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=517d22a3& */ "./resources/assets/src/components/backend/nod/correction-nod-review/form.vue?vue&type=template&id=517d22a3&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/nod/correction-nod-review/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -347,8 +295,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _form_vue_vue_type_template_id_7470291f___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _form_vue_vue_type_template_id_7470291f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _form_vue_vue_type_template_id_517d22a3___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _form_vue_vue_type_template_id_517d22a3___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -358,38 +306,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue"
+component.options.__file = "resources/assets/src/components/backend/nod/correction-nod-review/form.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/correction-nod-review/form.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/correction-nod-review/form.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/correction-nod-review/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue?vue&type=template&id=7470291f&":
-/*!***********************************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue?vue&type=template&id=7470291f& ***!
-  \***********************************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/correction-nod-review/form.vue?vue&type=template&id=517d22a3&":
+/*!*******************************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/correction-nod-review/form.vue?vue&type=template&id=517d22a3& ***!
+  \*******************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7470291f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=7470291f& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/correction-noe-evaluation/form.vue?vue&type=template&id=7470291f&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7470291f___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_517d22a3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=517d22a3& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/correction-nod-review/form.vue?vue&type=template&id=517d22a3&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_517d22a3___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7470291f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_517d22a3___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

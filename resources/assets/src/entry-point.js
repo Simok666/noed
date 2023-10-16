@@ -42,22 +42,22 @@ if (token) {
 
 import Echo from 'laravel-echo'
 
-window.Pusher = require('pusher-js');
+// window.Pusher = require('pusher-js');
 
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: process.env.MIX_PUSHER_APP_KEY,
-    wsHost: 'noeddev.widatra.com:8181',
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    authEndpoint: "http://noeddev.widatra.com:8181/AdminVue/pusher/user-auth",
-    encrypted: true,
-    forceTLS: true,
-    userAuthentication: {
-      headers: {
-        "X-CSRF-Token": token.content,
-      },
-    },
-});
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: process.env.MIX_PUSHER_APP_KEY,
+//     wsHost: 'noeddev.widatra.com:8181',
+//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+//     authEndpoint: "http://noeddev.widatra.com:8181/AdminVue/pusher/user-auth",
+//     encrypted: true,
+//     forceTLS: true,
+//     userAuthentication: {
+//       headers: {
+//         "X-CSRF-Token": token.content,
+//       },
+//     },
+// });
 
 /**
  * Load Vue.js app

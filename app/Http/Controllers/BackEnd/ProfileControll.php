@@ -40,17 +40,18 @@ class ProfileControll extends Controller
                 'emp.Photo',
                 'dpt.Department',
                 'pst.Name as Position',
-                'emp.UpdateAt'
+                'emp.UpdateAt',
             )
             ->leftjoin('employee as emp','emp.Id','=','usr.IdEmployee')
             ->leftjoin('department as dpt','dpt.Id','=','emp.IdDepartment')
             ->leftjoin('position as pst','pst.Id','=','emp.IdPosition')
+            
             ->where('usr.Actived','>',0)
             ->where('pst.Actived',1)
             ->where('dpt.Actived',1)
             ->where('usr.Id', session('adminvue')->Id)
             ->first();
-
+        
         if( !file_exists($item->Photo) ){
             $item->Photo = 'clouds/backend/files/images/users/user-default.png';
         }

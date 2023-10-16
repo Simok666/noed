@@ -1,134 +1,105 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[104],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/question-nod-report/index.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/question-nod-report/index.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'form-correction-noe-verification',
+  name: 'index-history-chat',
   metaInfo: {
-    title: 'Form Correction NOE'
+    title: 'Index Histroy Chat'
   },
   components: {},
   data: function data() {
-    return {
-      urlSubmit: '/AdminVue/correction-noe-verification-insert',
-      headerCard: 'Perbaikan Laporan NOE',
-      textBtnSubmit: 'Simpan',
-      field: {
-        Number: '',
-        IdPublish: '',
-        SectionPublish: '',
-        Description: '',
-        EventFile: [],
-        DescriptionCaretaker: ''
-      },
-      allErrors: [],
-      isNotif: false,
-      isEdit: false,
-      alertNotif: '',
-      alertVariant: 'alert-dark-danger',
-      isCaretaker: false
-    };
+    var _ref;
+    return _ref = {
+      field: {},
+      vars: {
+        perPage: 2
+      }
+    }, _defineProperty(_ref, "field", {
+      searchQuery: {}
+    }), _defineProperty(_ref, "historyData", []), _defineProperty(_ref, "variant", ''), _defineProperty(_ref, "totalHistoryData", 0), _defineProperty(_ref, "currentPage", 1), _ref;
   },
   methods: {
-    submitForm: function submitForm() {
-      this.showLoading();
-      var formData = new FormData();
-      formData.append("Id", this.field.Id);
-      formData.append("Number", this.field.Number);
-      formData.append("IdPublish", this.field.IdPublish);
-      formData.append("SectionPublish", this.field.SectionPublish);
-      formData.append("Description", this.field.Description);
-      if (this.field.Attachment) {
-        for (var i = 0; i < this.field.Attachment.length; i++) {
-          var file = this.field.Attachment[i];
-          formData.append('Attachment[' + i + ']', file);
-        }
-      }
-      if (this.isCaretaker) formData.append("DescriptionCaretaker", this.field.DescriptionCaretaker);
-      var config = {
-        headers: {
-          'content-type': 'multipart/form-data'
-        }
-      };
-      axios.post(this.urlSubmit, formData, config).then(function (res) {
-        var resp = res.data;
-        if (resp.status) {
-          this.$router.push({
-            name: 'noe/data-noe-verification',
-            params: {
-              isNotif: true,
-              gNotif: 'notifications-success',
-              tNotif: this.textBtnSubmit + ' Data Sukses',
-              txNotif: 'Simpan Data Sukses!'
-            }
-          });
-        } else {
-          this.isNotif = true;
-          this.alertNotif = resp.message;
-          this.alertVariant = 'alert-dark-danger';
-          this.allErrors = resp.validation;
-          this.scrollTop(0, 1000);
-        }
-        this.hideLoading();
-      }.bind(this))["catch"](function (e) {
-        console.log(e);
-        this.isNotif = true;
-        this.alertNotif = 'Invalid Server Side!';
-        this.alertVariant = 'alert-dark-danger';
-        this.scrollTop(0, 1000);
-        this.hideLoading();
-      }.bind(this));
-    },
-    getData: function getData(Id) {
-      axios.post('/AdminVue/correction-noe-verification-create', {
-        Id: Id
+    getHistoryData: function getHistoryData(pageNumber) {
+      axios.post('/AdminVue/auth-get-history-chat-data', {
+        perPage: this.vars.perPage,
+        page: pageNumber,
+        search: this.field.searchQuery
       }).then(function (res) {
-        var resp = res.data;
-        this.field.Number = resp.data.NoeNumber;
-        this.field.IdPublish = resp.data.IdPublish;
-        this.field.SectionPublish = resp.data.SectionPublish;
+        var resp = res.data.data;
+        this.historyData = resp.data;
+        this.totalHistoryData = resp.total;
       }.bind(this))["catch"](function (e) {
         console.log(e);
-        this.isNotif = true;
-        this.alertNotif = 'Invalid Server Side!';
-        this.alertVariant = 'alert-dark-danger';
       }.bind(this));
     },
-    handleFile: function handleFile(files) {
-      // console.log('FilePond Updated')
-      // example of instance method call on pond reference
-      this.field.Attachment = files.map(function (files) {
-        return files.file;
-      });
-      // console.log( this.field.myFile )
+    getVariant: function getVariant(chatStatus) {
+      switch (chatStatus) {
+        case 'Open':
+          return 'success';
+        case 'Done':
+          return 'light';
+        case 'InProgress':
+          return 'info';
+        case 'Expired':
+          return 'warning';
+        case 'Cancel':
+          return 'danger';
+        default:
+          return '';
+      }
     },
-    backIndex: function backIndex() {
-      this.$router.push('/RoleAdmin/noe/data-noe-verification');
+    onGetOption: function onGetOption(event) {
+      if (event != null || event != 0) {
+        this.vars.perPage = event;
+        this.currentPage = 1;
+        this.showLoading();
+        this.getHistoryData(this.currentPage);
+        this.hideLoading();
+      }
+    },
+    onPageChange: function onPageChange(pageNumber) {
+      this.getHistoryData(pageNumber);
+    },
+    submitSearch: function submitSearch() {
+      this.currentPage = 1;
+      this.getHistoryData(this.currentPage);
+    },
+    onAction: function onAction(action, indexChatRoom, nodNumber) {
+      if (action == 'chatRoom') {
+        this.$router.push({
+          name: 'nod/form-chat-room',
+          params: {
+            Id: indexChatRoom,
+            NodNumber: nodNumber
+            // isCaretaker: this.isCaretaker
+          }
+        });
+      }
     }
   },
   mounted: function mounted() {
-    if (this.$route.params.Id) {
-      var Id = this.$route.params.Id;
-      this.isCaretaker = this.$route.params.isCaretaker;
-      this.getData(Id);
-      this.field.Id = Id;
-    }
+    this.getHistoryData(this.currentPage);
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=template&id=7f455120&":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=template&id=7f455120& ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/question-nod-report/index.vue?vue&type=template&id=3fcc6b17&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/question-nod-report/index.vue?vue&type=template&id=3fcc6b17& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -142,185 +113,106 @@ var render = function render() {
   return _c("div", [_c("b-card", {
     staticClass: "mb-4",
     attrs: {
-      header: _vm.headerCard,
+      header: "History Chat NOD",
       "header-tag": "h4"
     }
-  }, [_vm.isNotif ? _c("div", {
-    staticClass: "alert alert-dismissible fade show",
-    "class": [_vm.alertVariant]
-  }, [_c("button", {
-    staticClass: "close",
+  }, [_c("b-form", {
+    staticClass: "mb-4 row",
     attrs: {
-      type: "button",
-      "data-dismiss": "alert"
+      inline: ""
+    }
+  }, [_c("div", {
+    staticClass: "col-md-6"
+  }, [_c("b-form", {
+    attrs: {
+      inline: ""
+    }
+  }, [_c("label", {
+    staticClass: "form-label mr-sm-2"
+  }, [_vm._v("Tampilkan Data")]), _vm._v(" "), _c("b-select", {
+    attrs: {
+      value: "vars.perPage",
+      options: [2, 3, 5, 100, 1000]
     },
     on: {
-      click: function click($event) {
-        _vm.isNotif = !_vm.isNotif;
+      change: function change($event) {
+        return _vm.onGetOption($event);
       }
-    }
-  }, [_vm._v("×")]), _vm._v("\n      " + _vm._s(_vm.alertNotif) + "\n    ")]) : _vm._e(), _vm._v(" "), _c("form", {
-    attrs: {
-      method: "POST"
     },
+    model: {
+      value: _vm.vars.perPage,
+      callback: function callback($$v) {
+        _vm.$set(_vm.vars, "perPage", $$v);
+      },
+      expression: "vars.perPage"
+    }
+  })], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6"
+  }, [_c("b-form", {
     on: {
       submit: function submit($event) {
         $event.preventDefault();
-        return _vm.submitForm();
+        return _vm.submitSearch.apply(null, arguments);
       }
     }
-  }, [_c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-4"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("No. NOE")]), _vm._v(" "), _c("b-input", {
-    staticClass: "mb-1",
+  }, [_c("b-input-group", [_c("b-form-input", {
     attrs: {
-      name: "Number",
-      state: _vm.allErrors.Number ? false : null,
-      readonly: "",
-      required: ""
+      placeholder: "Search History Data"
     },
     model: {
-      value: _vm.field.Number,
+      value: _vm.field.searchQuery.rc__question,
       callback: function callback($$v) {
-        _vm.$set(_vm.field, "Number", $$v);
+        _vm.$set(_vm.field.searchQuery, "rc__question", $$v);
       },
-      expression: "field.Number"
+      expression: "field.searchQuery.rc__question"
     }
-  }), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.field.IdPublish,
-      expression: "field.IdPublish"
-    }],
-    staticClass: "mb-1",
-    attrs: {
-      type: "hidden",
-      name: "IdPublish",
-      state: _vm.allErrors.IdPublish ? false : null,
-      readonly: "",
-      required: ""
-    },
-    domProps: {
-      value: _vm.field.IdPublish
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.field, "IdPublish", $event.target.value);
-      }
-    }
-  }), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.field.SectionPublish,
-      expression: "field.SectionPublish"
-    }],
-    staticClass: "mb-1",
-    attrs: {
-      type: "hidden",
-      name: "SectionPublish",
-      state: _vm.allErrors.SectionPublish ? false : null,
-      readonly: "",
-      required: ""
-    },
-    domProps: {
-      value: _vm.field.SectionPublish
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.field, "SectionPublish", $event.target.value);
-      }
-    }
-  }), _vm._v(" "), _vm.allErrors.Number ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Number[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-4"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Koreksi")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "Description",
-      state: _vm.allErrors.Description ? false : null,
-      required: ""
-    },
-    model: {
-      value: _vm.field.Description,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "Description", $$v);
-      },
-      expression: "field.Description"
-    }
-  }), _vm._v(" "), _vm.allErrors.Description ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Description[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-4"
-  }, [_c("label", [_vm._v("Lampiran")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("(Max. 50 MB)")]), _vm._v(" "), _c("file-pond", {
-    ref: "pondMyFile",
-    attrs: {
-      name: "Attachment",
-      "label-idle": "Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;",
-      "allow-multiple": true,
-      files: _vm.field.Attachment,
-      maxTotalFileSize: "50MB",
-      "accepted-file-types": "application/*, image/*, video/*"
-    },
-    on: {
-      updatefiles: _vm.handleFile
-    }
-  })], 1)], 1), _vm._v(" "), _vm.isCaretaker == true ? _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-4"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Deskripsi Mandatory")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "DescriptionCaretaker",
-      state: _vm.allErrors.DescriptionCaretaker ? false : null,
-      required: _vm.isCaretaker
-    },
-    model: {
-      value: _vm.field.DescriptionCaretaker,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "DescriptionCaretaker", $$v);
-      },
-      expression: "field.DescriptionCaretaker"
-    }
-  }), _vm._v(" "), _vm.allErrors.DescriptionCaretaker ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.DescriptionCaretaker[0]))]) : _vm._e()], 1)], 1) : _vm._e(), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("b-btn", {
-    staticClass: "float-right ml-2",
+  }), _vm._v(" "), _c("b-input-group-append", [_c("b-button", {
     attrs: {
       type: "submit",
       variant: "primary"
     }
-  }, [_vm._v("Simpan")]), _vm._v(" "), _c("b-btn", {
-    staticClass: "float-right",
+  }, [_vm._v("Search")])], 1)], 1)], 1)], 1)]), _vm._v(" "), _c("b-form", {
+    staticClass: "mb-4 row",
     attrs: {
-      type: "button",
-      variant: "secondary"
+      inline: ""
+    }
+  }, _vm._l(_vm.historyData, function (item, index) {
+    return _c("div", {
+      staticClass: "col-md-4"
+    }, [_c("b-button", {
+      staticClass: "mb-2 mt-2",
+      attrs: {
+        variant: "light"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.onAction("chatRoom", item.ChatroomId, item.NodNumber);
+        }
+      }
+    }, [_vm._v(_vm._s(item.ChatStatus))]), _vm._v(" "), item.ChatStatus ? _c("b-card", {
+      attrs: {
+        "bg-variant": _vm.getVariant(item.ChatStatus),
+        "text-variant": item.ChatStatus == "Done" ? "black" : "white",
+        header: item.NodNumber
+      }
+    }, [_c("b-card-text", [_vm._v("Topik Diskusi : ")]), _vm._v(" "), _c("b-card-text", [_vm._v(_vm._s(item.Question))]), _vm._v(" "), _c("b-card-text", [_vm._v("Invite Chat Forum : ")]), _vm._v(" "), _c("b-card-text", [_vm._v(_vm._s(item.RequestName) + " - (" + _vm._s(item.DepartName) + ")")])], 1) : _vm._e()], 1);
+  }), 0), _vm._v(" "), _c("b-pagination", {
+    attrs: {
+      "total-rows": _vm.totalHistoryData,
+      "per-page": _vm.vars.perPage,
+      "aria-controls": "history-data-pagination"
     },
     on: {
-      click: function click($event) {
-        return _vm.backIndex();
-      }
+      input: _vm.onPageChange
+    },
+    model: {
+      value: _vm.currentPage,
+      callback: function callback($$v) {
+        _vm.currentPage = $$v;
+      },
+      expression: "currentPage"
     }
-  }, [_vm._v("Kembali")])], 1)], 1)], 1)])], 1);
+  })], 1)], 1);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -328,17 +220,17 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue":
-/*!******************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue ***!
-  \******************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/question-nod-report/index.vue":
+/*!***********************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/question-nod-report/index.vue ***!
+  \***********************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _form_vue_vue_type_template_id_7f455120___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=7f455120& */ "./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=template&id=7f455120&");
-/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _index_vue_vue_type_template_id_3fcc6b17___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=3fcc6b17& */ "./resources/assets/src/components/backend/nod/question-nod-report/index.vue?vue&type=template&id=3fcc6b17&");
+/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/nod/question-nod-report/index.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -348,9 +240,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _form_vue_vue_type_template_id_7f455120___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _form_vue_vue_type_template_id_7f455120___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _index_vue_vue_type_template_id_3fcc6b17___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _index_vue_vue_type_template_id_3fcc6b17___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -360,38 +252,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/assets/src/components/backend/noe/correction-noe-verification/form.vue"
+component.options.__file = "resources/assets/src/components/backend/nod/question-nod-report/index.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/question-nod-report/index.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/question-nod-report/index.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/question-nod-report/index.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=template&id=7f455120&":
-/*!*************************************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=template&id=7f455120& ***!
-  \*************************************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/question-nod-report/index.vue?vue&type=template&id=3fcc6b17&":
+/*!******************************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/question-nod-report/index.vue?vue&type=template&id=3fcc6b17& ***!
+  \******************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7f455120___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=7f455120& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=template&id=7f455120&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7f455120___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_3fcc6b17___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./index.vue?vue&type=template&id=3fcc6b17& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/question-nod-report/index.vue?vue&type=template&id=3fcc6b17&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_3fcc6b17___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7f455120___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_3fcc6b17___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

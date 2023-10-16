@@ -648,10 +648,7 @@ export default {
     },
 
     handleFileEvent: function(files) {
-      // console.log('FilePond Updated')
-      // example of instance method call on pond reference
       this.field.EventFile = files.map(files => files.file)
-      // console.log( this.field.myFile )
     },
 
     handleRemoveEvent: function(error,files){

@@ -60,5 +60,17 @@ export default [{
     path: 'form-chat-room',
     name: 'nod/form-chat-room',
     component: () => import('@/components/backend/nod/question-nod-report/container')
+  },{
+    path: 'master-verifikasi-capa',
+    name: 'nod/master-verifikasi-capa',
+    component: () => import('@/components/backend/nod/verifikasi-capa-nod/index')
+  },{
+    path: 'form-master-verifikasi-capa',
+    name: 'nod/form-master-verifikasi-capa',
+    component: () => import('@/components/backend/nod/verifikasi-capa-nod/form')
+  },{
+    path: 'show-master-verifikasi-capa',
+    name: 'nod/show-master-verifikasi-capa',
+    component: () => import('@/components/backend/nod/verifikasi-capa-nod/form')
   }]
 }]

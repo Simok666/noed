@@ -437,7 +437,13 @@ __webpack_require__.r(__webpack_exports__);
       this.$forceUpdate();
     },
     removeDetail: function removeDetail(index, type) {
-      if (type == 'CA') this.field.NODCA.splice(index, 1);else this.field.NODPA.splice(index, 1);
+      if (type == 'CA') {
+        this.field.NODCA.splice(index, 1);
+        this.$forceUpdate();
+      } else {
+        this.field.NODPA.splice(index, 1);
+        this.$forceUpdate();
+      }
     },
     backIndex: function backIndex() {
       this.$router.push('/RoleAdmin/nod/data-nod-report');
