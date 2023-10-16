@@ -205,7 +205,27 @@
     "icon":"ion ion-md-build",
     "children":[]
   
-  }]
+  },{
+  "id":53,
+  "text":"Verifikasi CAPA NOD",
+  "value":"/RoleAdmin/nod/master-verifikasi-capa",
+  "submenu": [{
+    "type":"show",
+    "text":"Show",
+    "value":"/RoleAdmin/nod/show-master-verifikasi-capa"
+  },{
+    "type":"form",
+    "text":"Create & Edit",
+    "value":"/RoleAdmin/nod/form-master-verifikasi-capa"
+  },{
+    "type":"delete",
+    "text":"Delete",
+    "value":"/AdminVue/master-history-chat-delete"
+  }],
+  "icon":"ion ion-md-build",
+  "children":[]
+
+}]
 
 },{
   "id":37,

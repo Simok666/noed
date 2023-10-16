@@ -1,200 +1,309 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[11],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-evaluation/form.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/noe-evaluation/form.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'form-noe-evaluation',
+  name: 'form-nod-report',
   metaInfo: {
-    title: 'Form NOE Evaluation'
+    title: 'Form NOD Report'
   },
   components: {},
   data: function data() {
     return {
-      urlSubmit: '/AdminVue/noe-evaluation-insert',
-      headerCard: 'Evaluasi NOE',
+      urlSubmit: '/AdminVue/nod-verifikasi-capa-insert-data',
+      headerCard: 'Verifikasi CAPA NOD',
       textBtnSubmit: 'Simpan',
       field: {
-        EventFile: [],
-        CorrectiveActionFile: [],
-        IdDevRiskAssesment: [{
-          RiskAssesment: '',
-          Question: '',
-          Value: '',
-          AssesmentGroup: ''
+        Date: '',
+        //moment(new Date()).format('YYYY-MM-DD hh:mm:ss'),
+        BatchNo: '',
+        IdProduct: '',
+        Event: '',
+        CAFile: [],
+        PAFile: [],
+        CAFileName: [],
+        PAFileName: [],
+        IdDepartment: 0,
+        NODCA: [{
+          IdCAPIC: '',
+          CADate: '',
+          CADescription: '',
+          CAFile: []
         }],
-        DeviationLevel: '',
-        FileEventDownload: [],
-        FileCorrectiveActionDownload: [],
-        Dept: '',
-        Lampiran: ''
+        NODPA: [{
+          IdPAPIC: '',
+          PADate: '',
+          PADescription: '',
+          PAFile: []
+        }],
+        PublishTo: 0,
+        SectionPublish: 0
       },
       allErrors: [],
       isNotif: false,
+      isEdit: false,
       alertNotif: '',
       alertVariant: 'alert-dark-danger',
-      OldEventFile: [],
-      OldCorrectiveActionFile: [],
-      valDept: 0,
-      DescOPA: false,
-      resultValue: 0,
-      opsDeviation: [],
-      opsNOE: [{
-        'value': 'Bets',
-        'text': 'Bets'
-      }, {
-        'value': 'Non Bets',
-        'text': 'Non Bets'
-      }],
-      opsDevLevelQA: [{
-        'value': 'Minor',
-        'text': 'Minor'
-      }, {
-        'value': 'Major',
-        'text': 'Major'
-      }, {
-        'value': 'Critical',
-        'text': 'Critical'
-      }],
+      opsNODAccNumber: [],
+      opsCAPIC: [],
+      opsPAPIC: [],
       Position: 0,
       //1 = unit head; 2 = sect head; 3 = APJ; 4 = dept head;
       valStatus: 0,
       isShow: false,
-      isEdit: false,
+      userDepartment: 0,
+      deptTerkait: false,
+      statusDeptTerkait: false,
+      OldCAFile: [],
+      OldPAFile: [],
       BaseUrl: "/",
       isCaretaker: false,
-      isComment: false,
-      checkAnswer: false,
-      HistoryCorrectionData: [],
-      getCorrectorData: [],
-      showMore: false,
-      maxVisibleItems: 2,
-      isTypeUser: false,
-      isChildToAnswer: false,
-      isAnswered: false,
-      isCorrection: false
+      opsRelevantDept: [],
+      isDept: false,
+      isRelevantDept: false,
+      relevantDeptExist: 0,
+      min: moment__WEBPACK_IMPORTED_MODULE_0___default()(new Date()).format('YYYY-MM-DD'),
+      selected: '',
+      getAnotherEffect: [],
+      checkedEffect: [],
+      text: [],
+      dataAnotherEffect: []
     };
   },
-  computed: {
-    HistoryCorrection: function HistoryCorrection() {
-      if (this.showMore) {
-        return this.HistoryCorrectionData;
-      } else {
-        return this.HistoryCorrectionData.slice(0, this.maxVisibleItems);
-      }
-    },
-    getCorrector: function getCorrector() {
-      return this.getCorrectorData;
-    },
-    deptValue: function deptValue() {
-      return this.field.Dept;
-    },
-    lampiranValue: function lampiranValue() {
-      return this.field.Lampiran;
-    },
-    showMoreButton: function showMoreButton() {
-      return this.HistoryCorrectionData.length > this.maxVisibleItems;
+  created: function created() {
+    var _this = this;
+    // Initialize the 'text' object with default values for each 'title_effect'
+    this.getAnotherEffect.forEach(function (item) {
+      _this.text[item.id_effect] = '';
+    });
+  },
+  watch: {
+    checkedEffect: {
+      handler: function handler() {
+        // Ketika checkbox diubah, perbarui nilai textarea sesuai dengan checkbox yang dicentang
+        for (var key in this.checkedEffect) {
+          if (this.checkedEffect[key]) {
+            if (!this.text[key]) {
+              this.text[key] = ''; // Inisialisasi nilai textarea jika belum ada
+            }
+          } else {
+            delete this.text[key]; // Hapus nilai textarea jika checkbox tidak dicentang
+          }
+        }
+      },
+
+      deep: true
     }
   },
   methods: {
     submitForm: function submitForm() {
       this.showLoading();
-      var formData = new FormData();
-      formData.append("Id", this.field.Id);
-      if (this.field.IdDeviation && this.field.IdDeviation.Deviation != null) formData.append("IdDeviation", this.field.IdDeviation.Deviation);
-      formData.append("DescriptionEvaluation", this.field.DescriptionEvaluation);
-      if (this.field.NOEClassification && this.field.NOEClassification.value != null) formData.append("NOEClassification", this.field.NOEClassification.value);
-      if (this.field.DeviationLevelQA && this.field.DeviationLevelQA.value != null) formData.append("DeviationLevelQA", this.field.DeviationLevelQA.value);
-      formData.append("Remarks", this.field.Remarks);
-      var config = {
-        headers: {
-          'content-type': 'multipart/form-data'
-        }
-      };
-      axios.post(this.urlSubmit, formData, config).then(function (res) {
-        var resp = res.data;
-        if (resp.status) {
-          this.$router.push({
-            name: 'noe/data-noe-evaluation',
-            params: {
-              isNotif: true,
-              gNotif: 'notifications-success',
-              tNotif: this.textBtnSubmit + ' Data Sukses',
-              txNotif: 'Simpan Data Sukses!'
+      var isEmpty = false;
+      if (isEmpty) {
+        this.$swal({
+          icon: 'error',
+          text: 'Silahkan lengkapi kolom *Wajib Diisi!'
+        });
+      } else {
+        var formData = new FormData();
+        formData.append("Id", this.field.Id);
+        formData.append("NODNumber", this.field.NODNumber);
+        if (this.field.NOENumber) formData.append("NOENumber", this.field.NOENumber.Id);
+        formData.append("Date", this.field.Date);
+        formData.append("ProperCondition", this.field.ProperCondition);
+        formData.append("Man", this.field.Man);
+        formData.append("Machine", this.field.Machine);
+        formData.append("Method", this.field.Method);
+        formData.append("Material", this.field.Material);
+        formData.append("Milieu", this.field.Milieu);
+        var collected = [];
+        if (this.selected == true) {
+          for (var idEffect in this.checkedEffect) {
+            if (this.checkedEffect[idEffect]) {
+              collected[idEffect] = {
+                id_effect: idEffect,
+                selected: this.selected,
+                text: this.text[idEffect] || ''
+              };
             }
-          });
+          }
         } else {
-          this.isNotif = true;
-          this.alertNotif = resp.message;
-          this.alertVariant = 'alert-dark-danger';
-          this.allErrors = resp.validation;
-          this.scrollTop(0, 1000);
+          collected.push(this.selected);
         }
-        this.hideLoading();
-      }.bind(this))["catch"](function (e) {
-        console.log(e);
-        this.isNotif = true;
-        this.alertNotif = 'Invalid Server Side!';
-        this.alertVariant = 'alert-dark-danger';
-        this.scrollTop(0, 1000);
-        this.hideLoading();
-      }.bind(this));
+        if (this.Position == 2 || this.Position == 4) {
+          formData.append("DescAnotherEffect", JSON.stringify(collected));
+        }
+
+        // sebelumnya hanya 1 data group, sekarang lebih dari 1 data group
+        for (var i = 0; i < this.field.NODCA.length; i++) {
+          formData.append('IdCAPIC[' + i + ']', this.field.NODCA[i].IdCAPIC.Id);
+          formData.append('CADate[' + i + ']', this.field.NODCA[i].CADate);
+          formData.append('CADescription[' + i + ']', this.field.NODCA[i].CADescription);
+          var file = this.field.NODCA[i].CAFile;
+          for (var j = 0; j < file.length; j++) {
+            formData.append('CAFile[' + i + '][' + j + ']', file[j]);
+          }
+        }
+        formData.append("OldCAFile", JSON.stringify(this.OldCAFile));
+
+        // sebelumnya hanya 1 data group, sekarang lebih dari 1 data group
+        for (var i = 0; i < this.field.NODPA.length; i++) {
+          formData.append('IdPAPIC[' + i + ']', this.field.NODPA[i].IdPAPIC.Id);
+          formData.append('PADate[' + i + ']', this.field.NODPA[i].PADate);
+          formData.append('PADescription[' + i + ']', this.field.NODPA[i].PADescription);
+          var file = this.field.NODPA[i].PAFile;
+          for (var j = 0; j < file.length; j++) {
+            formData.append('PAFile[' + i + '][' + j + ']', file[j]);
+          }
+        }
+        formData.append("OldPAFile", JSON.stringify(this.OldPAFile));
+        formData.append("IdPublish", this.field.PublishTo);
+        formData.append("publishSection", this.field.SectionPublish);
+        var config = {
+          headers: {
+            'content-type': 'multipart/form-data'
+          }
+        };
+        axios.post(this.urlSubmit, formData, config).then(function (res) {
+          var resp = res.data;
+          if (resp.status) {
+            this.$router.push({
+              name: 'nod/data-nod-report',
+              params: {
+                isNotif: true,
+                gNotif: 'notifications-success',
+                tNotif: this.textBtnSubmit + ' Data Sukses',
+                txNotif: 'Simpan Data Sukses!'
+              }
+            });
+          } else {
+            this.isNotif = true;
+            this.alertNotif = resp.message;
+            this.alertVariant = 'alert-dark-danger';
+            this.allErrors = resp.validation;
+            this.scrollTop(0, 1000);
+          }
+          this.hideLoading();
+        }.bind(this))["catch"](function (e) {
+          console.log(e);
+          this.isNotif = true;
+          this.alertNotif = 'Invalid Server Side!';
+          this.alertVariant = 'alert-dark-danger';
+          this.scrollTop(0, 1000);
+          this.hideLoading();
+        }.bind(this));
+      }
+    },
+    onChange: function onChange(option) {
+      if (option) {
+        this.getDataNODAcc(option.IdNOEReport, option.Id);
+        this.getDataPIC(option.Id);
+      }
     },
     getData: function getData(Id) {
-      axios.post('/AdminVue/noe-evaluation-edit', {
+      axios.post('/AdminVue/nod-report-edit', {
         Id: Id
       }).then(function (res) {
+        var _this2 = this;
         var resp = res.data;
         this.Position = res.data.position;
+        this.userDepartment = res.data.department;
+        this.deptTerkait = res.data.deptTerkait;
+        this.statusDeptTerkait = res.data.statusDeptTerkait;
         this.field = resp.data;
-        if (this.field.Verified == "Perlu tindakan koreksi lain") this.valDept = 1;
-        if (this.field.Verified == "Tindakan koreksi telah dilaksanakan dengan baik") this.valDept = 0;
-        if (this.field.OtherProductAffect == "Ada") this.DescOPA = true;
-        if (this.field.OtherProductAffect == "Tidak Ada") {
-          this.DescOPA = false;
-          this.field.DescriptionOPA = '';
+        this.getDataNOE(this.field.IdNOEReport);
+        this.getDataPIC(this.field.IdNOEReport);
+        this.field.NODCA = resp.NODCA;
+        this.field.NODPA = resp.NODPA;
+        this.opsNOENumber.unshift(this.field.NOENumber);
+        this.opsRelevantDept = resp.data.RelevantDept;
+        if (resp.data.IdRelevantDept != 0) {
+          JSON.parse(resp.data.IdRelevantDept).filter(function (value) {
+            return value == resp.data.IdDepartmentSession ? _this2.isRelevantDept = true : _this2.isRelevantDept;
+          }, {});
         }
-        this.field.EventFile = [];
-        this.field.CorrectiveActionFile = [];
-        if (this.field.FileEvent != '') {
-          var countFileEvent = this.field.FileEvent.length;
-          for (var i = 0; i < countFileEvent; i++) {
-            this.OldEventFile.push(this.field.FileEvent[i]);
-            this.field.EventFile.push("/" + this.field.FileEvent[i]);
+        resp.data.TypeUser == 15 ? this.isDept = true : this.isDept;
+        this.relevantDeptExist = resp.data.IdRelevantDept;
+        this.field.NODCA.forEach(function (value, index) {
+          if (value) {
+            if (value.CAFile != '') {
+              value.IdCAPIC = {
+                'Id': value.IdCAPIC,
+                'PIC': value.CAPIC
+              };
+              value.CAFile = JSON.parse(value.CAFile);
+              _this2.OldCAFile.push(value.CAFile);
+              value.CAFileName = [];
+              value.CAFile.forEach(function (val, i) {
+                value.CAFile[i] = window.location.origin + '/' + val;
+                var result = val.split('/');
+                value.CAFileName[i] = result[4];
+              });
+            } else {
+              _this2.OldCAFile.push('');
+            }
           }
-        }
-        if (this.field.EventFile == '') {
-          this.OldEventFile = '';
-        }
-        if (this.field.FileCorrectiveAction != '') {
-          var countFileCorrectiveAction = this.field.FileCorrectiveAction.length;
-          for (var _i = 0; _i < countFileCorrectiveAction; _i++) {
-            this.OldCorrectiveActionFile.push(this.field.FileCorrectiveAction[_i]);
-            this.field.CorrectiveActionFile.push("/" + this.field.FileCorrectiveAction[_i]);
+        });
+        this.field.NODPA.forEach(function (value, index) {
+          if (value) {
+            if (value.PAFile != '') {
+              value.IdPAPIC = {
+                'Id': value.IdPAPIC,
+                'PIC': value.PAPIC
+              };
+              value.PAFile = JSON.parse(value.PAFile);
+              _this2.OldPAFile.push(value.PAFile);
+              value.PAFileName = [];
+              value.PAFile.forEach(function (val, i) {
+                value.PAFile[i] = window.location.origin + '/' + val;
+                var result = val.split('/');
+                value.PAFileName[i] = result[4];
+              });
+            } else {
+              _this2.OldPAFile.push('');
+            }
           }
-        }
-        if (this.field.CorrectiveActionFile == '') {
-          this.OldCorrectiveActionFile = '';
-        }
+        });
         if (this.field.Status) {
+          if (this.field.Status == 'UnPublish') this.valStatus = 1;
           if (this.field.Status == 'Dilaporkan ke Unit Head') this.valStatus = 2;
-          if (this.field.Status == 'Dilaporkan ke Sect Head') this.valStatus = 3;
-          if (this.field.Status == 'Disetujui oleh Unit Head') this.valStatus = 4;
-          if (this.field.Status == 'Disetujui oleh Sect Head') this.valStatus = 5;
-          if (this.field.Status == 'Disetujui oleh Dept Head') this.valStatus = 6;
-          if (this.field.Status == 'Disetujui oleh QA Sect.Head') this.valStatus = 7;
-          if (this.field.Status == 'Disetujui oleh QA APJ') this.valStatus = 8;
-          if (this.field.Status == 'Disetujui oleh QA Dept.Head') this.valStatus = 9;
-          if (this.field.Status == 'Ditolak') this.valStatus = 10;
+          if (this.field.Status == 'Disetujui oleh Unit Head') this.valStatus = 3;
+          if (this.field.Status == 'Disetujui oleh Section Head') this.valStatus = 4;
+          if (this.field.Status == 'Disetujui oleh Dept Head') this.valStatus = 5;
+          if (this.field.Status == 'Disetujui oleh Dept Head Terkait') this.valStatus = 6;
+          if (this.field.Status == 'Disetujui oleh QA APJ') this.valStatus = 7;
+          if (this.field.Status == 'Disetujui oleh QA Dept.Head') this.valStatus = 8;
+          if (this.field.Status == 'Ditolak') this.valStatus = 9;
+          if (this.field.Status == 'Disetujui Oleh QA Section Head') this.valStatus = 10;
         }
         this.isCaretaker = res.data.isCaretaker;
-        this.isCorrection = resp.isCorrection;
+        this.getAnotherEffect = resp.getAnotherEffect;
+        var selectedAnotherEffect = Object.values(resp.selectedAnotherEffect);
+        if (selectedAnotherEffect) {
+          selectedAnotherEffect.forEach(function (item, index) {
+            if (item !== false) {
+              _this2.selected = item.selected;
+              _this2.checkedEffect[item.id_effect] = item.id_effect;
+              _this2.text[item.id_effect] = item.text;
+            } else {
+              _this2.selected = item;
+            }
+          });
+        }
       }.bind(this))["catch"](function (e) {
         console.log(e);
         this.isNotif = true;
@@ -202,96 +311,224 @@ __webpack_require__.r(__webpack_exports__);
         this.alertVariant = 'alert-dark-danger';
       }.bind(this));
     },
-    getCorrectionData: function getCorrectionData(Id) {
-      axios.post('/AdminVue/noe-report-get-correction', {
-        Id: Id
+    getNODAccNumber: function getNODAccNumber() {
+      axios.post('/AdminVue/nod-report-get-acc-number').then(function (res) {
+        this.opsNODAccNumber = res.data.data;
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+        this.opsNODAccNumber = [];
+      }.bind(this));
+    },
+    getDataNODAcc: function getDataNODAcc(Id, IdNOD) {
+      axios.post('/AdminVue/nod-verifikasi-capa-get-data', {
+        Id: Id,
+        IdNOD: IdNOD
       }).then(function (res) {
-        var resp = res.data.data;
-        var count = res.data.count;
-        var history = res.data.history;
-        var getCorrectorData = res.data.correction;
-        this.HistoryCorrectionData = history;
-        this.getCorrectorData = getCorrectorData;
-        this.$set(this.field, 'Dept', resp.Name);
-        this.$set(this.field, 'Lampiran', resp.Description);
-        if (resp) {
-          if (resp.TypeUser == resp.SessionTypeUser) {
-            this.isTypeUser = true;
+        var _this3 = this;
+        this.Position = res.data.position;
+        this.field.BatchNo = res.data.data.BatchNo;
+        this.field.IdProduct = res.data.data.Product;
+        this.field.Event = res.data.data.Event;
+        this.field.PublishTo = res.data.data.IdPublish;
+        this.field.SectionPublish = res.data.data.publishSection;
+        this.field.Date = moment__WEBPACK_IMPORTED_MODULE_0___default()(res.data.data.Date).format('DD/MM/YYYY HH:mm:ss');
+        this.field.NODCA = res.data.NODCA;
+        this.field.NODPA = res.data.NODPA;
+        this.field.ProperCondition = res.data.data.ProperCondition;
+        this.field.Man = res.data.data.Man;
+        this.field.Machine = res.data.data.Machine;
+        this.field.Method = res.data.data.Method;
+        this.field.Material = res.data.data.Material;
+        this.field.Milieu = res.data.data.Milieu;
+        this.opsRelevantDept = res.data.data.RelevantDept;
+        if (res.data.data.IdRelevantDept != 0) {
+          JSON.parse(res.data.data.IdRelevantDept).filter(function (value) {
+            return value == res.data.data.IdDepartmentSession ? _this3.isRelevantDept = true : _this3.isRelevantDept;
+          }, {});
+        }
+        res.data.data.TypeUser == 15 ? this.isDept = true : this.isDept;
+        this.relevantDeptExist = res.data.data.IdRelevantDept;
+        this.field.NODCA.forEach(function (value, index) {
+          if (value) {
+            if (value.CAFile != '') {
+              value.IdCAPIC = {
+                'Id': value.IdCAPIC,
+                'PIC': value.CAPIC
+              };
+              value.CAFile = JSON.parse(value.CAFile);
+              _this3.OldCAFile.push(value.CAFile);
+              value.CAFileName = [];
+              value.CAFile.forEach(function (val, i) {
+                value.CAFile[i] = window.location.origin + '/' + val;
+                var result = val.split('/');
+                value.CAFileName[i] = result[4];
+              });
+            } else {
+              _this3.OldCAFile.push('');
+            }
           }
-          if (resp.ChildToAnswer == resp.SessionIdPosition) {
-            this.isChildToAnswer = true;
+        });
+        this.field.NODPA.forEach(function (value, index) {
+          if (value) {
+            if (value.PAFile != '') {
+              value.IdPAPIC = {
+                'Id': value.IdPAPIC,
+                'PIC': value.PAPIC
+              };
+              value.PAFile = JSON.parse(value.PAFile);
+              _this3.OldPAFile.push(value.PAFile);
+              value.PAFileName = [];
+              value.PAFile.forEach(function (val, i) {
+                value.PAFile[i] = window.location.origin + '/' + val;
+                var result = val.split('/');
+                value.PAFileName[i] = result[4];
+              });
+            } else {
+              _this3.OldPAFile.push('');
+            }
           }
-          if (resp.Answer == null) {
-            this.isAnswered;
-          } else {
-            this.field.Answer = resp.Answer;
-            this.isAnswered = true;
-          }
-          var countAnswer = [];
-          history.forEach(function (keys) {
-            countAnswer.push(keys.Answer);
-          });
-          if (countAnswer.length > 0) this.checkAnswer = true;
-        }
-        count > 0 ? this.isComment = true : this.isComment;
-        this.$forceUpdate();
-      }.bind(this))["catch"](function (e) {
-        console.log(e);
-      }.bind(this));
-    },
-    toggleShowMore: function toggleShowMore() {
-      this.showMore = !this.showMore;
-      console.log(this.showMore);
-    },
-    getDeviation: function getDeviation() {
-      axios.post('/AdminVue/noe-evaluation-get-deviation').then(function (res) {
-        this.opsDeviation = res.data.data;
-      }.bind(this))["catch"](function (e) {
-        console.log(e);
-        this.opsDeviation = [];
-      }.bind(this));
-    },
-    backIndex: function backIndex() {
-      this.$router.push('/RoleAdmin/noe/data-noe-evaluation');
-    },
-    onAction: function onAction(action) {
-      if (action == 'sendAnswer') {
-        return this.sendAnswer('/AdminVue/noe-report-answer', this.field.NOENumber, this.field.Answer, this.$parent, true, this.valStatus);
-      }
-      if (this.isCorrection == false) {
-        if (action == 'publish-evaluation') {
-          this.publishEvaluation('/AdminVue/noe-evaluation-publish-evaluation', this.field.Id, this.$parent, true);
-        }
-        if (action == 'approve') {
-          this.approve('/AdminVue/noe-evaluation-approve', this.field.Id, this.$parent, null, true, this.isCaretaker);
-        }
-        if (action == 'reject') {
-          this.reject('/AdminVue/noe-evaluation-reject', this.field.Id, this.$parent, true, this.isCaretaker);
-        }
-        if (action == 'correction') {
-          this.$router.push({
-            name: 'noe/form-correction-noe-evaluation',
-            params: {
-              Id: this.field.Id,
-              isCaretaker: this.isCaretaker
+        });
+        this.getAnotherEffect = res.data.getAnotherEffect;
+        var selectedAnotherEffect = Object.values(res.data.selectedAnotherEffect);
+        if (selectedAnotherEffect) {
+          selectedAnotherEffect.forEach(function (item, index) {
+            if (item !== false) {
+              _this3.selected = item.selected;
+              _this3.checkedEffect[item.id_effect] = item.id_effect;
+              _this3.text[item.id_effect] = item.text;
+            } else {
+              _this3.selected = item;
             }
           });
         }
+        this.min = moment__WEBPACK_IMPORTED_MODULE_0___default()(res.data.data.Date).format('YYYY-MM-DD');
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+        this.field.BatchNo = '';
+        this.field.IdProduct = '';
+        this.field.Event = '';
+      }.bind(this));
+    },
+    getDataPIC: function getDataPIC(idNOEReport) {
+      axios.post('/AdminVue/nod-report-get-data-pic', {
+        IdNOEReport: idNOEReport
+      }).then(function (res) {
+        this.opsCAPIC = res.data.data;
+        this.opsPAPIC = res.data.data;
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+        this.opsCAPIC = [];
+        this.opsPAPIC = [];
+      }.bind(this));
+    },
+    handleFileCA: function handleFileCA(files, index) {
+      this.field.NODCA[index].CAFile = files.map(function (files) {
+        return files.file;
+      });
+    },
+    handleRemoveCA: function handleRemoveCA(error, files) {
+      var _this4 = this;
+      this.OldCAFile.forEach(function (val, k) {
+        val.forEach(function (v, i) {
+          if (v == files.source) {
+            _this4.OldCAFile[k].splice(i, 1);
+          }
+        });
+      });
+    },
+    handleFilePA: function handleFilePA(files, index) {
+      this.field.NODPA[index].PAFile = files.map(function (files) {
+        return files.file;
+      });
+    },
+    handleRemovePA: function handleRemovePA(error, files) {
+      var _this5 = this;
+      this.OldPAFile.forEach(function (val, k) {
+        val.forEach(function (v, i) {
+          if (v == files.source) {
+            _this5.OldPAFile[k].splice(i, 1);
+          }
+        });
+      });
+    },
+    handleFileCAPA: function handleFileCAPA(files) {
+      this.field.EventFile = files.map(function (files) {
+        return files.file;
+      });
+    },
+    handleRemoveCAPA: function handleRemoveCAPA(error, files) {
+      var result = _typeof(files.source);
+      if (this.isEdit == true && result === 'string') {
+        var index = this.OldEventFile.indexOf(files.source.replace('/clouds', 'clouds'));
+        this.OldEventFile.splice(index, 1);
+      }
+    },
+    addDetail: function addDetail(type) {
+      if (type == 'CA') {
+        var newCA = {
+          'IdCAPIC': '',
+          'CADate': '',
+          'CADescription': '',
+          'CAFile': []
+        };
+        vue__WEBPACK_IMPORTED_MODULE_1___default.a.set(this.field.NODCA, this.field.NODCA.length, newCA);
+        this.$forceUpdate();
       } else {
-        return this.showNotifCustom('notifications-danger', 'Forbidden Action', 'Harus isi jawaban dari pengkoreksi');
+        var newPA = {
+          'IdPAPIC': '',
+          'PADate': '',
+          'PADescription': '',
+          'PAFile': []
+        };
+        vue__WEBPACK_IMPORTED_MODULE_1___default.a.set(this.field.NODPA, this.field.NODPA.length, newPA);
+        this.$forceUpdate();
+      }
+    },
+    checkPIC: function checkPIC(value) {
+      this.$forceUpdate();
+    },
+    removeDetail: function removeDetail(index, type) {
+      if (type == 'CA') {
+        this.field.NODCA.splice(index, 1);
+        this.$forceUpdate();
+      } else {
+        this.field.NODPA.splice(index, 1);
+        this.$forceUpdate();
+      }
+    },
+    backIndex: function backIndex() {
+      this.$router.push('/RoleAdmin/nod/data-nod-report');
+    },
+    onAction: function onAction(action) {
+      if (action == 'publish') {
+        this.publish('/AdminVue/nod-report-publish', this.field.Id, this.$parent, true);
+      }
+      if (action == 'approve') {
+        this.approve('/AdminVue/nod-report-approve', this.field.Id, this.$parent, null, true, this.isCaretaker, this.opsRelevantDept, this.isDept, this.isRelevantDept, this.relevantDeptExist);
+      }
+      if (action == 'reject') {
+        this.rejectOld('/AdminVue/nod-report-reject', this.field.Id, this.$parent, null, true, this.isCaretaker);
+      }
+      if (action == 'correction') {
+        this.$router.push({
+          name: 'nod/form-correction-nod-report',
+          params: {
+            Id: this.field.Id,
+            isCaretaker: this.isCaretaker
+          }
+        });
       }
     }
   },
   mounted: function mounted() {
-    this.getDeviation();
+    this.getNODAccNumber();
     if (this.$route.params.isFormEdit) {
-      this.isEdit = this.$route.params.isFormEdit;
       var Id = this.$route.params.Id;
+      this.isEdit = true;
       if (Id) {
         this.getData(Id);
-        this.getCorrectionData(Id);
         this.field.Id = Id;
-        this.urlSubmit = '/AdminVue/noe-evaluation-update';
+        this.urlSubmit = '/AdminVue/nod-report-update';
         this.textBtnSubmit = 'Simpan';
       }
     }
@@ -300,19 +537,19 @@ __webpack_require__.r(__webpack_exports__);
       var Id = this.$route.params.Id;
       if (Id) {
         this.getData(Id);
-        this.getCorrectionData(Id);
         this.field.Id = Id;
       }
     }
+    // if(this.isEdit == false && this.isShow == false) this.generateNumber()
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-evaluation/form.vue?vue&type=template&id=537fcafe&":
-/*!************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/noe-evaluation/form.vue?vue&type=template&id=537fcafe& ***!
-  \************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=template&id=3feb3352&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=template&id=3feb3352& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -329,7 +566,21 @@ var render = function render() {
       header: _vm.headerCard,
       "header-tag": "h4"
     }
-  }, [_c("form", {
+  }, [_vm.isNotif ? _c("div", {
+    staticClass: "alert alert-dismissible fade show",
+    "class": [_vm.alertVariant]
+  }, [_c("button", {
+    staticClass: "close",
+    attrs: {
+      type: "button",
+      "data-dismiss": "alert"
+    },
+    on: {
+      click: function click($event) {
+        _vm.isNotif = !_vm.isNotif;
+      }
+    }
+  }, [_vm._v("×")]), _vm._v("\n      " + _vm._s(_vm.alertNotif) + "\n    ")]) : _vm._e(), _vm._v(" "), _c("form", {
     attrs: {
       method: "POST"
     },
@@ -343,31 +594,38 @@ var render = function render() {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("No. NOE")]), _vm._v(" "), _c("b-input", {
-    staticClass: "mb-1",
+  }, [_vm._v("No. NOD Disetujui")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Dipilih")]) : _vm._e(), _vm._v(" "), _c("multiselect", {
     attrs: {
-      name: "NOENumber",
-      state: _vm.allErrors.NOENumber ? false : null,
-      readonly: ""
+      options: _vm.opsNODAccNumber,
+      "allow-empty": false,
+      placeholder: "Pilih No. NOD disetujui",
+      label: "NODNumber",
+      "track-by": "NODNumber",
+      required: "",
+      disabled: _vm.isShow
+    },
+    on: {
+      input: _vm.onChange
     },
     model: {
-      value: _vm.field.NOENumber,
+      value: _vm.field.NODAccNumber,
       callback: function callback($$v) {
-        _vm.$set(_vm.field, "NOENumber", $$v);
+        _vm.$set(_vm.field, "NODAccNumber", $$v);
       },
-      expression: "field.NOENumber"
+      expression: "field.NODAccNumber"
     }
-  }), _vm._v(" "), _vm.allErrors.NOENumber ? _c("span", {
+  }), _vm._v(" "), _vm.allErrors.NODAccNumber ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.NOENumber[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+  }, [_vm._v(_vm._s(_vm.allErrors.NODAccNumber[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Tanggal / Waktu")]), _vm._v(" "), _c("b-input", {
+  }, [_vm._v("Tanggal Kejadian NOE")]), _vm._v(" "), _c("b-input", {
     staticClass: "mb-1",
     attrs: {
       name: "Date",
-      state: _vm.allErrors.Date ? false : null,
       readonly: ""
     },
     model: {
@@ -377,9 +635,7 @@ var render = function render() {
       },
       expression: "field.Date"
     }
-  }), _vm._v(" "), _vm.allErrors.Date ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Date[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+  })], 1), _vm._v(" "), _c("b-form-group", {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
@@ -399,7 +655,7 @@ var render = function render() {
     }
   }), _vm._v(" "), _vm.allErrors.BatchNo ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.BatchNo[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+  }, [_vm._v(_vm._s(_vm.allErrors.BatchNo[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
@@ -419,51 +675,11 @@ var render = function render() {
     }
   }), _vm._v(" "), _vm.allErrors.IdProduct ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.IdProduct[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+  }, [_vm._v(_vm._s(_vm.allErrors.IdProduct[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Lokasi Kejadian")]), _vm._v(" "), _c("b-input", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "IdLocation",
-      state: _vm.allErrors.IdLocation ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.IdLocation,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "IdLocation", $$v);
-      },
-      expression: "field.IdLocation"
-    }
-  }), _vm._v(" "), _vm.allErrors.IdLocation ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.IdLocation[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Jenis Kejadian")]), _vm._v(" "), _c("b-input", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "IdTypeIncident",
-      state: _vm.allErrors.IdTypeIncident ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.IdTypeIncident,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "IdTypeIncident", $$v);
-      },
-      expression: "field.IdTypeIncident"
-    }
-  }), _vm._v(" "), _vm.allErrors.IdTypeIncident ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.IdTypeIncident[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Uraian Kejadian")]), _vm._v(" "), _c("b-textarea", {
+  }, [_vm._v("Uraian / Kondisi Ketidaksesuaian")]), _vm._v(" "), _c("b-textarea", {
     staticClass: "mb-1",
     attrs: {
       name: "Event",
@@ -479,734 +695,545 @@ var render = function render() {
     }
   }), _vm._v(" "), _vm.allErrors.Event ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Event[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-card", {
-    staticClass: "mb-3",
+  }, [_vm._v(_vm._s(_vm.allErrors.Event[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Kondisi Seharusnya")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-textarea", {
+    staticClass: "mb-1",
     attrs: {
-      header: "Lampiran Uraian Kejadian",
+      name: "ProperCondition",
+      state: _vm.allErrors.ProperCondition ? false : null,
+      required: "",
+      readonly: ""
+    },
+    model: {
+      value: _vm.field.ProperCondition,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "ProperCondition", $$v);
+      },
+      expression: "field.ProperCondition"
+    }
+  }), _vm._v(" "), _vm.allErrors.ProperCondition ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.ProperCondition[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Man (Personel)")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-textarea", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "Man",
+      state: _vm.allErrors.Man ? false : null,
+      required: "",
+      readonly: ""
+    },
+    model: {
+      value: _vm.field.Man,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "Man", $$v);
+      },
+      expression: "field.Man"
+    }
+  }), _vm._v(" "), _vm.allErrors.Man ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.Man[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Machine (Mesin / Peralatan)")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-textarea", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "Machine",
+      state: _vm.allErrors.Machine ? false : null,
+      required: "",
+      readonly: ""
+    },
+    model: {
+      value: _vm.field.Machine,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "Machine", $$v);
+      },
+      expression: "field.Machine"
+    }
+  }), _vm._v(" "), _vm.allErrors.Machine ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.Machine[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Method (Metode / Prosedur)")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-textarea", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "Method",
+      state: _vm.allErrors.Method ? false : null,
+      required: "",
+      readonly: ""
+    },
+    model: {
+      value: _vm.field.Method,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "Method", $$v);
+      },
+      expression: "field.Method"
+    }
+  }), _vm._v(" "), _vm.allErrors.Method ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.Method[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Material (Produk / Bahan)")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-textarea", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "Material",
+      state: _vm.allErrors.Material ? false : null,
+      required: "",
+      readonly: ""
+    },
+    model: {
+      value: _vm.field.Material,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "Material", $$v);
+      },
+      expression: "field.Material"
+    }
+  }), _vm._v(" "), _vm.allErrors.Material ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.Material[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Milieu (Lingkungan)")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-textarea", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "Milieu",
+      state: _vm.allErrors.Milieu ? false : null,
+      required: "",
+      readonly: ""
+    },
+    model: {
+      value: _vm.field.Milieu,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "Milieu", $$v);
+      },
+      expression: "field.Milieu"
+    }
+  }), _vm._v(" "), _vm.allErrors.Milieu ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.Milieu[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      header: "Tindakan Perbaikan (Corrective Action)",
       "header-tag": "h5"
     }
-  }, [_c("b-form-row", _vm._l(_vm.field.FileEventDownload, function (item, index) {
-    return _c("b-form-group", {
-      key: index,
-      staticClass: "col-md-4"
-    }, [_c("b-input-group", [_c("b-form-input", {
+  }, [_vm._l(_vm.field.NODCA, function (item, index) {
+    return [_c("b-form-row", [_c("b-form-group", {
+      staticClass: "col-md-6"
+    }, [_c("label", {
+      staticClass: "form-label"
+    }, [_vm._v("PIC")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+      staticClass: "form-label float-right text-danger"
+    }, [_vm._v("*Wajib Dipilih")]) : _vm._e(), _vm._v(" "), _c("multiselect", {
       attrs: {
-        name: "FileEventDownload",
-        readonly: ""
+        options: _vm.opsCAPIC,
+        "allow-empty": false,
+        placeholder: "Pilih PIC",
+        label: "PIC",
+        "track-by": "PIC",
+        required: "",
+        disabled: ""
+      },
+      on: {
+        input: function input($event) {
+          return _vm.checkPIC(item.IdCAPIC);
+        }
       },
       model: {
-        value: item[0],
+        value: item.IdCAPIC,
         callback: function callback($$v) {
-          _vm.$set(item, 0, $$v);
+          _vm.$set(item, "IdCAPIC", $$v);
         },
-        expression: "item[0]"
+        expression: "item.IdCAPIC"
       }
-    }), _vm._v(" "), _c("b-input-group-append", [_c("a", {
-      staticClass: "input-group-text btn-outline-success",
+    })], 1), _vm._v(" "), _c("b-form-group", {
+      staticClass: "col-md-5 col-10"
+    }, [_c("label", {
+      staticClass: "form-label"
+    }, [_vm._v("Due Date")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+      staticClass: "form-label float-right text-danger"
+    }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-form-datepicker", {
+      staticClass: "mb-1",
       attrs: {
-        href: _vm.BaseUrl + item[1],
-        target: "_blank"
+        locale: "en",
+        min: _vm.min,
+        "date-format-options": _vm.datePickerFormat,
+        required: "",
+        disabled: ""
+      },
+      model: {
+        value: item.CADate,
+        callback: function callback($$v) {
+          _vm.$set(item, "CADate", $$v);
+        },
+        expression: "item.CADate"
+      }
+    })], 1), _vm._v(" "), _vm.isShow == false && index > 0 ? _c("b-form-group", {
+      staticClass: "col-md-1 col-2 text-center"
+    }, [_c("label", [_vm._v("Tindakan")]), _c("br"), _vm._v(" "), _c("b-button", {
+      staticClass: "btn btn-sm btn-danger text-white",
+      attrs: {
+        pill: true,
+        disabled: ""
+      },
+      on: {
+        click: function click($event) {
+          return _vm.removeDetail(index, "CA");
+        }
       }
     }, [_c("i", {
-      staticClass: "fa fa-download"
-    })])])], 1)], 1);
-  }), 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Tindakan Koreksi yang Dilakukan")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "CorrectiveAction",
-      state: _vm.allErrors.CorrectiveAction ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.CorrectiveAction,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "CorrectiveAction", $$v);
-      },
-      expression: "field.CorrectiveAction"
-    }
-  }), _vm._v(" "), _vm.allErrors.CorrectiveAction ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.CorrectiveAction[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-card", {
-    staticClass: "mb-3",
-    attrs: {
-      header: "Lampiran Tindakan Koreksi yang Dilakukan",
-      "header-tag": "h5"
-    }
-  }, [_c("b-form-row", _vm._l(_vm.field.FileCorrectiveActionDownload, function (item, index) {
-    return _c("b-form-group", {
-      key: index,
-      staticClass: "col-md-4"
-    }, [_c("b-input-group", [_c("b-form-input", {
-      attrs: {
-        name: "FileCorrectiveActionDownload",
-        readonly: ""
-      },
-      model: {
-        value: item[0],
-        callback: function callback($$v) {
-          _vm.$set(item, 0, $$v);
-        },
-        expression: "item[0]"
-      }
-    }), _vm._v(" "), _c("b-input-group-append", [_c("a", {
-      staticClass: "input-group-text btn-outline-success",
-      attrs: {
-        href: _vm.BaseUrl + item[1],
-        target: "_blank"
-      }
-    }, [_c("i", {
-      staticClass: "fa fa-download"
-    })])])], 1)], 1);
-  }), 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Verifikasi Tindakan")]), _vm._v(" "), _c("b-input", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "Verified",
-      state: _vm.allErrors.Verified ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.Verified,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "Verified", $$v);
-      },
-      expression: "field.Verified"
-    }
-  }), _vm._v(" "), _vm.allErrors.Verified ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Verified[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Tindakan Koreksi Lain")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "OtherCorrectAction",
-      state: _vm.allErrors.OtherCorrectAction ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.OtherCorrectAction,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "OtherCorrectAction", $$v);
-      },
-      expression: "field.OtherCorrectAction"
-    }
-  }), _vm._v(" "), _vm.allErrors.OtherCorrectAction ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.OtherCorrectAction[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Departemen Terkait")]), _vm._v(" "), _c("b-input", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "RelevantDept",
-      state: _vm.allErrors.RelevantDept ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.RelevantDept,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "RelevantDept", $$v);
-      },
-      expression: "field.RelevantDept"
-    }
-  }), _vm._v(" "), _vm.allErrors.RelevantDept ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.RelevantDept[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-card", {
-    staticClass: "md-4"
-  }, [_vm._l(_vm.field.IdDevRiskAssesment, function (item, index) {
-    return _c("b-form-row", {
-      key: "IdDevRiskAssesment" + index
-    }, [_c("b-form-group", {
-      staticClass: "col-md-5"
-    }, [index == 0 ? _c("label", [_vm._v("Pertanyaan (SEVERITY)")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Question",
-        readonly: ""
-      },
-      model: {
-        value: item.Question,
-        callback: function callback($$v) {
-          _vm.$set(item, "Question", $$v);
-        },
-        expression: "item.Question"
-      }
-    })], 1), _vm._v(" "), _c("b-form-group", {
+      staticClass: "ion ion-md-trash"
+    })])], 1) : _vm._e()], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
       staticClass: "col-md-6"
-    }, [index == 0 ? _c("label", [_vm._v("Penilaian Risiko Deviasi (SEVERITY)")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "RiskAssesment",
-        readonly: ""
-      },
-      model: {
-        value: item.RiskAssesment.RiskAssesment,
-        callback: function callback($$v) {
-          _vm.$set(item.RiskAssesment, "RiskAssesment", $$v);
-        },
-        expression: "item.RiskAssesment.RiskAssesment"
-      }
-    })], 1), _vm._v(" "), _c("b-form-group", {
-      staticClass: "col-md-1"
-    }, [index == 0 ? _c("label", [_vm._v("Nilai")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Value",
-        type: "number",
-        min: "1",
-        max: "100",
-        readonly: ""
-      },
-      model: {
-        value: item.Value,
-        callback: function callback($$v) {
-          _vm.$set(item, "Value", $$v);
-        },
-        expression: "item.Value"
-      }
-    })], 1)], 1);
-  }), _vm._v(" "), _vm._l(_vm.field.IdDevRiskAssesment2, function (item, index) {
-    return _c("b-form-row", {
-      key: "IdDevRiskAssesment2" + index
-    }, [_c("b-form-group", {
-      staticClass: "col-md-5"
-    }, [index == 0 ? _c("label", [_vm._v("Pertanyaan (PROBABILITY)")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Question",
-        readonly: ""
-      },
-      model: {
-        value: item.Question,
-        callback: function callback($$v) {
-          _vm.$set(item, "Question", $$v);
-        },
-        expression: "item.Question"
-      }
-    })], 1), _vm._v(" "), _c("b-form-group", {
-      staticClass: "col-md-6"
-    }, [index == 0 ? _c("label", [_vm._v("Penilaian Risiko Deviasi (PROBABILITY)")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "RiskAssesment",
-        readonly: ""
-      },
-      model: {
-        value: item.RiskAssesment.RiskAssesment,
-        callback: function callback($$v) {
-          _vm.$set(item.RiskAssesment, "RiskAssesment", $$v);
-        },
-        expression: "item.RiskAssesment.RiskAssesment"
-      }
-    })], 1), _vm._v(" "), _c("b-form-group", {
-      staticClass: "col-md-1"
-    }, [index == 0 ? _c("label", [_vm._v("Nilai")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Value",
-        type: "number",
-        min: "1",
-        max: "100",
-        readonly: ""
-      },
-      model: {
-        value: item.Value,
-        callback: function callback($$v) {
-          _vm.$set(item, "Value", $$v);
-        },
-        expression: "item.Value"
-      }
-    })], 1)], 1);
-  }), _vm._v(" "), _vm._l(_vm.field.IdDevRiskAssesment3, function (item, index) {
-    return _c("b-form-row", {
-      key: "IdDevRiskAssesment3" + index
-    }, [_c("b-form-group", {
-      staticClass: "col-md-5"
-    }, [index == 0 ? _c("label", [_vm._v("Pertanyaan (DETECTABILITY)")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Question",
-        readonly: ""
-      },
-      model: {
-        value: item.Question,
-        callback: function callback($$v) {
-          _vm.$set(item, "Question", $$v);
-        },
-        expression: "item.Question"
-      }
-    })], 1), _vm._v(" "), _c("b-form-group", {
-      staticClass: "col-md-6"
-    }, [index == 0 ? _c("label", [_vm._v("Penilaian Risiko Deviasi (DETECTABILITY)")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "RiskAssesment",
-        readonly: ""
-      },
-      model: {
-        value: item.RiskAssesment.RiskAssesment,
-        callback: function callback($$v) {
-          _vm.$set(item.RiskAssesment, "RiskAssesment", $$v);
-        },
-        expression: "item.RiskAssesment.RiskAssesment"
-      }
-    })], 1), _vm._v(" "), _c("b-form-group", {
-      staticClass: "col-md-1"
-    }, [index == 0 ? _c("label", [_vm._v("Nilai")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Value",
-        type: "number",
-        min: "1",
-        max: "100",
-        readonly: ""
-      },
-      model: {
-        value: item.Value,
-        callback: function callback($$v) {
-          _vm.$set(item, "Value", $$v);
-        },
-        expression: "item.Value"
-      }
-    })], 1)], 1);
-  })], 2), _c("br"), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Level Deviasi")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "DeviationLevel",
-      state: _vm.allErrors.DeviationLevel ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.DeviationLevel,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "DeviationLevel", $$v);
-      },
-      expression: "field.DeviationLevel"
-    }
-  }), _vm._v(" "), _vm.allErrors.DeviationLevel ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.DeviationLevel[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Produk / Bets Lain yang Terdampak")]), _vm._v(" "), _c("b-input", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "OtherProductAffect",
-      state: _vm.allErrors.OtherProductAffect ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.OtherProductAffect,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "OtherProductAffect", $$v);
-      },
-      expression: "field.OtherProductAffect"
-    }
-  }), _vm._v(" "), _vm.allErrors.OtherProductAffect ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.OtherProductAffect[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }), _vm._v(" "), _vm.DescOPA == true ? _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Deskripsi")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "DescriptionOPA",
-      state: _vm.allErrors.DescriptionOPA ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.DescriptionOPA,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "DescriptionOPA", $$v);
-      },
-      expression: "field.DescriptionOPA"
-    }
-  }), _vm._v(" "), _vm.allErrors.DescriptionOPA ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.DescriptionOPA[0]))]) : _vm._e()], 1) : _vm._e()], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-12"
-  }, [_vm.isNotif ? _c("div", {
-    staticClass: "alert alert-dismissible fade show",
-    "class": [_vm.alertVariant]
-  }, [_c("button", {
-    staticClass: "close",
-    attrs: {
-      type: "button",
-      "data-dismiss": "alert"
-    },
-    on: {
-      click: function click($event) {
-        _vm.isNotif = !_vm.isNotif;
-      }
-    }
-  }, [_vm._v("×")]), _vm._v("\n          " + _vm._s(_vm.alertNotif) + "\n        ")]) : _vm._e()])], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Kategori NOE")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Dipilih")]), _vm._v(" "), _c("multiselect", {
-    attrs: {
-      options: _vm.opsDeviation,
-      "show-labels": false,
-      multiple: false,
-      placeholder: "Pilih Kategori NOE",
-      label: "Deviation",
-      "track-by": "Deviation",
-      required: "",
-      disabled: _vm.isShow
-    },
-    model: {
-      value: _vm.field.IdDeviation,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "IdDeviation", $$v);
-      },
-      expression: "field.IdDeviation"
-    }
-  }), _vm._v(" "), _vm.allErrors.IdDeviation ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.IdDeviation[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-4 hide"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Kategori NOE")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Dipilih")]), _vm._v(" "), _c("multiselect", {
-    attrs: {
-      options: _vm.opsNOE,
-      "allow-empty": false,
-      placeholder: "Pilih Kategori NOE",
-      label: "text",
-      "track-by": "text",
-      required: "",
-      disabled: _vm.isShow
-    },
-    model: {
-      value: _vm.field.NOEClassification,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "NOEClassification", $$v);
-      },
-      expression: "field.NOEClassification"
-    }
-  }), _vm._v(" "), _vm.allErrors.NOEClassification ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.NOEClassification[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Level Deviasi dari QA")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Dipilih")]), _vm._v(" "), _c("multiselect", {
-    attrs: {
-      options: _vm.opsDevLevelQA,
-      "allow-empty": false,
-      placeholder: "Pilih Level Deviasi",
-      label: "text",
-      "track-by": "text",
-      required: "",
-      disabled: _vm.isShow
-    },
-    model: {
-      value: _vm.field.DeviationLevelQA,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "DeviationLevelQA", $$v);
-      },
-      expression: "field.DeviationLevelQA"
-    }
-  }), _vm._v(" "), _vm.allErrors.DeviationLevelQA ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.DeviationLevelQA[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-12"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Evaluasi Terhadap Kesesuaian Pelaporan")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "DescriptionEvaluation",
-      state: _vm.allErrors.DescriptionEvaluation ? false : null,
-      rows: "3",
-      required: "",
-      readonly: _vm.isShow
-    },
-    model: {
-      value: _vm.field.DescriptionEvaluation,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "DescriptionEvaluation", $$v);
-      },
-      expression: "field.DescriptionEvaluation"
-    }
-  }), _vm._v(" "), _vm.allErrors.DescriptionEvaluation ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.DescriptionEvaluation[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-12"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Remarks")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "Remarks",
-      state: _vm.allErrors.Remarks ? false : null,
-      rows: "3",
-      required: "",
-      readonly: _vm.isShow
-    },
-    model: {
-      value: _vm.field.Remarks,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "Remarks", $$v);
-      },
-      expression: "field.Remarks"
-    }
-  }), _vm._v(" "), _vm.allErrors.Remarks ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Remarks[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _vm.isShow == true && _vm.isComment == true ? _c("b-card", {
-    staticClass: "mb-3",
-    attrs: {
-      header: "Koreksi dari Approver",
-      "header-tag": "h5"
-    }
-  }, [_c("b-form-row", _vm._l(_vm.getCorrector, function (item, index) {
-    return _c("b-form-group", {
-      key: index,
-      staticClass: "col-md-12"
-    }, [_c("b-input-group", [_c("b-form", {
-      attrs: {
-        inline: ""
-      }
     }, [_c("label", {
-      staticClass: "form-label mr-sm-1"
-    }, [_vm._v("Comment Dari :")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-      staticClass: "form-label float-right text-danger"
-    }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Dept",
-        state: _vm.allErrors.Dept ? false : null,
-        required: "",
-        readonly: _vm.isShow
-      },
-      model: {
-        value: item.CorrectorName,
-        callback: function callback($$v) {
-          _vm.$set(item, "CorrectorName", $$v);
-        },
-        expression: "item.CorrectorName"
-      }
-    }), _vm._v(" "), _vm.allErrors.Dept ? _c("span", {
-      staticClass: "text-danger"
-    }, [_vm._v(_vm._s(_vm.allErrors.Dept[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-input-group", [_c("b-textarea", {
-      staticClass: "mb-1",
-      staticStyle: {
-        "margin-left": "95px"
-      },
-      attrs: {
-        name: "Lampiran",
-        state: _vm.allErrors.Lampiran ? false : null,
-        required: "",
-        readonly: _vm.isShow
-      },
-      model: {
-        value: item.Description,
-        callback: function callback($$v) {
-          _vm.$set(item, "Description", $$v);
-        },
-        expression: "item.Description"
-      }
-    }), _vm._v(" "), _vm.allErrors.Lampiran ? _c("span", {
-      staticClass: "text-danger"
-    }, [_vm._v(_vm._s(_vm.allErrors.Lampiran[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-input-group", [_c("b-form", {
-      attrs: {
-        inline: ""
-      }
-    }, [_c("label", {
-      staticClass: "form-label mr-sm-1"
-    }, [_vm._v("Jawaban :")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-      staticClass: "form-label float-right text-danger"
-    }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _vm.isAnswered == false && _vm.isTypeUser == false && _vm.isChildToAnswer == true ? _c("b-textarea", {
-      staticClass: "mb-1",
-      staticStyle: {
-        "margin-left": "30px"
-      },
-      attrs: {
-        name: "Answer",
-        state: _vm.allErrors.Answer ? false : null,
-        required: ""
-      },
-      model: {
-        value: _vm.field.Answer,
-        callback: function callback($$v) {
-          _vm.$set(_vm.field, "Answer", $$v);
-        },
-        expression: "field.Answer"
-      }
-    }) : _vm.isTypeUser == true && _vm.isChildToAnswer == false ? _c("b-textarea", {
-      staticClass: "mb-1",
-      staticStyle: {
-        "margin-left": "30px"
-      },
-      attrs: {
-        name: "Answer",
-        state: _vm.allErrors.Answer ? false : null,
-        required: "",
-        readonly: _vm.isShow
-      },
-      model: {
-        value: _vm.field.Answer,
-        callback: function callback($$v) {
-          _vm.$set(_vm.field, "Answer", $$v);
-        },
-        expression: "field.Answer"
-      }
-    }) : _c("b-textarea", {
-      staticClass: "mb-1",
-      staticStyle: {
-        "margin-left": "30px"
-      },
-      attrs: {
-        name: "Answer",
-        state: _vm.allErrors.Answer ? false : null,
-        required: "",
-        readonly: _vm.isShow
-      },
-      model: {
-        value: _vm.field.Answer,
-        callback: function callback($$v) {
-          _vm.$set(_vm.field, "Answer", $$v);
-        },
-        expression: "field.Answer"
-      }
-    }), _vm._v(" "), _vm.allErrors.Answer ? _c("span", {
-      staticClass: "text-danger"
-    }, [_vm._v(_vm._s(_vm.allErrors.Answer[0]))]) : _vm._e()], 1)], 1)], 1);
-  }), 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6",
-    attrs: {
-      label: ""
-    }
-  }, [_vm.isAnswered == false && _vm.isTypeUser == false && _vm.isChildToAnswer == true ? _c("b-btn", {
-    staticClass: "float-right ml-2",
-    attrs: {
-      variant: "success"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.onAction("sendAnswer");
-      }
-    }
-  }, [_vm._v("Kirim")]) : _vm._e()], 1)], 1)], 1) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.checkAnswer == true ? _c("b-card", {
-    staticClass: "mb-3",
-    attrs: {
-      header: "Histori Koreksi dari Approver",
-      "header-tag": "h5"
-    }
-  }, [_vm._l(_vm.HistoryCorrection, function (item, index) {
-    return _c("b-form-group", {
-      key: index,
-      staticClass: "col-md-12"
-    }, [_c("b-input-group", [_c("b-form", {
-      attrs: {
-        inline: ""
-      }
-    }, [_c("label", {
-      staticClass: "form-label mr-sm-1"
-    }, [_vm._v("Comment Dari :")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-      staticClass: "form-label float-right text-danger"
-    }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Dept",
-        required: "",
-        readonly: _vm.isShow
-      },
-      model: {
-        value: item.Name,
-        callback: function callback($$v) {
-          _vm.$set(item, "Name", $$v);
-        },
-        expression: "item.Name"
-      }
-    })], 1)], 1), _vm._v(" "), _c("b-input-group", [_c("b-textarea", {
-      staticClass: "mb-1",
-      staticStyle: {
-        "margin-left": "95px"
-      },
-      attrs: {
-        name: "Lampiran",
-        required: "",
-        readonly: _vm.isShow
-      },
-      model: {
-        value: item.Description,
-        callback: function callback($$v) {
-          _vm.$set(item, "Description", $$v);
-        },
-        expression: "item.Description"
-      }
-    })], 1), _vm._v(" "), _c("b-input-group", [_c("b-form", {
-      attrs: {
-        inline: ""
-      }
-    }, [_c("label", {
-      staticClass: "form-label mr-sm-1"
-    }, [_vm._v("Jawaban :")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+      staticClass: "form-label"
+    }, [_vm._v("Deskripsi")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
       staticClass: "form-label float-right text-danger"
     }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-textarea", {
       staticClass: "mb-1",
-      staticStyle: {
-        "margin-left": "30px"
-      },
       attrs: {
-        name: "Answer",
+        name: "CADescription",
         required: "",
-        readonly: _vm.isShow
+        readonly: ""
       },
       model: {
-        value: item.Answer,
+        value: item.CADescription,
         callback: function callback($$v) {
-          _vm.$set(item, "Answer", $$v);
+          _vm.$set(item, "CADescription", $$v);
         },
-        expression: "item.Answer"
+        expression: "item.CADescription"
       }
-    })], 1)], 1)], 1);
-  }), _vm._v(" "), _vm.showMoreButton ? _c("b-button", {
+    })], 1), _vm._v(" "), _vm.isShow == false ? _c("b-form-group", {
+      staticClass: "col-md-6"
+    }, [_c("label", {
+      staticClass: "form-label"
+    }, [_vm._v("Lampiran Tindakan Perbaikan")]), _vm._v(" "), _c("label", {
+      staticClass: "form-label float-right text-danger"
+    }, [_vm._v("(Max. 50 MB)")]), _vm._v(" "), _c("file-pond", {
+      ref: "pondMyFile",
+      refInFor: true,
+      attrs: {
+        name: "CAFile",
+        "label-idle": "Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;",
+        "allow-multiple": true,
+        files: item.CAFile,
+        "accepted-file-types": "application/*, image/*, video/*",
+        maxTotalFileSize: "50MB",
+        disabled: "true"
+      },
+      on: {
+        updatefiles: function updatefiles($event) {
+          return _vm.handleFileCA($event, index);
+        },
+        removefile: _vm.handleRemoveCA
+      }
+    })], 1) : _vm._e(), _vm._v(" "), _c("b-form-group", {
+      staticClass: "col-md-4"
+    }, [_c("label", {
+      staticClass: "form-label"
+    }, [_vm._v("Lampiran Tindakan Perbaikan")]), _vm._v(" "), _vm._l(item.CAFileName, function (file, i) {
+      return [_c("b-input-group", [_c("b-form-input", {
+        attrs: {
+          name: "CAFileName",
+          value: file,
+          readonly: ""
+        }
+      }), _vm._v(" "), _c("b-input-group-append", [_c("a", {
+        staticClass: "input-group-text btn-outline-success",
+        attrs: {
+          href: item.CAFile[i],
+          target: "_blank"
+        }
+      }, [_c("i", {
+        staticClass: "fa fa-download"
+      })])])], 1)];
+    })], 2)], 1), _vm._v(" "), _c("hr")];
+  }), _vm._v(" "), _vm.isShow == false ? _c("b-btn", {
+    staticClass: "float-left btn-info",
     attrs: {
-      variant: "outline-primary"
+      type: "button",
+      disabled: "",
+      id: "btambah-CA"
     },
     on: {
-      click: _vm.toggleShowMore
+      click: function click($event) {
+        return _vm.addDetail("CA");
+      }
     }
-  }, [_vm._v(" " + _vm._s(_vm.showMore ? "Show Less" : "Show More"))]) : _vm._e()], 2) : _vm._e(), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" Tambah")]) : _vm._e()], 2), _vm._v(" "), _c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      header: "Tindakan Pencegahan (Preventive Action)",
+      "header-tag": "h5"
+    }
+  }, [_vm._l(_vm.field.NODPA, function (item, index) {
+    return [_c("b-form-row", [_c("b-form-group", {
+      staticClass: "col-md-6"
+    }, [_c("label", {
+      staticClass: "form-label"
+    }, [_vm._v("PIC")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+      staticClass: "form-label float-right text-danger"
+    }, [_vm._v("*Wajib Dipilih")]) : _vm._e(), _vm._v(" "), _c("multiselect", {
+      attrs: {
+        options: _vm.opsPAPIC,
+        "allow-empty": false,
+        placeholder: "Pilih PIC",
+        label: "PIC",
+        "track-by": "PIC",
+        required: "",
+        disabled: ""
+      },
+      model: {
+        value: item.IdPAPIC,
+        callback: function callback($$v) {
+          _vm.$set(item, "IdPAPIC", $$v);
+        },
+        expression: "item.IdPAPIC"
+      }
+    })], 1), _vm._v(" "), _c("b-form-group", {
+      staticClass: "col-md-5 col-10"
+    }, [_c("label", {
+      staticClass: "form-label"
+    }, [_vm._v("Due Date")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+      staticClass: "form-label float-right text-danger"
+    }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-form-datepicker", {
+      staticClass: "mb-1",
+      attrs: {
+        locale: "en",
+        min: _vm.min,
+        "date-format-options": _vm.datePickerFormat,
+        required: "",
+        disabled: ""
+      },
+      model: {
+        value: item.PADate,
+        callback: function callback($$v) {
+          _vm.$set(item, "PADate", $$v);
+        },
+        expression: "item.PADate"
+      }
+    })], 1), _vm._v(" "), _vm.isShow == false && index > 0 ? _c("b-form-group", {
+      staticClass: "col-md-1 col-2 text-center"
+    }, [_c("label", [_vm._v("Tindakan")]), _c("br"), _vm._v(" "), _c("b-button", {
+      staticClass: "btn btn-sm btn-danger text-white",
+      attrs: {
+        disabled: "",
+        pill: true
+      },
+      on: {
+        click: function click($event) {
+          return _vm.removeDetail(index, "PA");
+        }
+      }
+    }, [_c("i", {
+      staticClass: "ion ion-md-trash"
+    })])], 1) : _vm._e()], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+      staticClass: "col-md-6"
+    }, [_c("label", {
+      staticClass: "form-label"
+    }, [_vm._v("Deskripsi")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+      staticClass: "form-label float-right text-danger"
+    }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-textarea", {
+      staticClass: "mb-1",
+      attrs: {
+        name: "PADescription",
+        required: "",
+        readonly: ""
+      },
+      model: {
+        value: item.PADescription,
+        callback: function callback($$v) {
+          _vm.$set(item, "PADescription", $$v);
+        },
+        expression: "item.PADescription"
+      }
+    })], 1), _vm._v(" "), _vm.isShow == false ? _c("b-form-group", {
+      staticClass: "col-md-6"
+    }, [_c("label", {
+      staticClass: "form-label"
+    }, [_vm._v("Lampiran Tindakan Pencegahan")]), _vm._v(" "), _c("label", {
+      staticClass: "form-label float-right text-danger"
+    }, [_vm._v("(Max. 50 MB)")]), _vm._v(" "), _c("file-pond", {
+      ref: "pondMyFile",
+      refInFor: true,
+      attrs: {
+        name: "PAFile",
+        "label-idle": "Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;",
+        "allow-multiple": true,
+        files: item.PAFile,
+        "accepted-file-types": "application/*, image/*, video/*",
+        maxTotalFileSize: "50MB",
+        disabled: "true"
+      },
+      on: {
+        updatefiles: function updatefiles($event) {
+          return _vm.handleFilePA($event, index);
+        },
+        removefile: _vm.handleRemovePA
+      }
+    })], 1) : _vm._e(), _vm._v(" "), _c("b-form-group", {
+      staticClass: "col-md-4"
+    }, [_c("label", {
+      staticClass: "form-label"
+    }, [_vm._v("Lampiran Tindakan Pencegahan")]), _vm._v(" "), _vm._l(item.PAFileName, function (file, i) {
+      return [_c("b-input-group", [_c("b-form-input", {
+        attrs: {
+          name: "PAFileName",
+          value: file,
+          readonly: ""
+        }
+      }), _vm._v(" "), _c("b-input-group-append", [_c("a", {
+        staticClass: "input-group-text btn-outline-success",
+        attrs: {
+          href: item.PAFile[i],
+          target: "_blank"
+        }
+      }, [_c("i", {
+        staticClass: "fa fa-download"
+      })])])], 1)];
+    })], 2)], 1), _vm._v(" "), _c("hr")];
+  }), _vm._v(" "), _vm.isShow == false ? _c("b-btn", {
+    staticClass: "float-left btn-info",
+    attrs: {
+      disabled: true,
+      type: "button",
+      id: "btambah-PA"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.addDetail("PA");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fas fa-plus"
+  }), _vm._v(" Tambah")]) : _vm._e()], 2), _vm._v(" "), _vm.Position == 2 || _vm.Position == 4 ? _c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      header: "Sistem Lain Yang Terdampak (Bila Ada)",
+      "header-tag": "h5"
+    }
+  }, [_vm.isShow == false ? _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-form-group", {
+    attrs: {
+      label: "Bagian ini diisi oleh QA",
+      disabled: ""
+    }
+  }, [_c("b-form-radio", {
+    attrs: {
+      state: _vm.allErrors.selected ? false : null,
+      value: false,
+      disabled: _vm.isShow
+    },
+    model: {
+      value: _vm.selected,
+      callback: function callback($$v) {
+        _vm.selected = $$v;
+      },
+      expression: "selected"
+    }
+  }, [_vm._v("Tidak Ada")]), _vm._v(" "), _c("b-form-radio", {
+    attrs: {
+      state: _vm.allErrors.selected ? false : null,
+      value: true,
+      disabled: _vm.isShow
+    },
+    model: {
+      value: _vm.selected,
+      callback: function callback($$v) {
+        _vm.selected = $$v;
+      },
+      expression: "selected"
+    }
+  }, [_vm._v("Ada, yaitu ...")]), _vm._v(" "), _vm.allErrors.selected ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.selected[0]))]) : _vm._e()], 1), _vm._v(" "), _vm.selected === true ? _c("b-form-group", {
+    attrs: {
+      disabled: ""
+    }
+  }, _vm._l(_vm.getAnotherEffect, function (item, index) {
+    return _c("li", {
+      key: index
+    }, [_c("b-form-checkbox", {
+      attrs: {
+        value: item.id_effect,
+        disabled: _vm.isShow
+      },
+      model: {
+        value: _vm.checkedEffect[item.id_effect],
+        callback: function callback($$v) {
+          _vm.$set(_vm.checkedEffect, item.id_effect, $$v);
+        },
+        expression: "checkedEffect[item.id_effect]"
+      }
+    }, [_vm._v("\n                  " + _vm._s(item.title_effect) + "\n                ")]), _vm._v(" "), _vm.checkedEffect[item.id_effect] ? _c("div", [_c("b-form-textarea", {
+      staticClass: "mb-4",
+      attrs: {
+        id: "textarea-state",
+        placeholder: "Enter at least 10 characters",
+        rows: "3",
+        disabled: ""
+      },
+      model: {
+        value: _vm.text[item.id_effect],
+        callback: function callback($$v) {
+          _vm.$set(_vm.text, item.id_effect, $$v);
+        },
+        expression: "text[item.id_effect]"
+      }
+    })], 1) : _vm._e()], 1);
+  }), 0) : _vm._e()], 1) : _vm._e(), _vm._v(" "), _c("b-form-row", [_vm.isShow == false ? _c("b-form-group", {
+    staticClass: "col-md-12"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Lampiran CAPA")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("(Max. 50 MB)")]), _vm._v(" "), _c("file-pond", {
+    ref: "pondMyFile",
+    attrs: {
+      name: "CAPAFile",
+      "label-idle": "Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;",
+      "allow-multiple": true,
+      files: _vm.field.CAPAFile,
+      "accepted-file-types": "application/*, image/*, video/*",
+      maxTotalFileSize: "50MB"
+    },
+    on: {
+      updatefiles: _vm.handleFileCAPA,
+      removefile: _vm.handleRemoveCAPA
+    }
+  })], 1) : _vm._e()], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }), _vm._v(" "), _c("b-form-group", {
     staticClass: "col-md-6",
     attrs: {
       label: ""
     }
-  }, [_vm.isShow == true && _vm.Position == 2 && _vm.field.IsPublish == 2 && _vm.valStatus == 6 ? _c("b-btn", {
+  }, [_vm.isShow == true && _vm.Position < 3 && _vm.valStatus == 1 ? _c("b-btn", {
     staticClass: "float-right ml-2",
     attrs: {
       type: "button",
@@ -1214,15 +1241,10 @@ var render = function render() {
     },
     on: {
       click: function click($event) {
-        return _vm.onAction("publish-evaluation");
+        return _vm.onAction("publish");
       }
     }
-  }, [_vm._v("Publish Evaluasi")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.Position == 2 && _vm.field.IsPublish == 2 && _vm.isCaretaker == false && _vm.valStatus >= 7 ? _c("b-btn", {
-    staticClass: "float-right ml-2",
-    attrs: {
-      variant: "success"
-    }
-  }, [_vm._v("Diajukan")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && (_vm.Position == 3 && _vm.valStatus == 7 || (_vm.Position == 4 || _vm.isCaretaker == true) && _vm.valStatus == 7) ? _c("b-btn", {
+  }, [_vm._v("Publish")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && (_vm.valStatus == 2 && _vm.field.IdDepartment == _vm.userDepartment && _vm.Position == 1 || _vm.valStatus == 3 && _vm.field.IdDepartment == _vm.userDepartment && _vm.Position == 2 || _vm.valStatus == 4 && _vm.field.IdDepartment == _vm.userDepartment && (_vm.Position == 4 || _vm.isCaretaker == true) || _vm.valStatus == 5 && _vm.deptTerkait == true && _vm.statusDeptTerkait == false || _vm.userDepartment == 67 && (_vm.Position == 3 && _vm.valStatus == 6 || _vm.Position == 4 && _vm.valStatus == 10 || _vm.Position == 4 && _vm.valStatus == 10 || _vm.Position == 2 && _vm.valStatus == 6)) ? _c("b-btn", {
     staticClass: "float-right ml-2",
     attrs: {
       type: "button",
@@ -1233,7 +1255,7 @@ var render = function render() {
         return _vm.onAction("approve");
       }
     }
-  }, [_vm._v("Setujui")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && (_vm.Position == 4 || _vm.isCaretaker == true) && _vm.valStatus == 7 ? _c("b-btn", {
+  }, [_vm._v("\n          Setujui")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && (_vm.valStatus == 4 && _vm.field.IdDepartment == _vm.userDepartment && (_vm.Position == 4 || _vm.isCaretaker == true) || _vm.userDepartment == 67 && (_vm.Position == 3 && _vm.valStatus == 6 || _vm.Position == 4 && _vm.valStatus == 10 || _vm.Position == 4 && _vm.valStatus == 10)) ? _c("b-btn", {
     staticClass: "float-right ml-2",
     attrs: {
       type: "button",
@@ -1244,17 +1266,7 @@ var render = function render() {
         return _vm.onAction("reject");
       }
     }
-  }, [_vm._v("Tolak")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && (_vm.Position == 3 && _vm.valStatus == 8 || (_vm.Position == 4 || _vm.isCaretaker == true) && _vm.valStatus == 9) ? _c("b-btn", {
-    staticClass: "float-right ml-2",
-    attrs: {
-      variant: "success"
-    }
-  }, [_vm._v("Disetujui")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && (_vm.Position == 4 || _vm.isCaretaker == true) && _vm.valStatus == 10 ? _c("b-btn", {
-    staticClass: "float-right ml-2",
-    attrs: {
-      variant: "warning"
-    }
-  }, [_vm._v("Ditolak")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && (_vm.Position == 2 && _vm.valStatus == 6 || _vm.Position == 3 && _vm.valStatus == 7 || (_vm.Position == 4 || _vm.isCaretaker == true) && _vm.valStatus == 7) ? _c("b-btn", {
+  }, [_vm._v("\n          Tolak")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && (_vm.valStatus == 2 && _vm.field.IdDepartment == _vm.userDepartment && _vm.Position == 1 || _vm.valStatus == 3 && _vm.field.IdDepartment == _vm.userDepartment && _vm.Position == 2 || _vm.valStatus == 4 && _vm.field.IdDepartment == _vm.userDepartment && (_vm.Position == 4 || _vm.isCaretaker == true) || _vm.valStatus == 5 && _vm.deptTerkait == true && _vm.statusDeptTerkait == false || _vm.userDepartment == 67 && (_vm.Position == 3 && _vm.valStatus == 6 || _vm.Position == 4 && _vm.valStatus == 10 || _vm.Position == 4 && _vm.valStatus == 10)) ? _c("b-btn", {
     staticClass: "float-right ml-2",
     attrs: {
       type: "button",
@@ -1265,7 +1277,7 @@ var render = function render() {
         return _vm.onAction("correction");
       }
     }
-  }, [_vm._v("Koreksi")]) : _vm._e(), _vm._v(" "), _vm.isShow == false ? _c("b-btn", {
+  }, [_vm._v("\n          Koreksi")]) : _vm._e(), _vm._v(" "), _vm.isShow == false ? _c("b-btn", {
     staticClass: "float-right ml-2",
     attrs: {
       type: "submit",
@@ -1290,17 +1302,17 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/noe-evaluation/form.vue":
-/*!*****************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/noe-evaluation/form.vue ***!
-  \*****************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue":
+/*!**********************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue ***!
+  \**********************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _form_vue_vue_type_template_id_537fcafe___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=537fcafe& */ "./resources/assets/src/components/backend/noe/noe-evaluation/form.vue?vue&type=template&id=537fcafe&");
-/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/noe/noe-evaluation/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _form_vue_vue_type_template_id_3feb3352___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=3feb3352& */ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=template&id=3feb3352&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -1311,8 +1323,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _form_vue_vue_type_template_id_537fcafe___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _form_vue_vue_type_template_id_537fcafe___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _form_vue_vue_type_template_id_3feb3352___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _form_vue_vue_type_template_id_3feb3352___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -1322,38 +1334,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/assets/src/components/backend/noe/noe-evaluation/form.vue"
+component.options.__file = "resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/noe-evaluation/form.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/noe-evaluation/form.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-evaluation/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/noe-evaluation/form.vue?vue&type=template&id=537fcafe&":
-/*!************************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/noe-evaluation/form.vue?vue&type=template&id=537fcafe& ***!
-  \************************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=template&id=3feb3352&":
+/*!*****************************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=template&id=3feb3352& ***!
+  \*****************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_537fcafe___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=537fcafe& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-evaluation/form.vue?vue&type=template&id=537fcafe&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_537fcafe___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_3feb3352___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=3feb3352& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=template&id=3feb3352&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_3feb3352___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_537fcafe___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_3feb3352___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

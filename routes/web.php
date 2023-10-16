@@ -283,6 +283,12 @@ Route::group(['middleware'=>['adminvue']], function () {
 		Route::post('question-nod-report-insert','BackEnd\NODReportControll@sendQuestion');
 		Route::get('nod-report/{Id}/export','BackEnd\NODReportControll@export')->name('export.nod-report-export');
 
+		Route::post('data-verifikasi-capa-nod','BackEnd\VerifCAPAReportControll@index');
+		Route::post('nod-report-get-acc-number','BackEnd\VerifCAPAReportControll@getAccNumber');
+		Route::post('nod-verifikasi-capa-get-data','BackEnd\VerifCAPAReportControll@getDataNOD');
+		Route::post('nod-verifikasi-capa-insert-data','BackEnd\VerifCAPAReportControll@store');
+
+
 		Route::get('nod-chat-rooms', 'BackEnd\ChatController@rooms');
 		Route::post('nod-chat-teams', 'BackEnd\ChatController@teams');
 		Route::get('nod-chat-rooms/{roomId}/messages', 'BackEnd\ChatController@messages');
