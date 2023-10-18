@@ -214,6 +214,28 @@ class Helper {
         } }
     }
 
+    function sendEmailVerifiCapa($item, $NODCA, $NODPA, $itemMail) {
+        $data['Subject'] = 'Pengajuan efektivitas CAPA - Published';
+        $data['Title'] = 'Berikut pengajuan efektivitas CAPA dengan rincian sebagai berikut';
+        
+        $dataMail['Pelapor'] = session('adminvue')->Name .' | '. session('adminvue')->Position .' - '. session('adminvue')->Department;
+        $dataMail['NOD Number'] = $item->NODNumber;
+
+        foreach($NODCA as $keyCa => $valCa) {      
+            $dataMail['Dekskripsi Corrective Action (CA) ' . ($keyCa + 1)] = $valCa->CADescription;
+        }
+        foreach($NODPA as $keyPa => $valPa) {
+            $dataMail['Dekskripsi Corrective Action (PA) ' . ($keyPa + 1)] = $valPa->PADescription;
+        }
+
+        if(count($itemMail)>0) { foreach ($itemMail as $key => $val) {
+            $data['Employee'] = $val->Employee;
+            $data['Email'] = $val->Email;
+            
+            $this->History->sendMail($data, $dataMail, $dataObjectEmail=[]);
+        } }
+    }
+
     function sendEmailCareTaker($request, $itemMail, $getitemMailCC, $event)
     {
         if($event == 'insert')

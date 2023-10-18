@@ -687,8 +687,7 @@ export default function () {
             })
           }
           
-        }
-        else{
+        } else {
           Vue.swal({
             title: 'Apa anda yakin?',
             text: "Ingin Setujui Data",
@@ -840,6 +839,72 @@ export default function () {
           })
         }
         
+      }
+    },
+
+    approveVerifikasiCapa(url, id, elmTable, rowId=null, isShow=false, isSelected=null) {
+      if(isSelected == null) {
+        this.$router.push({
+          name: 'nod/master-verifikasi-capa',
+          params: {
+            isNotif: true,
+            gNotif: 'notifications-danger',
+            tNotif: 'Notifikasi Error',
+            txNotif: 'Verifikasi Efektifitas Capa Harus diisi !!'
+          }
+        })
+      } else {
+        Vue.swal({
+          title: 'Apa anda yakin?',
+          text: "Ingin Setujui Data",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#32CD32',
+          cancelButtonColor: '#D63030',
+          cancelButtonText: 'Batal',
+          confirmButtonText: 'Setujui',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.value) {
+            this.showLoading()
+              axios.post(url, {
+                Id: id
+              })
+              .then( function (res) {
+                
+                var resp = res.data
+                
+                if(isShow) {
+                  
+                  if(url === '/AdminVue/nod-verifikasi-capa-approve-data') {
+                    this.$router.push({
+                      name: 'nod/master-verifikasi-capa',
+                      params: {
+                        isNotif: true,
+                        gNotif: 'notifications-success',
+                        tNotif: 'Notifikasi Sukses',
+                        txNotif: 'Setujui Data Sukses!'
+                      }
+                    })
+                  }
+                } else {
+                  if(resp.status){
+                    this.showNotifCustom('notifications-success','Notifikasi Sukses',resp.message)
+                  }else{
+                    this.showNotifCustom('notifications-danger','Notifikasi Eror',resp.message)
+                  }
+                  elmTable.refresh()
+                  elmTable.hideDetailRow(rowId)
+                }
+                this.hideLoading()
+              }.bind(this))
+              .catch( function (e) {
+                console.log(e);
+                this.hideLoading()
+              }.bind(this))
+            
+          }
+        })
       }
     },
 

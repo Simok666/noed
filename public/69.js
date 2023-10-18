@@ -1,9 +1,9 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[69],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/nod-review/index.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/nod-review/index.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-evaluation/index.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/noe-evaluation/index.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -30,9 +30,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'index-nod-review',
+  name: 'index-noe-evaluation',
   metaInfo: {
-    title: 'Index NOD Review'
+    title: 'Index NOE Evaluation'
   },
   components: {
     Vuetable: vuetable_2__WEBPACK_IMPORTED_MODULE_1___default.a,
@@ -54,27 +54,40 @@ __webpack_require__.r(__webpack_exports__);
         titleClass: 'text-center',
         dataClass: 'text-center wd-50'
       }, {
-        name: 'NODNumber',
-        sortField: 'nrt.NODNumber',
-        title: 'No. NOD',
-        titleClass: 'text-center',
-        dataClass: 'text-center'
-      }, {
-        name: 'NOENumberAcc',
-        sortField: 'noe.NOENumberAcc',
+        name: 'NOENumberCustom',
+        // sortField: 'noe.NOENumber',
         title: 'No. NOE',
         titleClass: 'text-center',
         dataClass: 'text-center'
       }, {
-        name: 'Event',
-        sortField: 'noe.Event',
-        title: 'Uraian / Kondisi Ketidaksesuaian',
+        name: 'NOENumber',
+        title: 'No. Draft NOE',
         titleClass: 'text-center',
         dataClass: 'text-center'
       }, {
-        name: 'ProperCondition',
-        sortField: 'nod.ProperCondition',
-        title: 'Kondisi Seharusnya',
+        name: 'IdTypeIncident',
+        sortField: 'noe.IdTypeIncident',
+        title: 'Jenis Kejadian',
+        titleClass: 'text-center',
+        dataClass: 'text-center',
+        formatter: this.formatIncident
+      }, {
+        name: 'Location',
+        sortField: 'loc.Name',
+        title: 'Lokasi Kejadian',
+        titleClass: 'text-center',
+        dataClass: 'text-center'
+      }, {
+        name: 'Date',
+        sortField: 'noe.Date',
+        title: 'Tanggal / Waktu',
+        titleClass: 'text-center',
+        dataClass: 'text-center',
+        formatter: this.formatDate
+      }, {
+        name: 'Product',
+        sortField: 'pdc.Name',
+        title: 'Bahan / Produk Terkait',
         titleClass: 'text-center',
         dataClass: 'text-center'
       }, {
@@ -83,15 +96,17 @@ __webpack_require__.r(__webpack_exports__);
         title: 'No. Kontrol / No. Bets',
         titleClass: 'text-center',
         dataClass: 'text-center'
-      }, {
-        name: 'Product',
-        sortField: 'pdc.Name',
-        title: 'Bahan / Produk Terkait',
-        titleClass: 'text-center',
-        dataClass: 'text-center'
-      }, {
+      },
+      // {
+      //   name: 'Event',
+      //   sortField: 'noe.Event',
+      //   title: 'Uraian Kejadian',
+      //   titleClass: 'text-center',
+      //   dataClass: 'text-center'
+      // },
+      {
         name: 'Status',
-        sortField: 'nod.Status',
+        sortField: 'noe.Status',
         title: 'Status',
         titleClass: 'text-center',
         dataClass: 'text-center'
@@ -109,8 +124,8 @@ __webpack_require__.r(__webpack_exports__);
       }*/],
 
       sortOrder: [{
-        field: 'NODNumber',
-        sortField: 'nrt.NODNumber',
+        field: 'NOENumber',
+        sortField: 'noe.NOENumber',
         direction: 'asc'
       }],
       vars: {
@@ -125,28 +140,57 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         value: "UnPublish",
         text: "UnPublish"
-      },
-      // {value: "Dilaporkan ke QA APJ", text:"Dilaporkan ke QA APJ"},
-      {
+      }, {
+        value: "Dilaporkan ke Unit Head",
+        text: "Dilaporkan ke Unit Head"
+      }, {
+        value: "Dilaporkan ke Sect Head",
+        text: "Dilaporkan ke Sect Head"
+      }, {
+        value: "Disetujui oleh Unit Head",
+        text: "Disetujui oleh Unit Head"
+      }, {
+        value: "Disetujui oleh Sect Head",
+        text: "Disetujui oleh Sect Head"
+      }, {
+        value: "Disetujui oleh Dept Head",
+        text: "Disetujui oleh Dept Head"
+      }, {
         value: "Disetujui oleh QA Sect.Head",
         text: "Disetujui oleh QA Sect.Head"
-      }, {
+      },
+      // {value: "Disetujui oleh QA APJ", text:"Disetujui oleh QA APJ"},
+      {
         value: "Disetujui oleh QA Dept.Head",
         text: "Disetujui oleh QA Dept.Head"
       }, {
         value: "Ditolak",
         text: "Ditolak"
+      }, {
+        value: "Disetujui oleh Unit Head (caretaker)",
+        text: "Disetujui oleh Unit Head (caretaker)"
+      }, {
+        value: "Disetujui oleh Sect Head (caretaker)",
+        text: "Disetujui oleh Sect Head (caretaker)"
       }],
-      department: 0,
       position: 0,
       //1 = unit head; 2 = sect head; 3 = APJ; 4 = dept head;
-      isCaretaker: false,
-      isReview: false
+      isCaretaker: false
     };
   },
   methods: {
     formatDate: function formatDate(value) {
       return value == null ? '' : moment__WEBPACK_IMPORTED_MODULE_5___default()(value).format('DD.MM.YY');
+    },
+    formatIncident: function formatIncident(value) {
+      var dataIncident = JSON.parse(value);
+      var result = '';
+      dataIncident.forEach(function (value, index) {
+        if (value.TypeIncident) {
+          result += value.TypeIncident + "; ";
+        }
+      });
+      return value == null ? '' : result;
     },
     onPaginationData: function onPaginationData(paginationData) {
       this.$refs.pagination.setPaginationData(paginationData);
@@ -158,72 +202,65 @@ __webpack_require__.r(__webpack_exports__);
     getFilters: function getFilters() {
       this.$refs.vuetable.refresh();
     },
-    createData: function createData() {
-      this.$router.push('/RoleAdmin/nod/form-nod-review');
-    },
-    setReview: function setReview() {
-      this.isReview = !this.isReview;
-    },
     getSession: function getSession() {
-      axios.post('/AdminVue/nod-review-get-session').then(function (res) {
-        this.department = res.data.department;
+      axios.post('/AdminVue/noe-evaluation-get-session').then(function (res) {
         this.position = res.data.position;
         this.isCaretaker = res.data.isCaretaker;
       }.bind(this))["catch"](function (e) {
         console.log(e);
-        this.department = 0;
-        this.position = 0;
-        this.isCaretaker = false;
       }.bind(this));
     },
     onAction: function onAction(action, data, index) {
-      if (action == 'view-item') {
-        this.$router.push({
-          name: 'nod/show-nod-review',
-          params: {
-            Id: data.id,
-            isShow: true
+      axios.post('/AdminVue/noe-evaluation-iscaretaker', {
+        Id: data.id
+      }).then(function (res) {
+        this.isCaretaker = res.data.isCaretaker;
+        if (action == 'view-item') {
+          return this.$router.push({
+            name: 'noe/show-noe-evaluation',
+            params: {
+              Id: data.id,
+              isShow: true
+            }
+          });
+        }
+        if (data.IsCorrection == false || data.IsCorrection == null) {
+          if (action == 'edit-item') {
+            this.$router.push({
+              name: 'noe/form-noe-evaluation',
+              params: {
+                isFormEdit: true,
+                Id: data.id
+              }
+            });
           }
-        });
-      }
-      if (action == 'edit-item') {
-        this.$router.push({
-          name: 'nod/form-nod-review',
-          params: {
-            isFormEdit: true,
-            Id: data.id
+          if (action == 'delete-item') {
+            this.deleteData('/AdminVue/noe-evaluation-delete', data.id, this.$refs.vuetable);
           }
-        });
-      }
-      if (action == 'delete-item') {
-        this.deleteData('/AdminVue/nod-review-delete', data.id, this.$refs.vuetable);
-      }
-      if (action == 'publish') {
-        this.publish('/AdminVue/nod-review-publish', data.id, this.$refs.vuetable);
-      }
-      if (action == 'approve') {
-        this.$router.push({
-          name: 'nod/form-nod-review',
-          params: {
-            Id: data.id,
-            isShow: true,
-            isApprove: true,
-            isCaretaker: this.isCaretaker
+          if (action == 'publish-evaluation') {
+            this.publishEvaluation('/AdminVue/noe-evaluation-publish-evaluation', data.id, this.$refs.vuetable);
           }
-        });
-      }
-      if (action == 'reject') {
-        this.rejectOld('/AdminVue/nod-review-reject', data.id, this.$refs.vuetable, null, false, this.isCaretaker);
-      }
-      if (action == 'correction') {
-        this.$router.push({
-          name: 'nod/form-correction-nod-review',
-          params: {
-            Id: data.id,
-            isCaretaker: this.isCaretaker
+          if (action == 'approve') {
+            this.approve('/AdminVue/noe-evaluation-approve', data.id, this.$refs.vuetable, null, false, this.isCaretaker);
           }
-        });
-      }
+          if (action == 'reject') {
+            this.reject('/AdminVue/noe-evaluation-reject', data.id, this.$refs.vuetable, false, this.isCaretaker);
+          }
+          if (action == 'correction') {
+            this.$router.push({
+              name: 'noe/form-correction-noe-evaluation',
+              params: {
+                Id: data.id,
+                isCaretaker: this.isCaretaker
+              }
+            });
+          }
+        } else {
+          return this.showNotifCustom('notifications-danger', 'Forbidden Action', 'Harus isi jawaban dari pengkoreksi');
+        }
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+      }.bind(this));
     }
   },
   mounted: function mounted() {
@@ -277,10 +314,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/nod-review/index.vue?vue&type=template&id=80d5ac34&":
-/*!*********************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/nod-review/index.vue?vue&type=template&id=80d5ac34& ***!
-  \*********************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-evaluation/index.vue?vue&type=template&id=f9cc6df0&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/noe-evaluation/index.vue?vue&type=template&id=f9cc6df0& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -294,7 +331,7 @@ var render = function render() {
   return _c("div", [_c("b-card", {
     staticClass: "mb-4",
     attrs: {
-      header: "Review NOD",
+      header: "Evaluasi NOE",
       "header-tag": "h4"
     }
   }, [_c("b-form", {
@@ -322,34 +359,12 @@ var render = function render() {
       },
       expression: "vars.perPage"
     }
-  }), _vm._v(" "), _vm.department == 67 && _vm.position == 2 ? _c("b-select", {
-    staticClass: "ml-2",
-    attrs: {
-      value: "Data NOD Belum Review",
-      options: ["Data NOD Belum Review", "Data NOD Sudah Review"]
-    },
-    on: {
-      change: function change($event) {
-        return _vm.setReview();
-      }
-    }
-  }) : _vm._e()], 1)], 1), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6"
-  }, [_vm.department == 67 && _vm.position == 2 ? _c("b-btn", {
-    staticClass: "btn btn-success btn-md float-right mr-2",
-    on: {
-      click: function click($event) {
-        return _vm.createData();
-      }
-    }
-  }, [_c("i", {
-    staticClass: "ion ion-md-add-circle"
-  }), _vm._v(" Buat Data\n          ")]) : _vm._e()], 1)]), _vm._v(" "), !_vm.isReview && _vm.department == 67 && _vm.position == 2 ? _c("div", {
+  })], 1)], 1)]), _vm._v(" "), _c("div", {
     staticClass: "table-responsive"
   }, [_c("vuetable", {
     ref: "vuetable",
     attrs: {
-      "api-url": "/AdminVue/data-nod-notreview",
+      "api-url": "/AdminVue/data-noe-evaluation",
       "http-options": _vm.authHeader,
       "no-data-template": "Data tidak ada",
       fields: _vm.fields,
@@ -379,7 +394,7 @@ var render = function render() {
           staticClass: "wd-50"
         }), _vm._v(" "), _c("th", [_c("b-input", {
           attrs: {
-            placeholder: "No. NOD"
+            placeholder: "No. NOE"
           },
           on: {
             keyup: function keyup($event) {
@@ -388,15 +403,15 @@ var render = function render() {
             }
           },
           model: {
-            value: _vm.paramData.search.nrt__NODNumber,
+            value: _vm.paramData.search.noe__NOENumberAcc,
             callback: function callback($$v) {
-              _vm.$set(_vm.paramData.search, "nrt__NODNumber", $$v);
+              _vm.$set(_vm.paramData.search, "noe__NOENumberAcc", $$v);
             },
-            expression: "paramData.search.nrt__NODNumber"
+            expression: "paramData.search.noe__NOENumberAcc"
           }
         })], 1), _vm._v(" "), _c("th", [_c("b-input", {
           attrs: {
-            placeholder: "No. NOE"
+            placeholder: "No. Draft NOE"
           },
           on: {
             keyup: function keyup($event) {
@@ -413,7 +428,7 @@ var render = function render() {
           }
         })], 1), _vm._v(" "), _c("th", [_c("b-input", {
           attrs: {
-            placeholder: "Uraian / Kondisi Ketidaksesuaian"
+            placeholder: "Jenis Kejadian"
           },
           on: {
             keyup: function keyup($event) {
@@ -422,15 +437,15 @@ var render = function render() {
             }
           },
           model: {
-            value: _vm.paramData.search.noe__Event,
+            value: _vm.paramData.search.noe__IdTypeIncident,
             callback: function callback($$v) {
-              _vm.$set(_vm.paramData.search, "noe__Event", $$v);
+              _vm.$set(_vm.paramData.search, "noe__IdTypeIncident", $$v);
             },
-            expression: "paramData.search.noe__Event"
+            expression: "paramData.search.noe__IdTypeIncident"
           }
         })], 1), _vm._v(" "), _c("th", [_c("b-input", {
           attrs: {
-            placeholder: "Kondisi Seharusnya"
+            placeholder: "Lokasi Kejadian"
           },
           on: {
             keyup: function keyup($event) {
@@ -439,15 +454,19 @@ var render = function render() {
             }
           },
           model: {
-            value: _vm.paramData.search.nod__ProperCondition,
+            value: _vm.paramData.search.loc__Name,
             callback: function callback($$v) {
-              _vm.$set(_vm.paramData.search, "nod__ProperCondition", $$v);
+              _vm.$set(_vm.paramData.search, "loc__Name", $$v);
             },
-            expression: "paramData.search.nod__ProperCondition"
+            expression: "paramData.search.loc__Name"
           }
-        })], 1), _vm._v(" "), _c("th", [_c("b-input", {
+        })], 1), _vm._v(" "), _c("th", [_c("masked-input", {
+          staticClass: "form-control",
           attrs: {
-            placeholder: "No. Kontrol / No. Bets"
+            type: "text",
+            placeholder: "dd.mm.yy",
+            guide: false,
+            mask: _vm.datedmYMask
           },
           on: {
             keyup: function keyup($event) {
@@ -456,11 +475,11 @@ var render = function render() {
             }
           },
           model: {
-            value: _vm.paramData.search.noe__BatchNo,
+            value: _vm.paramData.search.noe__Date,
             callback: function callback($$v) {
-              _vm.$set(_vm.paramData.search, "noe__BatchNo", $$v);
+              _vm.$set(_vm.paramData.search, "noe__Date", $$v);
             },
-            expression: "paramData.search.noe__BatchNo"
+            expression: "paramData.search.noe__Date"
           }
         })], 1), _vm._v(" "), _c("th", [_c("b-input", {
           attrs: {
@@ -479,129 +498,6 @@ var render = function render() {
             },
             expression: "paramData.search.pdc__Code"
           }
-        })], 1), _vm._v(" "), _c("th"), _vm._v(" "), _c("th")]), _vm._v(" "), _c("vuetable-row-header")];
-      }
-    }, {
-      key: "index",
-      fn: function fn(props) {
-        return [_vm._v("\n        " + _vm._s(props.rowIndex + 1) + "\n      ")];
-      }
-    }, {
-      key: "action",
-      fn: function fn(props) {
-        return [_c("div", {
-          staticClass: "custom-actions"
-        })];
-      }
-    }, {
-      key: "more",
-      fn: function fn(props) {
-        return [_c("div", {
-          staticClass: "custom-actions"
-        })];
-      }
-    }], null, false, 1479146389)
-  })], 1) : _c("div", {
-    staticClass: "table-responsive"
-  }, [_c("vuetable", {
-    ref: "vuetable",
-    attrs: {
-      "api-url": "/AdminVue/data-nod-review",
-      "http-options": _vm.authHeader,
-      "no-data-template": "Data tidak ada",
-      fields: _vm.fields,
-      css: _vm.cssTable,
-      "sort-order": _vm.sortOrder,
-      "multi-sort": false,
-      "multi-sort-key": "ctrl",
-      "per-page": _vm.vars.perPage,
-      "pagination-path": "",
-      "append-params": _vm.paramData
-    },
-    on: {
-      "vuetable:pagination-data": _vm.onPaginationData,
-      "vuetable:loading": function vuetableLoading($event) {
-        return _vm.showLoading();
-      },
-      "vuetable:loaded": function vuetableLoaded($event) {
-        return _vm.hideLoading();
-      }
-    },
-    scopedSlots: _vm._u([{
-      key: "tableHeader",
-      fn: function fn(props) {
-        return [_c("tr", {
-          staticClass: "text-center"
-        }, [_c("th", {
-          staticClass: "wd-50"
-        }), _vm._v(" "), _c("th", [_c("b-input", {
-          attrs: {
-            placeholder: "No. NOD"
-          },
-          on: {
-            keyup: function keyup($event) {
-              if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
-              return _vm.getFilters();
-            }
-          },
-          model: {
-            value: _vm.paramData.search.nrt__NODNumber,
-            callback: function callback($$v) {
-              _vm.$set(_vm.paramData.search, "nrt__NODNumber", $$v);
-            },
-            expression: "paramData.search.nrt__NODNumber"
-          }
-        })], 1), _vm._v(" "), _c("th", [_c("b-input", {
-          attrs: {
-            placeholder: "No. NOE"
-          },
-          on: {
-            keyup: function keyup($event) {
-              if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
-              return _vm.getFilters();
-            }
-          },
-          model: {
-            value: _vm.paramData.search.noe__NOENumber,
-            callback: function callback($$v) {
-              _vm.$set(_vm.paramData.search, "noe__NOENumber", $$v);
-            },
-            expression: "paramData.search.noe__NOENumber"
-          }
-        })], 1), _vm._v(" "), _c("th", [_c("b-input", {
-          attrs: {
-            placeholder: "Uraian / Kondisi Ketidaksesuaian"
-          },
-          on: {
-            keyup: function keyup($event) {
-              if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
-              return _vm.getFilters();
-            }
-          },
-          model: {
-            value: _vm.paramData.search.noe__Event,
-            callback: function callback($$v) {
-              _vm.$set(_vm.paramData.search, "noe__Event", $$v);
-            },
-            expression: "paramData.search.noe__Event"
-          }
-        })], 1), _vm._v(" "), _c("th", [_c("b-input", {
-          attrs: {
-            placeholder: "Kondisi Seharusnya"
-          },
-          on: {
-            keyup: function keyup($event) {
-              if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
-              return _vm.getFilters();
-            }
-          },
-          model: {
-            value: _vm.paramData.search.nod__ProperCondition,
-            callback: function callback($$v) {
-              _vm.$set(_vm.paramData.search, "nod__ProperCondition", $$v);
-            },
-            expression: "paramData.search.nod__ProperCondition"
-          }
         })], 1), _vm._v(" "), _c("th", [_c("b-input", {
           attrs: {
             placeholder: "No. Kontrol / No. Bets"
@@ -618,28 +514,11 @@ var render = function render() {
               _vm.$set(_vm.paramData.search, "noe__BatchNo", $$v);
             },
             expression: "paramData.search.noe__BatchNo"
-          }
-        })], 1), _vm._v(" "), _c("th", [_c("b-input", {
-          attrs: {
-            placeholder: "Bahan / Produk Terkait"
-          },
-          on: {
-            keyup: function keyup($event) {
-              if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
-              return _vm.getFilters();
-            }
-          },
-          model: {
-            value: _vm.paramData.search.pdc__Code,
-            callback: function callback($$v) {
-              _vm.$set(_vm.paramData.search, "pdc__Code", $$v);
-            },
-            expression: "paramData.search.pdc__Code"
           }
         })], 1), _vm._v(" "), _c("th", [_c("b-form-select", {
           attrs: {
             options: _vm.optionStatus,
-            value: "paramData.search.nod__Status"
+            value: "paramData.search.noe__Status"
           },
           on: {
             change: function change($event) {
@@ -647,25 +526,30 @@ var render = function render() {
             }
           },
           model: {
-            value: _vm.paramData.search.nod__Status,
+            value: _vm.paramData.search.noe__Status,
             callback: function callback($$v) {
-              _vm.$set(_vm.paramData.search, "nod__Status", $$v);
+              _vm.$set(_vm.paramData.search, "noe__Status", $$v);
             },
-            expression: "paramData.search.nod__Status"
+            expression: "paramData.search.noe__Status"
           }
         })], 1), _vm._v(" "), _c("th")]), _vm._v(" "), _c("vuetable-row-header")];
       }
     }, {
       key: "index",
       fn: function fn(props) {
-        return [_vm._v("\n        " + _vm._s(props.rowIndex + 1) + "\n      ")];
+        return [_vm._v("\n          " + _vm._s(props.rowIndex + 1) + "\n      ")];
+      }
+    }, {
+      key: "NOENumberCustom",
+      fn: function fn(props) {
+        return [props.rowData.Status == "Disetujui oleh QA Dept.Head" || props.rowData.Status == "Disetujui oleh QA APJ" || props.rowData.Status == "Disetujui oleh QA Sect.Head" ? _c("span", [_vm._v(_vm._s(props.rowData.NOENumberAcc))]) : _c("span", [_vm._v(_vm._s(props.rowData.NOENumber))])];
       }
     }, {
       key: "action",
       fn: function fn(props) {
         return [_c("div", {
           staticClass: "custom-actions"
-        }, [_vm.department == 67 ? _c("b-btn", {
+        }, [props.rowData.IsPublish == 2 ? _c("b-btn", {
           staticClass: "btn btn-outline-info btn-sm mr-1 mt-1",
           on: {
             click: function click($event) {
@@ -674,7 +558,7 @@ var render = function render() {
           }
         }, [_c("i", {
           staticClass: "ion ion-ios-eye"
-        }), _vm._v(" Tampilkan\n          ")]) : _vm._e(), _vm._v(" "), _vm.department == 67 && props.rowData.Status == "UnPublish" ? _c("b-btn", {
+        }), _vm._v(" Tampilkan\n          ")]) : _vm._e(), _vm._v(" "), props.rowData.IsPublish == 2 && ((props.rowData.Status == "Disetujui oleh Dept Head" || props.rowData.Status == "Disetujui oleh Unit Head (caretaker)" || props.rowData.Status == "Disetujui oleh Sect Head (caretaker)") && _vm.position == 2 || props.rowData.Status == "Disetujui oleh QA Sect.Head" && _vm.position == 3 || props.rowData.Status == "Disetujui oleh QA Sect.Head" && _vm.position == 4) ? _c("b-btn", {
           staticClass: "btn btn-outline-secondary btn-sm mr-1 mt-1",
           on: {
             click: function click($event) {
@@ -683,7 +567,7 @@ var render = function render() {
           }
         }, [_c("i", {
           staticClass: "ion ion-md-create"
-        }), _vm._v(" Ubah\n          ")]) : _vm._e(), _vm._v(" "), _vm.department == 67 && props.rowData.Status == "UnPublish" ? _c("b-btn", {
+        }), _vm._v(" Ubah\n          ")]) : _vm._e(), _vm._v(" "), props.rowData.IsPublish == 2 && (props.rowData.Status == "Disetujui oleh Dept Head" || props.rowData.Status == "Disetujui oleh Unit Head (caretaker)" || props.rowData.Status == "Disetujui oleh Sect Head (caretaker)") && _vm.position == 2 ? _c("b-btn", {
           staticClass: "btn btn-outline-danger btn-sm mr-1 mt-1",
           on: {
             click: function click($event) {
@@ -692,25 +576,25 @@ var render = function render() {
           }
         }, [_c("i", {
           staticClass: "ion ion-md-trash"
-        }), _vm._v(" Hapus\n          ")]) : _vm._e(), _vm._v(" "), _vm.department == 67 && _vm.position == 2 && props.rowData.Status == "UnPublish" ? _c("b-btn", {
-          staticClass: "btn btn-outline-primary btn-sm mr-1 mt-1",
-          on: {
-            click: function click($event) {
-              return _vm.onAction("publish", props.rowData, props.rowIndex);
-            }
-          }
-        }, [_c("i", {
-          staticClass: "ion ion-md-checkmark"
-        }), _vm._v(" Publish\n          ")]) : _vm._e(), _vm._v(" "), _vm.department == 67 && (_vm.position == 3 && props.rowData.Status == "Dilaporkan ke QA APJ" || (_vm.position == 4 || _vm.isCaretaker == true) && props.rowData.Status == "Disetujui oleh QA Sect.Head") ? _c("b-btn", {
+        }), _vm._v(" Hapus\n          ")]) : _vm._e(), _vm._v(" "), props.rowData.IsPublish == 1 && (props.rowData.Status == "Disetujui oleh Dept Head" || props.rowData.Status == "Disetujui oleh Unit Head (caretaker)" || props.rowData.Status == "Disetujui oleh Sect Head (caretaker)") && _vm.position == 2 ? _c("b-btn", {
           staticClass: "btn btn-outline-success btn-sm mr-1 mt-1",
           on: {
             click: function click($event) {
-              return _vm.onAction("approve", props.rowData, props.rowIndex);
+              return _vm.onAction("edit-item", props.rowData, props.rowIndex);
             }
           }
         }, [_c("i", {
           staticClass: "ion ion-md-checkmark"
-        }), _vm._v(" Setujui\n          ")]) : _vm._e(), _vm._v(" "), _vm.department == 67 && (_vm.position == 4 || _vm.isCaretaker == true) && props.rowData.Status == "Disetujui oleh QA Sect.Head" ? _c("b-btn", {
+        }), _vm._v(" Evaluasi\n          ")]) : _vm._e(), _vm._v(" "), props.rowData.IsPublish == 2 && (props.rowData.Status == "Disetujui oleh Dept Head" || props.rowData.Status == "Disetujui oleh Unit Head (caretaker)" || props.rowData.Status == "Disetujui oleh Sect Head (caretaker)") && _vm.position == 2 ? _c("b-btn", {
+          staticClass: "btn btn-outline-primary btn-sm mr-1 mt-1",
+          on: {
+            click: function click($event) {
+              return _vm.onAction("publish-evaluation", props.rowData, props.rowIndex);
+            }
+          }
+        }, [_c("i", {
+          staticClass: "ion-md-cloud-upload"
+        }), _vm._v(" Publish Evaluasi\n          ")]) : _vm._e(), _vm._v(" "), (_vm.position == 4 || _vm.isCaretaker == true) && props.rowData.Status == "Disetujui oleh QA Sect.Head" && props.rowData.IsPublish == 2 ? _c("b-btn", {
           staticClass: "btn btn-outline-danger btn-sm mr-1 mt-1",
           on: {
             click: function click($event) {
@@ -719,7 +603,16 @@ var render = function render() {
           }
         }, [_c("i", {
           staticClass: "ion ion-md-close"
-        }), _vm._v(" Tolak\n          ")]) : _vm._e(), _vm._v(" "), _vm.department == 67 && (_vm.position == 3 && props.rowData.Status == "Dilaporkan ke QA APJ" || (_vm.position == 4 || _vm.isCaretaker == true) && props.rowData.Status == "Disetujui oleh QA Sect.Head") ? _c("b-btn", {
+        }), _vm._v(" Tolak\n          ")]) : _vm._e(), _vm._v(" "), (_vm.position == 2 || _vm.isCaretaker == true) && props.rowData.Status == "Disetujui oleh Dept Head" && props.rowData.IsPublish == 1 ? _c("b-btn", {
+          staticClass: "btn btn-outline-danger btn-sm mr-1 mt-1",
+          on: {
+            click: function click($event) {
+              return _vm.onAction("reject", props.rowData, props.rowIndex);
+            }
+          }
+        }, [_c("i", {
+          staticClass: "ion ion-md-close"
+        }), _vm._v(" Tolak\n          ")]) : _vm._e(), _vm._v(" "), _vm.position == 2 && (props.rowData.Status == "Disetujui oleh Dept Head" || props.rowData.Status == "Disetujui oleh Unit Head (caretaker)" || props.rowData.Status == "Disetujui oleh Sect Head (caretaker)") || _vm.position == 3 && props.rowData.Status == "Disetujui oleh QA Sect.Head" || (_vm.position == 4 || _vm.isCaretaker == true) && props.rowData.Status == "Disetujui oleh QA Sect.Head" && props.rowData.IsPublish == 2 ? _c("b-btn", {
           staticClass: "btn btn-warning btn-sm mr-1 mt-1",
           on: {
             click: function click($event) {
@@ -728,7 +621,7 @@ var render = function render() {
           }
         }, [_c("i", {
           staticClass: "fas fa-comment"
-        }), _vm._v(" Koreksi\n          ")]) : _vm._e(), _vm._v(" "), _c("div", [_vm.department == 67 && (_vm.position == 2 && props.rowData.Status == "UnPublish" || _vm.position == 3 && props.rowData.Status == "Dilaporkan ke QA APJ" || (_vm.position == 4 || _vm.isCaretaker == true) && props.rowData.Status == "Disetujui oleh QA Sect.Head") ? _c("span", {
+        }), _vm._v(" Koreksi\n          ")]) : _vm._e(), _vm._v(" "), _c("div", [props.rowData.Status == "Disetujui oleh Dept Head" && _vm.position == 2 || _vm.position == 3 && props.rowData.Status == "Disetujui oleh QA Sect.Head" || (_vm.position == 4 || _vm.isCaretaker == true) && props.rowData.Status == "Disetujui oleh QA Sect.Head" ? _c("span", {
           staticClass: "btn btn-md btn-warning"
         }) : _c("span", {
           staticClass: "btn btn-md btn-success"
@@ -817,17 +710,17 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/nod/nod-review/index.vue":
-/*!**************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/nod/nod-review/index.vue ***!
-  \**************************************************************************/
+/***/ "./resources/assets/src/components/backend/noe/noe-evaluation/index.vue":
+/*!******************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/noe/noe-evaluation/index.vue ***!
+  \******************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _index_vue_vue_type_template_id_80d5ac34___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=80d5ac34& */ "./resources/assets/src/components/backend/nod/nod-review/index.vue?vue&type=template&id=80d5ac34&");
-/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/nod/nod-review/index.vue?vue&type=script&lang=js&");
+/* harmony import */ var _index_vue_vue_type_template_id_f9cc6df0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=f9cc6df0& */ "./resources/assets/src/components/backend/noe/noe-evaluation/index.vue?vue&type=template&id=f9cc6df0&");
+/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/noe/noe-evaluation/index.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -838,8 +731,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _index_vue_vue_type_template_id_80d5ac34___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _index_vue_vue_type_template_id_80d5ac34___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _index_vue_vue_type_template_id_f9cc6df0___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _index_vue_vue_type_template_id_f9cc6df0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -849,38 +742,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/assets/src/components/backend/nod/nod-review/index.vue"
+component.options.__file = "resources/assets/src/components/backend/noe/noe-evaluation/index.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/nod/nod-review/index.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/nod/nod-review/index.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/noe/noe-evaluation/index.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/noe/noe-evaluation/index.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/nod-review/index.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-evaluation/index.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/nod/nod-review/index.vue?vue&type=template&id=80d5ac34&":
-/*!*********************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/nod/nod-review/index.vue?vue&type=template&id=80d5ac34& ***!
-  \*********************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/noe/noe-evaluation/index.vue?vue&type=template&id=f9cc6df0&":
+/*!*************************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/noe/noe-evaluation/index.vue?vue&type=template&id=f9cc6df0& ***!
+  \*************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_80d5ac34___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./index.vue?vue&type=template&id=80d5ac34& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/nod-review/index.vue?vue&type=template&id=80d5ac34&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_80d5ac34___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_f9cc6df0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./index.vue?vue&type=template&id=f9cc6df0& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-evaluation/index.vue?vue&type=template&id=f9cc6df0&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_f9cc6df0___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_80d5ac34___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_f9cc6df0___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

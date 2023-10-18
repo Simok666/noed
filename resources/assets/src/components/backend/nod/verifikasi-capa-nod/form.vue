@@ -22,7 +22,7 @@
                 track-by="NODNumber"
                 @input="onChange"
                 required
-                :disabled="isShow" />
+                :disabled="isEdit || isShow" />
               <span class="text-danger" v-if="allErrors.NODAccNumber">{{ allErrors.NODAccNumber[0] }}</span>
             </b-form-group>
           </b-form-row>
@@ -282,7 +282,7 @@
           </b-card>
 
           <b-form-row>
-              <b-form-group class="col-md-12" v-if="isShow == false">
+              <b-form-group class="col-md-12" >
                 <label class="form-label">Lampiran CAPA</label>
                 <label class="form-label float-right text-danger">(Max. 50 MB)</label>
                 <file-pond
@@ -295,42 +295,69 @@
                 :files="field.CAPAFile"
                 accepted-file-types="application/*, image/*, video/*"
                 maxTotalFileSize="50MB"
+                required
+                :disabled = "isShow || Position === 4"
                />
               </b-form-group>
   
-              <!-- <b-form-group  class="col-md-4">
-                <label class="form-label">Lampiran CAPA</label>
-                <template v-for="(file, i) in item.PAFileName">
+              <b-card v-if="isShow == true" class="mb-3" header="Lampiran CAPA" header-tag="h5">
+              <b-form-row>
+                <b-form-group class="col-md-12" v-for="(item, index) in field.FileCAPADownload" :key="index">
                   <b-input-group>
-                    <b-form-input name="PAFileName" :value="file" readonly></b-form-input>
+                    <b-form-input name="FileCAPADownload" v-model="item[0]" readonly></b-form-input>
                     <b-input-group-append>
-                      <a class="input-group-text btn-outline-success" :href="item.PAFile[i]" target="_blank">
+                      <a class="input-group-text btn-outline-success" :href="BaseUrl+item[1]" target="_blank">
                         <i class="fa fa-download"></i>
                       </a>
                     </b-input-group-append>
                   </b-input-group>
-                </template>
-              </b-form-group> -->
+                </b-form-group>
+              </b-form-row>
+            </b-card>
   
+          </b-form-row>
+          
+          <b-card class="mb-4" v-if="Position == 2 || Position == 4" header="Verifikasi Efektifitas CAPA" header-tag="h5">
+
+            <b-form-row v-if="(isShow == true || isEdit == true) && (Position === 4 && valStatus === 2 && userDepartment === 67)">
+              <b-form-group class="col-md-12" >
+                <label v-if="isShow == false" class="form-label float-right text-danger">*Wajib Diisi</label>
+                <b-form-group > 
+                  <b-form-radio v-model="selectedEfektifitasCapa" :state="allErrors.selectedEfektifitasCapa?false:null"  :value="false" :disabled="isShow">CAPA telah dilaksanakan dengan baik</b-form-radio>
+                  <b-form-radio v-model="selectedEfektifitasCapa" :state="allErrors.selectedEfektifitasCapa?false:null"  :value="true" :disabled="isShow">Perlu CAPA lain, yaitu :</b-form-radio>
+                  <span class="text-danger" v-if="allErrors.selectedEfektifitasCapa">{{ allErrors.selectedEfektifitasCapa[0] }}</span>
+                </b-form-group>
+                <b-form-group v-if="selectedEfektifitasCapa === true" >
+                  <b-form-textarea
+                        id="textarea-state"
+                        v-model="field.selectedEfektifitasValue"
+                        placeholder="Enter at least 10 characters"
+                        rows="3"
+                        class="mb-4"
+                        :disabled="isShow"
+                        :required="selectedEfektifitasCapa"
+                      ></b-form-textarea>
+                </b-form-group>
+              </b-form-group>
             </b-form-row>
+          </b-card>
+          
   
           <b-form-row>
             <b-form-group class="col-md-6"></b-form-group>
             <b-form-group label="" class="col-md-6">
               
-              <b-btn v-if="isShow == true && Position < 3 && valStatus == 1" type="button" variant="primary" class="float-right ml-2" @click="onAction('publish')">Publish</b-btn>
-              
-              <b-btn v-if="isShow == true && ( (valStatus == 2 && field.IdDepartment == userDepartment && Position == 1) || (valStatus == 3 && field.IdDepartment == userDepartment && Position == 2) || (valStatus == 4 && field.IdDepartment == userDepartment && (Position == 4 || isCaretaker == true)) || (valStatus == 5 && deptTerkait == true && statusDeptTerkait==false) || (userDepartment == 67 &&  ( (Position == 3 && valStatus == 6) || (Position == 4 && valStatus == 10) || (Position == 4 && valStatus == 10) || (Position == 2 && valStatus == 6) )) )"
+              <b-btn v-if="isShow == true && (Position === 4 && valStatus === 2 && userDepartment === 67)"
                 type="button" variant="primary" class="float-right ml-2" @click="onAction('approve')">
               Setujui</b-btn>
   
   
-              <b-btn v-if="isShow == true && ( (valStatus == 4 && field.IdDepartment == userDepartment && (Position == 4 || isCaretaker == true)) || (userDepartment == 67 && ( (Position == 3 && valStatus == 6) || (Position == 4 && valStatus == 10) || (Position == 4 && valStatus == 10) )) )"
+              <b-btn v-if="isShow == true && (Position === 4 && valStatus === 2 && userDepartment === 67)"
                 type="button" variant="danger" class="float-right ml-2" @click="onAction('reject')">
               Tolak</b-btn>
   
   
-              <b-btn v-if="isShow == true && ( (valStatus == 2 && field.IdDepartment == userDepartment && Position == 1) || (valStatus == 3 && field.IdDepartment == userDepartment && Position == 2) || (valStatus == 4 && field.IdDepartment == userDepartment && (Position == 4 || isCaretaker == true)) || (valStatus == 5 && deptTerkait == true && statusDeptTerkait==false) || (userDepartment == 67 && ( (Position == 3 && valStatus == 6) || (Position == 4 && valStatus == 10) || (Position == 4 && valStatus == 10) )) )"
+              <b-btn v-if="isShow == true && (Position === 4 && valStatus === 2 && userDepartment === 67)"
                 type="button" variant="warning" class="float-right ml-2" @click="onAction('correction')">
               Koreksi</b-btn>
   
@@ -378,7 +405,12 @@
           NODCA:[{IdCAPIC:'',CADate:'',CADescription:'',CAFile:[]}],
           NODPA:[{IdPAPIC:'',PADate:'',PADescription:'',PAFile:[]}],
           PublishTo: 0,
-          SectionPublish: 0
+          SectionPublish: 0,
+          userEntry: 0,
+          CAPAFile: [],
+          FileCAPADownload: [],
+          Status: '',
+          selectedEfektifitasValue: ''
         },
         allErrors: [],
         isNotif: false,
@@ -404,10 +436,12 @@
         relevantDeptExist:0,
         min: moment(new Date()).format('YYYY-MM-DD'),
         selected: '',
+        selectedEfektifitasCapa : '',
         getAnotherEffect: [],
         checkedEffect: [],
         text: [],
-        dataAnotherEffect: []
+        dataAnotherEffect: [],
+        OldCAPAFile: [],
       }
     },
   
@@ -450,63 +484,32 @@
         } else {
           const formData = new FormData()
           formData.append("Id", this.field.Id)
-          formData.append("NODNumber", this.field.NODNumber)
-          if(this.field.NOENumber) formData.append("NOENumber", this.field.NOENumber.Id)
-          formData.append("Date", this.field.Date)
-          formData.append("ProperCondition", this.field.ProperCondition)
-          formData.append("Man", this.field.Man)
-          formData.append("Machine", this.field.Machine)
-          formData.append("Method", this.field.Method)
-          formData.append("Material", this.field.Material)
-          formData.append("Milieu", this.field.Milieu)
+          formData.append("userEntry", this.field.userEntry)
           
-          let collected = []
-  
-          if(this.selected == true){
-            for (const idEffect in this.checkedEffect) {
-              if(this.checkedEffect[idEffect]) {
-                collected[idEffect] = {
-                  id_effect: idEffect,
-                  selected: this.selected,
-                  text: this.text[idEffect] || ''
-                }
-              }
-            }  
+          if(this.field.NODAccNumber) formData.append("NODAccNumber", this.field.NODAccNumber.Id)
+          
+          for( var i = 0; i < this.field.CAPAFile.length; i++ ) {
+            let file = this.field.CAPAFile[i];
+            formData.append('CAPAFile[' + i + ']', file);
+          }
+          
+          formData.append("OldCAPAFile", JSON.stringify(this.OldCAPAFile))
+
+          let collectedEfektivitas = []
+
+          if(this.selectedEfektifitasCapa === true) {
+            collectedEfektivitas = {
+              selected: this.selectedEfektifitasCapa,
+              efektifitasDesc: this.field.selectedEfektifitasValue
+            }
           } else {
-            collected.push(this.selected)
-          }
-  
-          if(this.Position == 2 || this.Position == 4) {
-            formData.append("DescAnotherEffect", JSON.stringify(collected))
-          }
-  
-          // sebelumnya hanya 1 data group, sekarang lebih dari 1 data group
-          for( var i = 0; i < this.field.NODCA.length; i++ ) {
-            formData.append('IdCAPIC[' + i + ']', this.field.NODCA[i].IdCAPIC.Id)
-            formData.append('CADate[' + i + ']', this.field.NODCA[i].CADate)
-            formData.append('CADescription[' + i + ']', this.field.NODCA[i].CADescription)
-            var file = this.field.NODCA[i].CAFile
-            for( var j=0; j<file.length; j++ ) {
-              formData.append('CAFile[' + i + ']['+ j +']', file[j])
+            collectedEfektivitas = {
+              selected: this.selectedEfektifitasCapa
             }
           }
-          formData.append("OldCAFile",JSON.stringify(this.OldCAFile))
-  
-  
-          // sebelumnya hanya 1 data group, sekarang lebih dari 1 data group
-          for( var i = 0; i < this.field.NODPA.length; i++ ) {
-            formData.append('IdPAPIC[' + i + ']', this.field.NODPA[i].IdPAPIC.Id)
-            formData.append('PADate[' + i + ']', this.field.NODPA[i].PADate)
-            formData.append('PADescription[' + i + ']', this.field.NODPA[i].PADescription)
-            var file = this.field.NODPA[i].PAFile
-            for( var j=0; j<file.length; j++ ) {
-              formData.append('PAFile[' + i + ']['+ j +']', file[j])
-            }
-          }
-          formData.append("OldPAFile",JSON.stringify(this.OldPAFile))
-          formData.append("IdPublish",this.field.PublishTo)
-          formData.append("publishSection",this.field.SectionPublish)
           
+          formData.append("verifikasiEfektivitasCapa", JSON.stringify(collectedEfektivitas))
+
           const config = {
               headers: { 'content-type': 'multipart/form-data' }
           }
@@ -516,7 +519,7 @@
             var resp = res.data
             if(resp.status){
               this.$router.push({
-                name: 'nod/data-nod-report',
+                name: 'nod/master-verifikasi-capa',
                 params: {
                   isNotif: true,
                   gNotif: 'notifications-success',
@@ -547,101 +550,48 @@
   
       onChange(option) {
         if(option){
+          
           this.getDataNODAcc(option.IdNOEReport, option.Id)
           this.getDataPIC(option.Id)
         }
       },
   
       getData (Id) {
-        axios.post('/AdminVue/nod-report-edit', {
+        axios.post('/AdminVue/nod-verifikasi-capa-edit-data', {
           Id:Id,
         })
         .then( function (res) {
           var resp = res.data
+          
           this.Position = res.data.position
           this.userDepartment = res.data.department
           this.deptTerkait = res.data.deptTerkait
           this.statusDeptTerkait = res.data.statusDeptTerkait
-          this.field = resp.data
-          this.getDataNOE(this.field.IdNOEReport)
-          this.getDataPIC(this.field.IdNOEReport)
-          this.field.NODCA = resp.NODCA
-          this.field.NODPA = resp.NODPA
-          this.opsNOENumber.unshift(this.field.NOENumber)
-          this.opsRelevantDept = resp.data.RelevantDept
+          this.field.NODAccNumber = resp.data
+          this.field.Status = resp.data.statusCapa
+          this.selectedEfektifitasCapa = resp.data.efektivitasCapa.selected
+          this.field.selectedEfektifitasValue = resp.data.efektivitasCapa.efektifitasDesc
           
-          if(resp.data.IdRelevantDept != 0) {    
-            JSON.parse(resp.data.IdRelevantDept).filter((value) => {
-              return value == resp.data.IdDepartmentSession ? this.isRelevantDept = true : this.isRelevantDept
-            }, {})
-          }
-          resp.data.TypeUser == 15 ? this.isDept = true : this.isDept
-          this.relevantDeptExist = resp.data.IdRelevantDept 
+          Vue.set(this.field, 'FileCAPADownload', resp.data.FileCAPADownload)
           
-          this.field.NODCA.forEach((value,index) => {
-            if(value){
-              if(value.CAFile!='') {
-                value.IdCAPIC = {'Id': value.IdCAPIC , 'PIC': value.CAPIC}
-                value.CAFile = JSON.parse(value.CAFile)
-                this.OldCAFile.push(value.CAFile)
-                value.CAFileName = []
-                value.CAFile.forEach((val, i)=> {
-                  value.CAFile[i] = window.location.origin + '/' + val
-                  let result = val.split('/')
-                  value.CAFileName[i] = result[4]
-                })
-              }else{
-                this.OldCAFile.push('')
-              }
+          if(this.field.Status == 'Disetujui oleh QA Section Head') this.valStatus = 2
+          
+          this.field.CAPAFile = resp.data.fileCAPA
+
+          if(this.field.CAPAFile != ''){
+          let countFileCAPA = this.field.CAPAFile.length
+            for (let i = 0; i < countFileCAPA; i++) {
+              this.OldCAPAFile.push(this.field.CAPAFile[i])
+              this.field.CAPAFile.push(process.env.BASE_URL + this.field.CAPAFile[i])
             }
-          })
-  
-          this.field.NODPA.forEach((value,index) => {
-            if(value){
-              if(value.PAFile!='') {
-                value.IdPAPIC = {'Id': value.IdPAPIC , 'PIC': value.PAPIC}
-                value.PAFile = JSON.parse(value.PAFile)
-                this.OldPAFile.push(value.PAFile)
-                value.PAFileName = []
-                value.PAFile.forEach((val, i)=> {
-                  value.PAFile[i] = window.location.origin + '/' + val
-                  let result = val.split('/')
-                  value.PAFileName[i] = result[4]
-                })
-              }else{
-                this.OldPAFile.push('')
-              }
-            }
-          })
-          
-          if(this.field.Status) {
-            if(this.field.Status == 'UnPublish') this.valStatus = 1
-            if(this.field.Status == 'Dilaporkan ke Unit Head') this.valStatus = 2
-            if(this.field.Status == 'Disetujui oleh Unit Head') this.valStatus = 3
-            if(this.field.Status == 'Disetujui oleh Section Head') this.valStatus = 4
-            if(this.field.Status == 'Disetujui oleh Dept Head') this.valStatus = 5
-            if(this.field.Status == 'Disetujui oleh Dept Head Terkait') this.valStatus = 6
-            if(this.field.Status == 'Disetujui oleh QA APJ') this.valStatus = 7
-            if(this.field.Status == 'Disetujui oleh QA Dept.Head') this.valStatus = 8
-            if(this.field.Status == 'Ditolak') this.valStatus = 9
-            if(this.field.Status == 'Disetujui Oleh QA Section Head') this.valStatus = 10
           }
-          this.isCaretaker = res.data.isCaretaker
-          this.getAnotherEffect = resp.getAnotherEffect
-  
-          let selectedAnotherEffect = Object.values(resp.selectedAnotherEffect)
-          
-          if(selectedAnotherEffect) {
-            selectedAnotherEffect.forEach((item, index) => {
-              if(item !== false) {
-                this.selected = item.selected
-                this.checkedEffect[item.id_effect] = item.id_effect
-                this.text[item.id_effect] = item.text
-              } else {
-                this.selected = item
-              }
-            })
+          if(this.field.CAPAFile == ''){
+            this.OldCAPAFile = '';
           }
+          
+          this.getDataNODAcc(resp.data.IdNOEReport, resp.data.Id)
+          this.getDataPIC(resp.data.IdNOEReport)
+  
   
         }.bind(this))
         .catch( function (e) {
@@ -676,6 +626,7 @@
           this.field.Event = res.data.data.Event
           this.field.PublishTo = res.data.data.IdPublish
           this.field.SectionPublish = res.data.data.publishSection
+          this.field.userEntry = res.data.getUserEntry
           this.field.Date = moment(res.data.data.Date).format('DD/MM/YYYY HH:mm:ss')
           this.field.NODCA = res.data.NODCA
           this.field.NODPA = res.data.NODPA
@@ -802,14 +753,14 @@
       },
 
       handleFileCAPA: function(files) {
-      this.field.EventFile = files.map(files => files.file)
+      this.field.CAPAFile = files.map(files => files.file)
       },
 
       handleRemoveCAPA: function(error,files){
         let result = typeof(files.source)
         if(this.isEdit == true && result === 'string'){
-          let index = this.OldEventFile.indexOf(files.source.replace('/clouds','clouds'))
-          this.OldEventFile.splice(index,1)
+          let index = this.OldCAPAFile.indexOf(files.source.replace('/clouds','clouds'))
+          this.OldCAPAFile.splice(index,1)
         }
       },
   
@@ -846,7 +797,7 @@
       },
   
       backIndex() {
-        this.$router.push('/RoleAdmin/nod/data-nod-report')
+        this.$router.push('/RoleAdmin/nod/master-verifikasi-capa')
       },
   
       onAction(action){
@@ -854,7 +805,7 @@
           this.publish('/AdminVue/nod-report-publish', this.field.Id, this.$parent, true)
         }
         if(action == 'approve'){
-          this.approve('/AdminVue/nod-report-approve', this.field.Id, this.$parent, null, true, this.isCaretaker, this.opsRelevantDept, this.isDept, this.isRelevantDept, this.relevantDeptExist)
+          this.approveVerifikasiCapa('/AdminVue/nod-verifikasi-capa-approve-data', this.field.Id, this.$parent, null, true, this.selectedEfektifitasCapa)
         }
         if(action == 'reject'){
           this.rejectOld('/AdminVue/nod-report-reject', this.field.Id, this.$parent, null, true, this.isCaretaker)
@@ -879,22 +830,24 @@
       if(this.$route.params.isFormEdit){
         var Id = this.$route.params.Id
         this.isEdit = true
+       
         if(Id){
           this.getData(Id)
           this.field.Id = Id
-          this.urlSubmit = '/AdminVue/nod-report-update'
+          this.urlSubmit = '/AdminVue/nod-verifikasi-capa-update-data'
           this.textBtnSubmit = 'Simpan'
         }
       }
       if(this.$route.params.isShow){
         this.isShow = this.$route.params.isShow
         var Id = this.$route.params.Id
+        
         if(Id){
           this.getData(Id)
           this.field.Id = Id
         }
       }
-      // if(this.isEdit == false && this.isShow == false) this.generateNumber()
+      
     },
   
   }

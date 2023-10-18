@@ -71,17 +71,17 @@
               <i class="ion ion-ios-eye"></i> Tampilkan
             </b-btn>
             
-            <b-btn v-if="((props.rowData.Status == 'UnPublish' && position == 5) || ( props.rowData.Status == 'Disetujui oleh Dept Head Terkait' && position == 2)) || props.rowData.ReportDept == typeUser && (props.rowData.IsUpadatedRevision != 1)" class="btn btn-outline-secondary btn-sm mr-1 mt-1"
+            <b-btn v-if="(((props.rowData.statusCAPA == 'Dibuat oleh QA Section Head' || props.rowData.statusCAPA == 'Disetujui oleh QA Section Head') && ((position === 2 && props.rowData.isPublish === 0) || (position == 4 && props.rowData.isPublish === 1))))" class="btn btn-outline-secondary btn-sm mr-1 mt-1"
               @click="onAction('edit-item', props.rowData, props.rowIndex)">
               <i class="ion ion-md-create"></i> Ubah
             </b-btn>
             
-            <b-btn v-if="(props.rowData.Status == 'UnPublish' && position == 5)  || props.rowData.ReportDept == typeUser && (props.rowData.IsUpadatedRevision != 1)" class="btn btn-outline-danger btn-sm mr-1 mt-1"
+            <b-btn v-if="((props.rowData.statusCAPA == 'Dibuat oleh QA Section Head' && position == 2))" class="btn btn-outline-danger btn-sm mr-1 mt-1"
               @click="onAction('delete-item', props.rowData, props.rowIndex)">
               <i class="ion ion-md-trash"></i> Hapus
             </b-btn>
   
-            <b-btn v-if="(props.rowData.Status == 'UnPublish' && position == 5)  || props.rowData.ReportDept == typeUser && (props.rowData.IsUpadatedRevision != 1)" class="btn btn-outline-success btn-sm mr-1 mt-1"
+            <b-btn v-if="((props.rowData.statusCAPA == 'Dibuat oleh QA Section Head' && position == 2))" class="btn btn-outline-success btn-sm mr-1 mt-1"
               @click="onAction('publish', props.rowData, props.rowIndex)">
               <i class="ion-md-cloud-upload"></i> Publish
             </b-btn>
@@ -282,9 +282,9 @@
       onAction(action,data,index){
         if(action=='view-item'){
           this.$router.push({
-            name: 'nod/show-nod-report',
+            name: 'nod/show-master-verifikasi-capa',
             params: {
-              Id: data.id,
+              Id: data.id_Approve,
               isShow: true
             }
           })
@@ -292,20 +292,20 @@
   
         if(action=='edit-item'){
           this.$router.push({
-            name: 'nod/form-nod-report',
+            name: 'nod/form-master-verifikasi-capa',
             params: {
               isFormEdit: true,
-              Id: data.id,
+              Id: data.id_Approve,
             }
           })
         }
-  
+        
         if(action=='delete-item'){
-          this.deleteData('/AdminVue/nod-report-delete', data.id, this.$refs.vuetable)
+          this.deleteData('/AdminVue/nod-verifikasi-capa-delete-data', data.id, this.$refs.vuetable)
         }
   
         if(action == 'publish'){
-            this.publish('/AdminVue/nod-report-publish', data.id, this.$refs.vuetable)
+            this.publish('/AdminVue/nod-verifikasi-capa-publish-data', data.id_Approve, this.$refs.vuetable)
         }
   
         if(action == 'approve'){
