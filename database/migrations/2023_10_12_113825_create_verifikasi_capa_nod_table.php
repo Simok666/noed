@@ -16,8 +16,12 @@ class CreateVerifikasiCapaNodTable extends Migration
         Schema::create('verifikasi_capa_nod', function (Blueprint $table) {
             $table->id();
             $table->integer('id_approved_nod');
-            $table->integer('attachment_capa');
-            $table->enum('status_capa', ['Disetujui oleh QA Section Head', 'Diverifikasi oleh QA Dept Head']);
+            $table->text('attachment_capa');
+            $table->enum('status_capa', ['Dibuat oleh QA Section Head','Disetujui oleh QA Section Head', 'Diverifikasi oleh QA Dept Head']);
+            $table->integer('user_entry');
+            $table->text('verifikasi_efektifitas_capa')->nullable();
+            $table->integer('is_approved');
+            $table->integer('is_publish')->default(0);
             $table->integer('actived');
             $table->timestamps();
         });

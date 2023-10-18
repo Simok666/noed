@@ -1,18 +1,18 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[110],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/question-nod-report/form.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/question-nod-report/form.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vue_text_mask__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-text-mask */ "./node_modules/vue-text-mask/dist/vueTextMask.js");
-/* harmony import */ var vue_text_mask__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_text_mask__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue_text_mask__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-text-mask */ "./node_modules/vue-text-mask/dist/vueTextMask.js");
+/* harmony import */ var vue_text_mask__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_text_mask__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _mathieustan_vue_datepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mathieustan/vue-datepicker */ "./node_modules/@mathieustan/vue-datepicker/dist/vue-datepicker.esm.js");
 /* harmony import */ var _mathieustan_vue_datepicker_dist_vue_datepicker_min_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mathieustan/vue-datepicker/dist/vue-datepicker.min.css */ "./node_modules/@mathieustan/vue-datepicker/dist/vue-datepicker.min.css");
 /* harmony import */ var _mathieustan_vue_datepicker_dist_vue_datepicker_min_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_mathieustan_vue_datepicker_dist_vue_datepicker_min_css__WEBPACK_IMPORTED_MODULE_3__);
@@ -21,375 +21,96 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'form-noe-verification',
+  name: 'form-question-nod-report',
   metaInfo: {
-    title: 'Form NOE Verification And Assesment'
+    title: 'Form Question NOD'
   },
   components: {
-    MaskedInput: vue_text_mask__WEBPACK_IMPORTED_MODULE_1___default.a,
-    VueDatePicker: _mathieustan_vue_datepicker__WEBPACK_IMPORTED_MODULE_2__["VueDatePicker"]
+    VueDatePicker: _mathieustan_vue_datepicker__WEBPACK_IMPORTED_MODULE_2__["VueDatePicker"],
+    MaskedInput: vue_text_mask__WEBPACK_IMPORTED_MODULE_0___default.a
   },
   data: function data() {
     return {
-      urlSubmit: '/AdminVue/noe-verification-insert',
-      headerCard: 'Verifikasi & Penilaian NOE',
+      urlSubmit: '/AdminVue/question-nod-report-insert',
+      headerCard: 'Request Pertanyaan Laporan NOD',
       textBtnSubmit: 'Simpan',
       field: {
+        Number: '',
+        Description: '',
         EventFile: [],
-        CorrectiveActionFile: [],
-        IdDevRiskAssesment: [{
-          RiskAssesment: '',
-          Question: '',
-          Value: ''
-        }],
-        IdDevRiskAssesment2: [{
-          RiskAssesment: '',
-          Question: '',
-          Value: ''
-        }],
-        IdDevRiskAssesment3: [{
-          RiskAssesment: '',
-          Question: '',
-          Value: ''
-        }],
-        DeviationLevel: '',
-        OtherCorrectAction: '',
-        DescriptionOPA: '',
-        FileEventDownload: [],
-        FileCorrectiveActionDownload: [],
-        Date: moment__WEBPACK_IMPORTED_MODULE_0___default()(new Date()).format('YYYY-MM-DD'),
-        Dept: '',
-        Lampiran: ''
+        DescriptionCaretaker: '',
+        Date: moment__WEBPACK_IMPORTED_MODULE_1___default()(new Date()).format('YYYY-MM-DD'),
+        StartTime: '09:00',
+        EndTime: '16:00'
       },
       allErrors: [],
       isNotif: false,
+      isEdit: false,
       alertNotif: '',
+      opsTypeTeam: [],
       alertVariant: 'alert-dark-danger',
-      OldEventFile: [],
-      OldCorrectiveActionFile: [],
-      opsVerified: [{
-        'value': 'Tindakan koreksi telah dilaksanakan dengan baik',
-        'text': 'Tindakan koreksi telah dilaksanakan dengan baik'
-      }, {
-        'value': 'Perlu tindakan koreksi lain',
-        'text': 'Perlu tindakan koreksi lain'
-      }],
-      opsRelevantDept: [],
-      valDept: false,
-      opsRiskAssesment: [],
-      opsRiskAssesment2: [],
-      opsRiskAssesment3: [],
-      opsOPA: [{
-        'value': 'Ada',
-        'text': 'Ada'
-      }, {
-        'value': 'Tidak Ada',
-        'text': 'Tidak Ada'
-      }],
-      DescOPA: false,
-      resultValue: 0,
-      IdDeviationLevel: 0,
-      Position: 0,
-      //1 = unit head; 2 = sect head; 3 = dept head;
-      valStatus: 0,
-      isShow: false,
-      isComment: false,
-      BaseUrl: "/",
       isCaretaker: false,
-      deptStatus: false,
-      opsPublish: [],
-      isNOEAcc: false,
       dateFormat: 'DD.MM.YYYY',
       locale: {
         lang: 'en'
-      },
-      isInputCorrection: false,
-      checkAnswer: false,
-      HistoryCorrectionData: [],
-      getCorrectorData: [],
-      showMore: false,
-      maxVisibleItems: 2,
-      isTypeUser: false,
-      isChildToAnswer: false,
-      isAnswered: false,
-      isCorrection: false
-    };
-  },
-  computed: {
-    HistoryCorrection: function HistoryCorrection() {
-      if (this.showMore) {
-        return this.HistoryCorrectionData;
-      } else {
-        return this.HistoryCorrectionData.slice(0, this.maxVisibleItems);
       }
-    },
-    getCorrector: function getCorrector() {
-      return this.getCorrectorData;
-    },
-    deptValue: function deptValue() {
-      return this.field.Dept;
-    },
-    lampiranValue: function lampiranValue() {
-      return this.field.Lampiran;
-    },
-    showMoreButton: function showMoreButton() {
-      return this.HistoryCorrectionData.length > this.maxVisibleItems;
-    }
+    };
   },
   methods: {
     submitForm: function submitForm() {
       this.showLoading();
-      var isEmpty = false;
-      if (this.field.IdDevRiskAssesment) {
-        this.field.IdDevRiskAssesment.forEach(function (data, index) {
-          if (data.RiskAssesment == '') {
-            isEmpty = true;
-            return false;
-          }
-        });
-      }
-      if (this.field.IdDevRiskAssesment2) {
-        this.field.IdDevRiskAssesment2.forEach(function (data, index) {
-          if (data.RiskAssesment == '') {
-            isEmpty = true;
-            return false;
-          }
-        });
-      }
-      if (this.field.IdDevRiskAssesment3) {
-        this.field.IdDevRiskAssesment3.forEach(function (data, index) {
-          if (data.RiskAssesment == '') {
-            isEmpty = true;
-            return false;
-          }
-        });
-      }
-      if (isEmpty) this.$swal({
-        icon: 'error',
-        text: 'Silahkan lengkapi kolom *Wajib Dipilih!'
-      });else if (!this.field.Verified || this.field.Verified.value == null || !this.field.OtherProductAffect || this.field.OtherProductAffect && this.field.OtherProductAffect.value == null) this.$swal({
-        icon: 'error',
-        text: 'Silahkan lengkapi kolom *Wajib Dipilih!'
-      });else if (this.field.Verified.value == 'Perlu tindakan koreksi lain' && (!this.field.RelevantDept || !this.field.RelevantDept.length)) this.$swal({
-        icon: 'error',
-        text: 'Silahkan lengkapi kolom *Wajib Dipilih!'
-      });else {
-        var formData = new FormData();
-        formData.append("Id", this.field.Id);
-        if (this.field.Verified) formData.append("Verified", this.field.Verified.value);
-        if (this.field.OtherCorrectAction) formData.append("OtherCorrectAction", this.field.OtherCorrectAction);
-        if (this.field.RelevantDept) formData.append("RelevantDept", JSON.stringify(this.field.RelevantDept));
-        formData.append("IdDevRiskAssesment", JSON.stringify(this.field.IdDevRiskAssesment));
-        formData.append("IdDevRiskAssesment2", JSON.stringify(this.field.IdDevRiskAssesment2));
-        formData.append("IdDevRiskAssesment3", JSON.stringify(this.field.IdDevRiskAssesment3));
-        formData.append("DeviationLevel", this.field.DeviationLevel);
-        if (this.IdDeviationLevel) formData.append("IdDeviationLevel", this.IdDeviationLevel);
-        if (this.field.OtherProductAffect) formData.append("OtherProductAffect", this.field.OtherProductAffect.value);
-        formData.append("DescriptionOPA", this.field.DescriptionOPA);
-        if (this.field.IdPublish) formData.append("IdPublish", this.field.IdPublish.Id);
-        var config = {
-          headers: {
-            'content-type': 'multipart/form-data'
-          }
-        };
-        axios.post(this.urlSubmit, formData, config).then(function (res) {
-          var resp = res.data;
-          if (resp.status) {
-            this.$router.push({
-              name: 'noe/data-noe-verification',
-              params: {
-                isNotif: true,
-                gNotif: 'notifications-success',
-                tNotif: this.textBtnSubmit + ' Data Sukses',
-                txNotif: 'Simpan Data Sukses!'
-              }
-            });
-          } else {
-            this.isNotif = true;
-            this.alertNotif = resp.message;
-            this.alertVariant = 'alert-dark-danger';
-            this.allErrors = resp.validation;
-            this.scrollTop(0, 1000);
-          }
-          this.hideLoading();
-        }.bind(this))["catch"](function (e) {
-          console.log(e);
-          this.isNotif = true;
-          this.alertNotif = 'Invalid Server Side!';
-          this.alertVariant = 'alert-dark-danger';
-          this.scrollTop(0, 1000);
-          this.hideLoading();
-        }.bind(this));
-      }
-    },
-    onChangeVerified: function onChangeVerified(option) {
-      if (option.value == "Perlu tindakan koreksi lain" || option == "Perlu tindakan koreksi lain") {
-        this.valDept = true;
-        this.isInputCorrection = false;
-      } else if (option.value == "Tindakan koreksi telah dilaksanakan dengan baik") {
-        this.isInputCorrection = true;
-      } else {
-        // sebelumnya keluar jika 'Verified' == 'Perlu tindakan koreksi lain'
-        this.valDept = false;
-        // this.field.OtherCorrectAction = ''
-      }
+      var formData = new FormData();
+      formData.append("Id", this.field.Id);
+      formData.append("Number", this.field.Number);
+      formData.append("Deviation", this.field.Deviation);
+      formData.append("IdTeam", JSON.stringify(this.field.IdTeam));
+      formData.append("Question", this.field.Question);
+      if (this.field.Date) formData.append("Date", this.field.Date);
+      if (this.field.StartTime) formData.append("StartTime", this.field.StartTime);
+      if (this.field.EndTime) formData.append("EndTime", this.field.EndTime);
 
-      console.log(this.isInputCorrection);
-    },
-    onChangeOPA: function onChangeOPA(option) {
-      if (option.value == "Ada" || option == "Ada") {
-        this.DescOPA = true;
-      } else {
-        this.DescOPA = false;
-        this.field.DescriptionOPA = '';
-      }
-    },
-    onSelectDevRisk: function onSelectDevRisk(value, index) {
-      var isExist = false;
-      if (this.field.IdDevRiskAssesment.length && this.field.IdDevRiskAssesment.length > 1) {
-        this.field.IdDevRiskAssesment.forEach(function (data, index) {
-          if (data.RiskAssesment.RiskAssesment == value.RiskAssesment) {
-            isExist = true;
-          }
-        });
-      }
-      if (isExist) {
-        this.$swal({
-          icon: 'error',
-          text: 'Penilaian Risiko Deviasi tidak boleh sama!'
-        }).then(function () {
-          setTimeout(function () {
-            document.getElementById("btambah-risk").focus();
-          }, 500);
-        });
-        this.removeDetail(index);
-        this.addDetail();
-      } else {
-        this.field.IdDevRiskAssesment[index].Question = value.Question;
-        this.field.IdDevRiskAssesment[index].Value = value.Value;
-        this.field.IdDevRiskAssesment[index].AssesmentGroup = value.AssesmentGroup;
-        this.countValue();
-      }
-    },
-    onSelectDevRisk2: function onSelectDevRisk2(value, index) {
-      this.field.IdDevRiskAssesment2[index].Question = value.Question;
-      this.field.IdDevRiskAssesment2[index].Value = value.Value;
-      this.countValue();
-    },
-    onSelectDevRisk3: function onSelectDevRisk3(value, index) {
-      this.field.IdDevRiskAssesment3[index].Question = value.Question;
-      this.field.IdDevRiskAssesment3[index].Value = value.Value;
-      this.countValue();
-    },
-    countValue: function countValue() {
-      var _this = this;
-      this.resultValue = 0;
-      this.field.IdDevRiskAssesment.forEach(function (data, index) {
-        if (data.RiskAssesment != '') {
-          if (_this.resultValue == 0) _this.resultValue += parseInt(data.Value);else _this.resultValue *= parseInt(data.Value);
+      // if(this.isCaretaker) formData.append("DescriptionCaretaker", this.field.DescriptionCaretaker)
+
+      var config = {
+        headers: {
+          'content-type': 'multipart/form-data'
         }
-      });
-      this.field.IdDevRiskAssesment2.forEach(function (data, index) {
-        if (data.RiskAssesment != '') {
-          if (_this.resultValue == 0) _this.resultValue += parseInt(data.Value);else _this.resultValue *= parseInt(data.Value);
+      };
+      axios.post(this.urlSubmit, formData, config).then(function (res) {
+        var resp = res.data;
+        if (resp.status) {
+          this.$router.push({
+            name: 'nod/data-nod-report',
+            params: {
+              isNotif: true,
+              gNotif: 'notifications-success',
+              tNotif: this.textBtnSubmit + ' Data Sukses',
+              txNotif: 'Simpan Data Sukses!'
+            }
+          });
+        } else {
+          this.isNotif = true;
+          this.alertNotif = resp.message;
+          this.alertVariant = 'alert-dark-danger';
+          this.allErrors = resp.validation;
+          this.scrollTop(0, 1000);
         }
-      });
-      this.field.IdDevRiskAssesment3.forEach(function (data, index) {
-        if (data.RiskAssesment != '') {
-          if (_this.resultValue == 0) _this.resultValue += parseInt(data.Value);else _this.resultValue *= parseInt(data.Value);
-        }
-      });
-      this.getDeviationLevel(this.resultValue);
+        this.hideLoading();
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+        this.isNotif = true;
+        this.alertNotif = 'Invalid Server Side!';
+        this.alertVariant = 'alert-dark-danger';
+        this.scrollTop(0, 1000);
+        this.hideLoading();
+      }.bind(this));
     },
     getData: function getData(Id) {
-      axios.post('/AdminVue/noe-verification-edit', {
+      axios.post('/AdminVue/correction-nod-report-create', {
         Id: Id
       }).then(function (res) {
         var resp = res.data;
-        this.Position = res.data.position;
-        this.field = resp.data;
-        if (resp.data.NOENumberAcc == null) {
-          this.field.NOENumber = resp.data.NOENumber;
-        } else {
-          this.field.NOENumber = resp.data.NOENumberAcc;
-          this.isNOEAcc = true;
-        }
-        this.IdDeviationLevel = resp.data.IdDeviationLevel;
-        this.onChangeVerified(this.field.Verified);
-        this.onChangeOPA(this.field.OtherProductAffect);
-        if (resp.data.IdDevRiskAssesment == null || resp.data.IdDevRiskAssesment == '') this.field.IdDevRiskAssesment = [{
-          RiskAssesment: '',
-          Question: '',
-          Value: ''
-        }];
-        if (resp.data.IdDevRiskAssesment2 == null || resp.data.IdDevRiskAssesment2 == '') this.field.IdDevRiskAssesment2 = [{
-          RiskAssesment: '',
-          Question: '',
-          Value: ''
-        }];
-        if (resp.data.IdDevRiskAssesment3 == null || resp.data.IdDevRiskAssesment3 == '') this.field.IdDevRiskAssesment3 = [{
-          RiskAssesment: '',
-          Question: '',
-          Value: ''
-        }];
-        if (resp.data.IdDeviationLevel) this.countValue();
-        this.field.EventFile = [];
-        this.field.CorrectiveActionFile = [];
-        if (this.field.FileEvent != '') {
-          var countFileEvent = this.field.FileEvent.length;
-          for (var i = 0; i < countFileEvent; i++) {
-            this.OldEventFile.push(this.field.FileEvent[i]);
-            this.field.EventFile.push("/" + this.field.FileEvent[i]);
-          }
-        }
-        if (this.field.EventFile == '') {
-          this.OldEventFile = '';
-        }
-        if (this.field.FileCorrectiveAction != '') {
-          var countFileCorrectiveAction = this.field.FileCorrectiveAction.length;
-          for (var _i = 0; _i < countFileCorrectiveAction; _i++) {
-            this.OldCorrectiveActionFile.push(this.field.FileCorrectiveAction[_i]);
-            this.field.CorrectiveActionFile.push("/" + this.field.FileCorrectiveAction[_i]);
-          }
-        }
-        if (this.field.CorrectiveActionFile == '') {
-          this.OldCorrectiveActionFile = '';
-        }
-        if (this.field.Status) {
-          if (this.field.Status == 'Dilaporkan ke Unit Head') this.valStatus = 2;
-          if (this.field.Status == 'Dilaporkan ke Sect Head') this.valStatus = 3;
-          if (this.field.Status == 'Disetujui oleh Unit Head') this.valStatus = 4;
-          if (this.field.Status == 'Disetujui oleh Sect Head') this.valStatus = 5;
-          if (this.field.Status == 'Disetujui oleh Dept Head') this.valStatus = 6;
-          if (this.field.Status == 'Disetujui oleh QA Sect.Head') this.valStatus = 7;
-          if (this.field.Status == 'Disetujui oleh QA APJ') this.valStatus = 8;
-          if (this.field.Status == 'Disetujui oleh QA Dept.Head') this.valStatus = 9;
-          if (this.field.Status == 'Ditolak') this.valStatus = 10;
-        }
-        this.isCaretaker = res.data.isCaretaker;
-        if (this.opsRiskAssesment.length > 0) {
-          this.field.IdDevRiskAssesment[0].Question = this.opsRiskAssesment[0].Question;
-        } else {
-          this.field.IdDevRiskAssesment[0].Question = ''; // Set a default value or handle the situation differently
-        }
-
-        if (this.opsRiskAssesment2.length > 0) {
-          this.field.IdDevRiskAssesment2[0].Question = this.opsRiskAssesment2[0].Question;
-        } else {
-          this.field.IdDevRiskAssesment2[0].Question = ''; // Set a default value or handle the situation differently
-        }
-
-        if (this.opsRiskAssesment3.length > 0) {
-          this.field.IdDevRiskAssesment3[0].Question = this.opsRiskAssesment3[0].Question;
-        } else {
-          this.field.IdDevRiskAssesment3[0].Question = ''; // Set a default value or handle the situation differently
-        }
-
-        this.isCorrection = resp.isCorrection;
-
-        // this.field.IdDevRiskAssesment[0].Question = this.opsRiskAssesment[0].Question
-        // this.field.IdDevRiskAssesment2[0].Question = this.opsRiskAssesment2[0].Question
-        // this.field.IdDevRiskAssesment3[0].Question = this.opsRiskAssesment3[0].Question
+        this.field.Number = resp.data;
       }.bind(this))["catch"](function (e) {
         console.log(e);
         this.isNotif = true;
@@ -397,170 +118,41 @@ __webpack_require__.r(__webpack_exports__);
         this.alertVariant = 'alert-dark-danger';
       }.bind(this));
     },
-    getCorrectionData: function getCorrectionData(Id) {
-      axios.post('/AdminVue/noe-report-get-correction', {
+    getPublisher: function getPublisher(Id) {
+      axios.post('/AdminVue/nod-report-get-publisher', {
         Id: Id
       }).then(function (res) {
-        var resp = res.data.data;
-        var count = res.data.count;
-        var history = res.data.history;
-        var getCorrectorData = res.data.correction;
-        this.HistoryCorrectionData = history;
-        this.getCorrectorData = getCorrectorData;
-        this.$set(this.field, 'Dept', resp.Name);
-        this.$set(this.field, 'Lampiran', resp.Description);
-        if (resp) {
-          if (resp.TypeUser == resp.SessionTypeUser) {
-            this.isTypeUser = true;
-          }
-          if (resp.ChildToAnswer == resp.SessionIdPosition) {
-            this.isChildToAnswer = true;
-          }
-          if (resp.Answer == null) {
-            this.isAnswered;
-          } else {
-            this.field.Answer = resp.Answer;
-            this.isAnswered = true;
-          }
-          var countAnswer = [];
-          history.forEach(function (keys) {
-            countAnswer.push(keys.Answer);
-          });
-          if (countAnswer.length > 0) this.checkAnswer = true;
-        }
-        count > 0 ? this.isComment = true : this.isComment;
-        this.$forceUpdate();
-      }.bind(this))["catch"](function (e) {
-        console.log(e);
-      }.bind(this));
-    },
-    toggleShowMore: function toggleShowMore() {
-      this.showMore = !this.showMore;
-      console.log(this.showMore);
-    },
-    getRelevantDept: function getRelevantDept() {
-      axios.post('/AdminVue/noe-verification-get-relevant-dept').then(function (res) {
-        this.opsRelevantDept = res.data.data;
-      }.bind(this))["catch"](function (e) {
-        console.log(e);
-        this.opsRelevantDept = [];
-      }.bind(this));
-    },
-    getDeviationRisk: function getDeviationRisk() {
-      axios.post('/AdminVue/noe-verification-get-deviation-risk').then(function (res) {
-        this.opsRiskAssesment = res.data.data;
-        this.field.IdDevRiskAssesment[0].Question = res.data.data[0].Question;
-        this.opsRiskAssesment2 = res.data.data2;
-        this.field.IdDevRiskAssesment2[0].Question = res.data.data2[0].Question;
-        this.opsRiskAssesment3 = res.data.data3;
-        this.field.IdDevRiskAssesment3[0].Question = res.data.data3[0].Question;
-      }.bind(this))["catch"](function (e) {
-        console.log(e);
-        this.opsRiskAssesment = [];
-        this.opsRiskAssesment2 = [];
-        this.opsRiskAssesment3 = [];
-      }.bind(this));
-    },
-    getDeviationLevel: function getDeviationLevel(value) {
-      axios.post('/AdminVue/noe-verification-get-deviation-level', {
-        value: value
-      }).then(function (res) {
-        this.field.DeviationLevel = res.data.data;
-        this.IdDeviationLevel = res.data.iddeviation;
-      }.bind(this))["catch"](function (e) {
-        console.log(e);
-        this.field.DeviationLevel = '';
-        this.IdDeviationLevel = '';
-      }.bind(this));
-    },
-    getPublish: function getPublish() {
-      axios.post('/AdminVue/noe-report-get-publish').then(function (res) {
-        var resp = res.data;
-        this.opsPublish = resp.data;
-        if (resp.status == true) {
-          this.deptStatus = true;
+        if (res.data.status == false) {
+          this.opsTypeTeam = [];
         } else {
-          this.deptStatus;
+          this.opsTypeTeam = res.data.data;
         }
       }.bind(this))["catch"](function (e) {
         console.log(e);
-        this.opsPublish = [];
+        this.opsTypeTeam = [];
       }.bind(this));
-    },
-    addDetail: function addDetail() {
-      this.field.IdDevRiskAssesment.push({
-        'RiskAssesment': '',
-        'Question': '',
-        'Value': '',
-        'AssesmentGroup': ''
-      });
-    },
-    removeDetail: function removeDetail(index) {
-      this.field.IdDevRiskAssesment.splice(index, 1);
-      this.countValue();
     },
     backIndex: function backIndex() {
-      this.$router.push('/RoleAdmin/noe/data-noe-verification');
-    },
-    onAction: function onAction(action) {
-      if (action == 'sendAnswer') {
-        return this.sendAnswer('/AdminVue/noe-report-answer', this.field.NOENumber, this.field.Answer, this.$parent, true);
-      }
-      if (this.isCorrection == false) {
-        if (action == 'publish-verify') {
-          this.publishVerify('/AdminVue/noe-verification-publish-verify', this.field.Id, this.$parent, true);
-        }
-        if (action == 'approve') {
-          this.approve('/AdminVue/noe-verification-approve', this.field.Id, this.$parent, null, true, this.isCaretaker);
-        }
-        if (action == 'reject') {
-          this.reject('/AdminVue/noe-verification-reject', this.field.Id, this.$parent, true, this.isCaretaker);
-        }
-        if (action == 'correction') {
-          this.$router.push({
-            name: 'noe/form-correction-noe-verification',
-            params: {
-              Id: this.field.Id,
-              isCaretaker: this.isCaretaker
-            }
-          });
-        }
-      } else {
-        return this.showNotifCustom('notifications-danger', 'Forbidden Action', 'Harus isi jawaban dari pengkoreksi');
-      }
+      this.$router.push('/RoleAdmin/nod/data-nod-report');
     }
   },
   mounted: function mounted() {
-    this.getRelevantDept();
-    this.getDeviationRisk();
-    this.getPublish();
-    if (this.$route.params.isFormEdit) {
+    this.getPublisher(this.$route.params.Id);
+    if (this.$route.params.Id) {
       var Id = this.$route.params.Id;
-      if (Id) {
-        this.getData(Id);
-        this.field.Id = Id;
-        this.urlSubmit = '/AdminVue/noe-verification-update';
-        this.textBtnSubmit = 'Simpan';
-      }
-    }
-    if (this.$route.params.isShow) {
-      this.isShow = this.$route.params.isShow;
-      var Id = this.$route.params.Id;
-      if (Id) {
-        this.getData(Id);
-        this.getCorrectionData(Id);
-        this.field.Id = Id;
-      }
+      // this.isCaretaker = this.$route.params.isCaretaker
+      this.getData(Id);
+      this.field.Id = Id;
     }
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=template&id=4e181182&":
-/*!**************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=template&id=4e181182& ***!
-  \**************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/question-nod-report/form.vue?vue&type=template&id=340da9e2&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/question-nod-report/form.vue?vue&type=template&id=340da9e2& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -602,36 +194,105 @@ var render = function render() {
       }
     }
   }, [_c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_vm.isNOEAcc == true ? _c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("No. NOE")]) : _vm._e(), _vm._v(" "), _vm.isNOEAcc == false ? _c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("No. DRAFT NOE")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "NOENumber",
-      state: _vm.allErrors.NOENumber ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.NOENumber,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "NOENumber", $$v);
-      },
-      expression: "field.NOENumber"
-    }
-  }), _vm._v(" "), _vm.allErrors.NOENumber ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.NOENumber[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6"
+    staticClass: "col-md-12"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Tanggal / Waktu")]), _vm._v(" "), _c("b-input-group", [_c("VueDatePicker", {
+  }, [_vm._v("No. NOD")]), _vm._v(" "), _c("b-input", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "Number",
+      state: _vm.allErrors.Number ? false : null,
+      readonly: "",
+      required: ""
+    },
+    model: {
+      value: _vm.field.Number,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "Number", $$v);
+      },
+      expression: "field.Number"
+    }
+  }), _vm._v(" "), _vm.allErrors.Number ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.Number[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-12"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Deviation")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-textarea", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "Description",
+      state: _vm.allErrors.Deviation ? false : null,
+      required: ""
+    },
+    model: {
+      value: _vm.field.Deviation,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "Deviation", $$v);
+      },
+      expression: "field.Deviation"
+    }
+  }), _vm._v(" "), _vm.allErrors.Deviation ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.Deviation[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-12"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Pilih Team Room Chat")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Dipilih")]), _vm._v(" "), _c("multiselect", {
+    attrs: {
+      options: _vm.opsTypeTeam,
+      "show-labels": false,
+      placeholder: "Pilih Team",
+      multiple: true,
+      label: "namepublisher",
+      "track-by": "namepublisher",
+      required: ""
+    },
+    model: {
+      value: _vm.field.IdTeam,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "IdTeam", $$v);
+      },
+      expression: "field.IdTeam"
+    }
+  }), _vm._v(" "), _vm.allErrors.IdTeam ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.IdTeam[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-12"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Topik Pertanyaan")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-textarea", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "Question",
+      state: _vm.allErrors.Question ? false : null,
+      required: ""
+    },
+    model: {
+      value: _vm.field.Question,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "Question", $$v);
+      },
+      expression: "field.Question"
+    }
+  }), _vm._v(" "), _vm.allErrors.Question ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.Question[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-12"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Tanggal / Waktu")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("VueDatePicker", {
     staticClass: "mb-1",
     attrs: {
       required: "",
-      disabled: _vm.isShow,
       format: _vm.dateFormat,
       locale: _vm.locale
     },
@@ -642,897 +303,59 @@ var render = function render() {
       },
       expression: "field.Date"
     }
-  }), _vm._v(" "), _c("b-input-group-append", [_c("masked-input", {
+  })], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Mulai Jam")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("masked-input", {
     staticClass: "form-control",
     attrs: {
       type: "text",
       placeholder: "Contoh 4 digit : 09:00",
       guide: false,
-      mask: [/\d/, /\d/, ".", /\d/, /\d/],
-      disabled: _vm.isShow
+      mask: [/\d/, /\d/, ".", /\d/, /\d/]
     },
     model: {
-      value: _vm.field.Time,
+      value: _vm.field.StartTime,
       callback: function callback($$v) {
-        _vm.$set(_vm.field, "Time", $$v);
+        _vm.$set(_vm.field, "StartTime", $$v);
       },
-      expression: "field.Time"
+      expression: "field.StartTime"
     }
-  })], 1)], 1), _vm._v(" "), _vm.allErrors.Time ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Time[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+  })], 1), _vm._v(" "), _c("b-form-group", {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("No. Kontrol / No. Bets")]), _vm._v(" "), _c("b-input", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "BatchNo",
-      state: _vm.allErrors.BatchNo ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.BatchNo,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "BatchNo", $$v);
-      },
-      expression: "field.BatchNo"
-    }
-  }), _vm._v(" "), _vm.allErrors.BatchNo ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.BatchNo[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Bahan / Produk Terkait")]), _vm._v(" "), _c("b-input", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "IdProduct",
-      state: _vm.allErrors.IdProduct ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.IdProduct,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "IdProduct", $$v);
-      },
-      expression: "field.IdProduct"
-    }
-  }), _vm._v(" "), _vm.allErrors.IdProduct ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.IdProduct[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Lokasi Kejadian")]), _vm._v(" "), _c("b-input", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "IdLocation",
-      state: _vm.allErrors.IdLocation ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.IdLocation,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "IdLocation", $$v);
-      },
-      expression: "field.IdLocation"
-    }
-  }), _vm._v(" "), _vm.allErrors.IdLocation ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.IdLocation[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Jenis Kejadian")]), _vm._v(" "), _c("b-input", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "IdTypeIncident",
-      state: _vm.allErrors.IdTypeIncident ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.IdTypeIncident,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "IdTypeIncident", $$v);
-      },
-      expression: "field.IdTypeIncident"
-    }
-  }), _vm._v(" "), _vm.allErrors.IdTypeIncident ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.IdTypeIncident[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Uraian Kejadian")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "Event",
-      state: _vm.allErrors.Event ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.Event,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "Event", $$v);
-      },
-      expression: "field.Event"
-    }
-  }), _vm._v(" "), _vm.allErrors.Event ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Event[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-card", {
-    staticClass: "mb-3",
-    attrs: {
-      header: "Lampiran Uraian Kejadian",
-      "header-tag": "h5"
-    }
-  }, [_c("b-form-row", _vm._l(_vm.field.FileEventDownload, function (item, index) {
-    return _c("b-form-group", {
-      key: index,
-      staticClass: "col-md-4"
-    }, [_c("b-input-group", [_c("b-form-input", {
-      attrs: {
-        name: "FileEventDownload",
-        readonly: ""
-      },
-      model: {
-        value: item[0],
-        callback: function callback($$v) {
-          _vm.$set(item, 0, $$v);
-        },
-        expression: "item[0]"
-      }
-    }), _vm._v(" "), _c("b-input-group-append", [_c("a", {
-      staticClass: "input-group-text btn-outline-success",
-      attrs: {
-        href: _vm.BaseUrl + item[1],
-        target: "_blank"
-      }
-    }, [_c("i", {
-      staticClass: "fa fa-download"
-    })])])], 1)], 1);
-  }), 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Tindakan Koreksi yang Dilakukan")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "CorrectiveAction",
-      state: _vm.allErrors.CorrectiveAction ? false : null,
-      readonly: ""
-    },
-    model: {
-      value: _vm.field.CorrectiveAction,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "CorrectiveAction", $$v);
-      },
-      expression: "field.CorrectiveAction"
-    }
-  }), _vm._v(" "), _vm.allErrors.CorrectiveAction ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.CorrectiveAction[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-card", {
-    staticClass: "mb-3",
-    attrs: {
-      header: "Lampiran Tindakan Koreksi yang Dilakukan",
-      "header-tag": "h5"
-    }
-  }, [_c("b-form-row", _vm._l(_vm.field.FileCorrectiveActionDownload, function (item, index) {
-    return _c("b-form-group", {
-      key: index,
-      staticClass: "col-md-4"
-    }, [_c("b-input-group", [_c("b-form-input", {
-      attrs: {
-        name: "FileCorrectiveActionDownload",
-        readonly: ""
-      },
-      model: {
-        value: item[0],
-        callback: function callback($$v) {
-          _vm.$set(item, 0, $$v);
-        },
-        expression: "item[0]"
-      }
-    }), _vm._v(" "), _c("b-input-group-append", [_c("a", {
-      staticClass: "input-group-text btn-outline-success",
-      attrs: {
-        href: _vm.BaseUrl + item[1],
-        target: "_blank"
-      }
-    }, [_c("i", {
-      staticClass: "fa fa-download"
-    })])])], 1)], 1);
-  }), 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Verifikasi Tindakan")]), _vm._v(" "), _c("label", {
+  }, [_vm._v("Akhir Jam")]), _vm._v(" "), _c("label", {
     staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Dipilih")]), _vm._v(" "), _c("multiselect", {
+  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("masked-input", {
+    staticClass: "form-control",
     attrs: {
-      options: _vm.opsVerified,
-      "allow-empty": false,
-      placeholder: "Pilih Verifikasi Tindakan",
-      label: "text",
-      "track-by": "text",
-      required: "",
-      disabled: _vm.isShow
-    },
-    on: {
-      input: _vm.onChangeVerified
+      type: "text",
+      placeholder: "Contoh 4 digit : 09:00",
+      guide: false,
+      mask: [/\d/, /\d/, ".", /\d/, /\d/]
     },
     model: {
-      value: _vm.field.Verified,
+      value: _vm.field.EndTime,
       callback: function callback($$v) {
-        _vm.$set(_vm.field, "Verified", $$v);
+        _vm.$set(_vm.field, "EndTime", $$v);
       },
-      expression: "field.Verified"
+      expression: "field.EndTime"
     }
-  }), _vm._v(" "), _vm.allErrors.Verified ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Verified[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Tindakan Koreksi Lain")]), _vm._v(" "), _vm.valDept ? _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _vm.isInputCorrection == false ? _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "OtherCorrectAction",
-      state: _vm.allErrors.OtherCorrectAction ? false : null,
-      required: _vm.valDept,
-      readonly: _vm.isShow
-    },
-    model: {
-      value: _vm.field.OtherCorrectAction,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "OtherCorrectAction", $$v);
-      },
-      expression: "field.OtherCorrectAction"
-    }
-  }) : _vm._e(), _vm._v(" "), _vm.isInputCorrection == true ? _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "OtherCorrectAction",
-      state: _vm.allErrors.OtherCorrectAction ? false : null,
-      required: _vm.valDept,
-      readonly: _vm.isShow,
-      disabled: ""
-    },
-    model: {
-      value: _vm.field.OtherCorrectAction,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "OtherCorrectAction", $$v);
-      },
-      expression: "field.OtherCorrectAction"
-    }
-  }) : _vm._e(), _vm._v(" "), _vm.allErrors.OtherCorrectAction ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.OtherCorrectAction[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Departemen Terkait")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Dipilih")]), _vm._v(" "), _c("multiselect", {
-    attrs: {
-      options: _vm.opsRelevantDept,
-      "show-labels": false,
-      multiple: true,
-      placeholder: "Pilih Departemen Terkait",
-      label: "RelevantDept",
-      "track-by": "RelevantDept",
-      disabled: _vm.isShow
-    },
-    model: {
-      value: _vm.field.RelevantDept,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "RelevantDept", $$v);
-      },
-      expression: "field.RelevantDept"
-    }
-  }), _vm._v(" "), _vm.allErrors.RelevantDept ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.RelevantDept[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-card", {
-    staticClass: "md-4"
-  }, [_vm._l(_vm.field.IdDevRiskAssesment, function (item, index) {
-    return _c("b-form-row", {
-      key: "IdDevRiskAssesment" + index
-    }, [_c("b-form-group", {
-      staticClass: "col-lg-5"
-    }, [index == 0 ? _c("label", [_vm._v("Pertanyaan (SEVERITY)")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Question",
-        readonly: ""
-      },
-      model: {
-        value: item.Question,
-        callback: function callback($$v) {
-          _vm.$set(item, "Question", $$v);
-        },
-        expression: "item.Question"
-      }
-    })], 1), _vm._v(" "), _c("b-form-group", {
-      staticClass: "col-lg-6"
-    }, [index == 0 ? [_c("label", [_vm._v("Penilaian Risiko Deviasi (SEVERITY)")]), _vm._v(" "), _c("label", {
-      staticClass: "form-label float-right text-danger"
-    }, [_vm._v("*Wajib Dipilih")])] : _vm._e(), _vm._v(" "), _c("multiselect", {
-      attrs: {
-        options: _vm.opsRiskAssesment,
-        "allow-empty": false,
-        placeholder: "Pilih Penilaian Risiko Deviasi",
-        selectLabel: "",
-        deselectLabel: "",
-        label: "RiskAssesment",
-        "track-by": "RiskAssesment",
-        disabled: _vm.isShow
-      },
-      on: {
-        input: function input($event) {
-          return _vm.onSelectDevRisk($event, index);
-        }
-      },
-      model: {
-        value: item.RiskAssesment,
-        callback: function callback($$v) {
-          _vm.$set(item, "RiskAssesment", $$v);
-        },
-        expression: "item.RiskAssesment"
-      }
-    })], 2), _vm._v(" "), _c("b-form-group", {
-      staticClass: "col-lg-1"
-    }, [index == 0 ? _c("label", [_vm._v("Nilai")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Value",
-        type: "number",
-        min: "1",
-        max: "100",
-        readonly: ""
-      },
-      model: {
-        value: item.Value,
-        callback: function callback($$v) {
-          _vm.$set(item, "Value", $$v);
-        },
-        expression: "item.Value"
-      }
-    })], 1)], 1);
-  }), _vm._v(" "), _vm._l(_vm.field.IdDevRiskAssesment2, function (item, index) {
-    return _c("b-form-row", {
-      key: "IdDevRiskAssesment2" + index
-    }, [_c("b-form-group", {
-      staticClass: "col-lg-5"
-    }, [index == 0 ? _c("label", [_vm._v("Pertanyaan (PROBABILITY)")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Question",
-        readonly: ""
-      },
-      model: {
-        value: item.Question,
-        callback: function callback($$v) {
-          _vm.$set(item, "Question", $$v);
-        },
-        expression: "item.Question"
-      }
-    })], 1), _vm._v(" "), _c("b-form-group", {
-      staticClass: "col-lg-6"
-    }, [index == 0 ? [_c("label", [_vm._v("Penilaian Risiko Deviasi (PROBABILITY)")]), _vm._v(" "), _c("label", {
-      staticClass: "form-label float-right text-danger"
-    }, [_vm._v("*Wajib Dipilih")])] : _vm._e(), _vm._v(" "), _c("multiselect", {
-      attrs: {
-        options: _vm.opsRiskAssesment2,
-        "allow-empty": false,
-        placeholder: "Pilih Penilaian Risiko Deviasi",
-        selectLabel: "",
-        deselectLabel: "",
-        label: "RiskAssesment",
-        "track-by": "RiskAssesment",
-        disabled: _vm.isShow
-      },
-      on: {
-        input: function input($event) {
-          return _vm.onSelectDevRisk2($event, index);
-        }
-      },
-      model: {
-        value: item.RiskAssesment,
-        callback: function callback($$v) {
-          _vm.$set(item, "RiskAssesment", $$v);
-        },
-        expression: "item.RiskAssesment"
-      }
-    })], 2), _vm._v(" "), _c("b-form-group", {
-      staticClass: "col-lg-1"
-    }, [index == 0 ? _c("label", [_vm._v("Nilai")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Value",
-        type: "number",
-        min: "1",
-        max: "100",
-        readonly: ""
-      },
-      model: {
-        value: item.Value,
-        callback: function callback($$v) {
-          _vm.$set(item, "Value", $$v);
-        },
-        expression: "item.Value"
-      }
-    })], 1)], 1);
-  }), _vm._v(" "), _vm._l(_vm.field.IdDevRiskAssesment3, function (item, index) {
-    return _c("b-form-row", {
-      key: "IdDevRiskAssesment3" + index
-    }, [_c("b-form-group", {
-      staticClass: "col-lg-5"
-    }, [index == 0 ? _c("label", [_vm._v("Pertanyaan (DETECTABILITY)")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Question",
-        readonly: ""
-      },
-      model: {
-        value: item.Question,
-        callback: function callback($$v) {
-          _vm.$set(item, "Question", $$v);
-        },
-        expression: "item.Question"
-      }
-    })], 1), _vm._v(" "), _c("b-form-group", {
-      staticClass: "col-lg-6"
-    }, [index == 0 ? [_c("label", [_vm._v("Penilaian Risiko Deviasi (DETECTABILITY)")]), _vm._v(" "), _c("label", {
-      staticClass: "form-label float-right text-danger"
-    }, [_vm._v("*Wajib Dipilih")])] : _vm._e(), _vm._v(" "), _c("multiselect", {
-      attrs: {
-        options: _vm.opsRiskAssesment3,
-        "allow-empty": false,
-        placeholder: "Pilih Penilaian Risiko Deviasi",
-        selectLabel: "",
-        deselectLabel: "",
-        label: "RiskAssesment",
-        "track-by": "RiskAssesment",
-        disabled: _vm.isShow
-      },
-      on: {
-        input: function input($event) {
-          return _vm.onSelectDevRisk3($event, index);
-        }
-      },
-      model: {
-        value: item.RiskAssesment,
-        callback: function callback($$v) {
-          _vm.$set(item, "RiskAssesment", $$v);
-        },
-        expression: "item.RiskAssesment"
-      }
-    })], 2), _vm._v(" "), _c("b-form-group", {
-      staticClass: "col-lg-1"
-    }, [index == 0 ? _c("label", [_vm._v("Nilai")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Value",
-        type: "number",
-        min: "1",
-        max: "100",
-        readonly: ""
-      },
-      model: {
-        value: item.Value,
-        callback: function callback($$v) {
-          _vm.$set(item, "Value", $$v);
-        },
-        expression: "item.Value"
-      }
-    })], 1)], 1);
-  })], 2), _c("br"), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Level Deviasi")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "DeviationLevel",
-      state: _vm.allErrors.DeviationLevel ? false : null,
-      readonly: "",
-      required: ""
-    },
-    model: {
-      value: _vm.field.DeviationLevel,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "DeviationLevel", $$v);
-      },
-      expression: "field.DeviationLevel"
-    }
-  }), _vm._v(" "), _vm.allErrors.DeviationLevel ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.DeviationLevel[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Produk / Bets Lain yang Terdampak")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Dipilih")]), _vm._v(" "), _c("multiselect", {
-    attrs: {
-      options: _vm.opsOPA,
-      "allow-empty": false,
-      placeholder: "Pilih Produk / Bets Lain yang Terdampak",
-      label: "text",
-      "track-by": "text",
-      required: "",
-      disabled: _vm.isShow
-    },
-    on: {
-      input: _vm.onChangeOPA
-    },
-    model: {
-      value: _vm.field.OtherProductAffect,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "OtherProductAffect", $$v);
-      },
-      expression: "field.OtherProductAffect"
-    }
-  }), _vm._v(" "), _vm.allErrors.OtherProductAffect ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.OtherProductAffect[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_vm.DescOPA ? _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Batch Terdampak")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "DescriptionOPA",
-      state: _vm.allErrors.DescriptionOPA ? false : null,
-      required: _vm.DescOPA,
-      readonly: _vm.isShow
-    },
-    model: {
-      value: _vm.field.DescriptionOPA,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "DescriptionOPA", $$v);
-      },
-      expression: "field.DescriptionOPA"
-    }
-  }), _vm._v(" "), _vm.allErrors.DescriptionOPA ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.DescriptionOPA[0]))]) : _vm._e()], 1) : _vm._e()], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Publish Ke :")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Dipilih")]) : _vm._e(), _vm._v(" "), _vm.deptStatus == true ? _c("multiselect", {
-    attrs: {
-      options: _vm.opsPublish,
-      "allow-empty": false,
-      "show-labels": false,
-      placeholder: "Pilih Publish Ke Siapa",
-      label: "Name",
-      "track-by": "Name",
-      required: "",
-      disabled: _vm.isShow
-    },
-    model: {
-      value: _vm.field.IdPublish,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "IdPublish", $$v);
-      },
-      expression: "field.IdPublish"
-    }
-  }) : _vm._e(), _vm._v(" "), _vm.deptStatus == false ? _c("multiselect", {
-    attrs: {
-      options: _vm.opsPublish,
-      "allow-empty": false,
-      "show-labels": false,
-      placeholder: "Atasan Masih belum diisi silahkan tanya ke QA",
-      required: "",
-      disabled: ""
-    },
-    model: {
-      value: _vm.field.IdPublish,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "IdPublish", $$v);
-      },
-      expression: "field.IdPublish"
-    }
-  }) : _vm._e(), _vm._v(" "), _vm.allErrors.IdPublish ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.IdPublish[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _vm.isShow == true && _vm.isComment == true ? _c("b-card", {
-    staticClass: "mb-3",
-    attrs: {
-      header: "Koreksi dari Approver",
-      "header-tag": "h5"
-    }
-  }, [_c("b-form-row", _vm._l(_vm.getCorrector, function (item, index) {
-    return _c("b-form-group", {
-      key: index,
-      staticClass: "col-md-12"
-    }, [_c("b-input-group", [_c("b-form", {
-      attrs: {
-        inline: ""
-      }
-    }, [_c("label", {
-      staticClass: "form-label mr-sm-1"
-    }, [_vm._v("Comment Dari :")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-      staticClass: "form-label float-right text-danger"
-    }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Dept",
-        state: _vm.allErrors.Dept ? false : null,
-        required: "",
-        readonly: _vm.isShow
-      },
-      model: {
-        value: item.CorrectorName,
-        callback: function callback($$v) {
-          _vm.$set(item, "CorrectorName", $$v);
-        },
-        expression: "item.CorrectorName"
-      }
-    }), _vm._v(" "), _vm.allErrors.Dept ? _c("span", {
-      staticClass: "text-danger"
-    }, [_vm._v(_vm._s(_vm.allErrors.Dept[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-input-group", [_c("b-textarea", {
-      staticClass: "mb-1",
-      staticStyle: {
-        "margin-left": "95px"
-      },
-      attrs: {
-        name: "Lampiran",
-        state: _vm.allErrors.Lampiran ? false : null,
-        required: "",
-        readonly: _vm.isShow
-      },
-      model: {
-        value: item.Description,
-        callback: function callback($$v) {
-          _vm.$set(item, "Description", $$v);
-        },
-        expression: "item.Description"
-      }
-    }), _vm._v(" "), _vm.allErrors.Lampiran ? _c("span", {
-      staticClass: "text-danger"
-    }, [_vm._v(_vm._s(_vm.allErrors.Lampiran[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-input-group", [_c("b-form", {
-      attrs: {
-        inline: ""
-      }
-    }, [_c("label", {
-      staticClass: "form-label mr-sm-1"
-    }, [_vm._v("Jawaban :")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-      staticClass: "form-label float-right text-danger"
-    }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _vm.isAnswered == false && _vm.isTypeUser == false && _vm.isChildToAnswer == true ? _c("b-textarea", {
-      staticClass: "mb-1",
-      staticStyle: {
-        "margin-left": "30px"
-      },
-      attrs: {
-        name: "Answer",
-        state: _vm.allErrors.Answer ? false : null,
-        required: ""
-      },
-      model: {
-        value: _vm.field.Answer,
-        callback: function callback($$v) {
-          _vm.$set(_vm.field, "Answer", $$v);
-        },
-        expression: "field.Answer"
-      }
-    }) : _vm.isTypeUser == true && _vm.isChildToAnswer == false ? _c("b-textarea", {
-      staticClass: "mb-1",
-      staticStyle: {
-        "margin-left": "30px"
-      },
-      attrs: {
-        name: "Answer",
-        state: _vm.allErrors.Answer ? false : null,
-        required: "",
-        readonly: _vm.isShow
-      },
-      model: {
-        value: _vm.field.Answer,
-        callback: function callback($$v) {
-          _vm.$set(_vm.field, "Answer", $$v);
-        },
-        expression: "field.Answer"
-      }
-    }) : _c("b-textarea", {
-      staticClass: "mb-1",
-      staticStyle: {
-        "margin-left": "30px"
-      },
-      attrs: {
-        name: "Answer",
-        state: _vm.allErrors.Answer ? false : null,
-        required: "",
-        readonly: _vm.isShow
-      },
-      model: {
-        value: _vm.field.Answer,
-        callback: function callback($$v) {
-          _vm.$set(_vm.field, "Answer", $$v);
-        },
-        expression: "field.Answer"
-      }
-    }), _vm._v(" "), _vm.allErrors.Answer ? _c("span", {
-      staticClass: "text-danger"
-    }, [_vm._v(_vm._s(_vm.allErrors.Answer[0]))]) : _vm._e()], 1)], 1)], 1);
-  }), 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+  })], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6",
-    attrs: {
-      label: ""
-    }
-  }, [_vm.isAnswered == false && _vm.isTypeUser == false && _vm.isChildToAnswer == true ? _c("b-btn", {
-    staticClass: "float-right ml-2",
-    attrs: {
-      variant: "success"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.onAction("sendAnswer");
-      }
-    }
-  }, [_vm._v("Kirim")]) : _vm._e()], 1)], 1)], 1) : _vm._e(), _vm._v(" "), _vm.checkAnswer == true ? _c("b-card", {
-    staticClass: "mb-3",
-    attrs: {
-      header: "Histori Koreksi dari Approver",
-      "header-tag": "h5"
-    }
-  }, [_vm._l(_vm.HistoryCorrection, function (item, index) {
-    return _c("b-form-group", {
-      key: index,
-      staticClass: "col-md-12"
-    }, [_c("b-input-group", [_c("b-form", {
-      attrs: {
-        inline: ""
-      }
-    }, [_c("label", {
-      staticClass: "form-label mr-sm-1"
-    }, [_vm._v("Comment Dari :")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-      staticClass: "form-label float-right text-danger"
-    }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-      staticClass: "mb-1",
-      attrs: {
-        name: "Dept",
-        required: "",
-        readonly: _vm.isShow
-      },
-      model: {
-        value: item.Name,
-        callback: function callback($$v) {
-          _vm.$set(item, "Name", $$v);
-        },
-        expression: "item.Name"
-      }
-    })], 1)], 1), _vm._v(" "), _c("b-input-group", [_c("b-textarea", {
-      staticClass: "mb-1",
-      staticStyle: {
-        "margin-left": "95px"
-      },
-      attrs: {
-        name: "Lampiran",
-        required: "",
-        readonly: _vm.isShow
-      },
-      model: {
-        value: item.Description,
-        callback: function callback($$v) {
-          _vm.$set(item, "Description", $$v);
-        },
-        expression: "item.Description"
-      }
-    })], 1), _vm._v(" "), _c("b-input-group", [_c("b-form", {
-      attrs: {
-        inline: ""
-      }
-    }, [_c("label", {
-      staticClass: "form-label mr-sm-1"
-    }, [_vm._v("Jawaban :")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-      staticClass: "form-label float-right text-danger"
-    }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-textarea", {
-      staticClass: "mb-1",
-      staticStyle: {
-        "margin-left": "30px"
-      },
-      attrs: {
-        name: "Answer",
-        required: "",
-        readonly: _vm.isShow
-      },
-      model: {
-        value: item.Answer,
-        callback: function callback($$v) {
-          _vm.$set(item, "Answer", $$v);
-        },
-        expression: "item.Answer"
-      }
-    })], 1)], 1)], 1);
-  }), _vm._v(" "), _vm.showMoreButton ? _c("b-button", {
-    attrs: {
-      variant: "outline-primary"
-    },
-    on: {
-      click: _vm.toggleShowMore
-    }
-  }, [_vm._v(" " + _vm._s(_vm.showMore ? "Show Less" : "Show More"))]) : _vm._e()], 2) : _vm._e(), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
-  }), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6",
-    attrs: {
-      label: ""
-    }
-  }, [_vm.isShow == true && _vm.field.IsPublish == 1 && (_vm.Position == 1 && _vm.valStatus == 2 || _vm.Position == 2 && _vm.valStatus == 3) ? _c("b-btn", {
-    staticClass: "float-right ml-2",
-    attrs: {
-      type: "button",
-      variant: "primary"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.onAction("publish-verify");
-      }
-    }
-  }, [_vm._v("Publish Verifikasi")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.field.IsPublish == 1 && _vm.isCaretaker == false && (_vm.Position == 1 && _vm.valStatus >= 4 || _vm.Position == 2 && _vm.valStatus >= 5) ? _c("b-btn", {
-    staticClass: "float-right ml-2",
-    attrs: {
-      variant: "success"
-    }
-  }, [_vm._v("Diajukan")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.field.IsPublish == 1 && ((_vm.Position == 3 || _vm.isCaretaker == true) && _vm.valStatus == 5 || _vm.Position == 2 && _vm.valStatus == 4) ? _c("b-btn", {
-    staticClass: "float-right ml-2",
-    attrs: {
-      type: "button",
-      variant: "primary"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.onAction("approve");
-      }
-    }
-  }, [_vm._v("Setujui")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && (_vm.Position == 3 || _vm.isCaretaker == true) && _vm.valStatus == 5 ? _c("b-btn", {
-    staticClass: "float-right ml-2",
-    attrs: {
-      type: "button",
-      variant: "danger"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.onAction("reject");
-      }
-    }
-  }, [_vm._v("Tolak")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.valStatus < 10 && ((_vm.Position == 3 || _vm.isCaretaker == true) && _vm.valStatus >= 6 || _vm.Position == 2 && _vm.valStatus >= 5) ? _c("b-btn", {
-    staticClass: "float-right ml-2",
-    attrs: {
-      variant: "success"
-    }
-  }, [_vm._v("Disetujui")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.valStatus == 10 ? _c("b-btn", {
-    staticClass: "float-right ml-2",
-    attrs: {
-      variant: "warning"
-    }
-  }, [_vm._v("Ditolak")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.field.IsPublish == 1 && (_vm.Position == 1 && _vm.valStatus == 2 || _vm.Position == 2 && _vm.valStatus == 3 || _vm.valStatus == 4 || (_vm.Position == 3 || _vm.isCaretaker == true) && _vm.valStatus == 5) ? _c("b-btn", {
-    staticClass: "float-right ml-2",
-    attrs: {
-      type: "button",
-      variant: "warning"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.onAction("correction");
-      }
-    }
-  }, [_vm._v("Koreksi")]) : _vm._e(), _vm._v(" "), _vm.isShow == false ? _c("b-btn", {
+  }, [_c("b-btn", {
     staticClass: "float-right ml-2",
     attrs: {
       type: "submit",
       variant: "primary"
     }
-  }, [_vm._v("Simpan")]) : _vm._e(), _vm._v(" "), _c("b-btn", {
+  }, [_vm._v("Kirim")]), _vm._v(" "), _c("b-btn", {
     staticClass: "float-right",
     attrs: {
       type: "button",
@@ -1848,17 +671,17 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/noe-verification/form.vue":
-/*!*******************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/noe-verification/form.vue ***!
-  \*******************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/question-nod-report/form.vue":
+/*!**********************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/question-nod-report/form.vue ***!
+  \**********************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _form_vue_vue_type_template_id_4e181182___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=4e181182& */ "./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=template&id=4e181182&");
-/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _form_vue_vue_type_template_id_340da9e2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=340da9e2& */ "./resources/assets/src/components/backend/nod/question-nod-report/form.vue?vue&type=template&id=340da9e2&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/nod/question-nod-report/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -1869,8 +692,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _form_vue_vue_type_template_id_4e181182___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _form_vue_vue_type_template_id_4e181182___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _form_vue_vue_type_template_id_340da9e2___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _form_vue_vue_type_template_id_340da9e2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -1880,38 +703,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/assets/src/components/backend/noe/noe-verification/form.vue"
+component.options.__file = "resources/assets/src/components/backend/nod/question-nod-report/form.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=script&lang=js&":
-/*!********************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/question-nod-report/form.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/question-nod-report/form.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/question-nod-report/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=template&id=4e181182&":
-/*!**************************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=template&id=4e181182& ***!
-  \**************************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/question-nod-report/form.vue?vue&type=template&id=340da9e2&":
+/*!*****************************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/question-nod-report/form.vue?vue&type=template&id=340da9e2& ***!
+  \*****************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_4e181182___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=4e181182& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=template&id=4e181182&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_4e181182___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_340da9e2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=340da9e2& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/question-nod-report/form.vue?vue&type=template&id=340da9e2&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_340da9e2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_4e181182___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_340da9e2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

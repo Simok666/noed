@@ -287,6 +287,11 @@ Route::group(['middleware'=>['adminvue']], function () {
 		Route::post('nod-report-get-acc-number','BackEnd\VerifCAPAReportControll@getAccNumber');
 		Route::post('nod-verifikasi-capa-get-data','BackEnd\VerifCAPAReportControll@getDataNOD');
 		Route::post('nod-verifikasi-capa-insert-data','BackEnd\VerifCAPAReportControll@store');
+		Route::post('nod-verifikasi-capa-edit-data','BackEnd\VerifCAPAReportControll@edit');
+		Route::post('nod-verifikasi-capa-delete-data','BackEnd\VerifCAPAReportControll@delete');
+		Route::post('nod-verifikasi-capa-update-data','BackEnd\VerifCAPAReportControll@update');
+		Route::post('nod-verifikasi-capa-publish-data','BackEnd\VerifCAPAReportControll@publish');
+		Route::post('nod-verifikasi-capa-approve-data','BackEnd\VerifCAPAReportControll@approve');
 
 
 		Route::get('nod-chat-rooms', 'BackEnd\ChatController@rooms');

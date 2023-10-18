@@ -471,6 +471,7 @@
 									<table width="100%" cellpadding="0" cellspacing="0" role="presentation">
 										{{-- {{dd($dataMail)}} --}}
                     @foreach($dataMail as $key=>$val)
+				
                     <tr>
                       <td class="attributes_item">
                         <span class="f-fallback">

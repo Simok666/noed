@@ -1,9 +1,9 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[7],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-report/form.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/noe-report/form.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -16,20 +16,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mathieustan_vue_datepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mathieustan/vue-datepicker */ "./node_modules/@mathieustan/vue-datepicker/dist/vue-datepicker.esm.js");
 /* harmony import */ var _mathieustan_vue_datepicker_dist_vue_datepicker_min_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mathieustan/vue-datepicker/dist/vue-datepicker.min.css */ "./node_modules/@mathieustan/vue-datepicker/dist/vue-datepicker.min.css");
 /* harmony import */ var _mathieustan_vue_datepicker_dist_vue_datepicker_min_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_mathieustan_vue_datepicker_dist_vue_datepicker_min_css__WEBPACK_IMPORTED_MODULE_3__);
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-
-// import VueDatepicker from 'vue-datepicker';
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'form-noe-report',
+  name: 'form-noe-verification',
   metaInfo: {
-    title: 'Form NOE Report'
+    title: 'Form NOE Verification And Assesment'
   },
   components: {
     MaskedInput: vue_text_mask__WEBPACK_IMPORTED_MODULE_1___default.a,
@@ -37,55 +31,88 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      urlSubmit: '/AdminVue/noe-report-insert',
-      headerCard: 'Laporan Kejadian NOE',
+      urlSubmit: '/AdminVue/noe-verification-insert',
+      headerCard: 'Verifikasi & Penilaian NOE',
       textBtnSubmit: 'Simpan',
       field: {
         EventFile: [],
         CorrectiveActionFile: [],
-        Date: moment__WEBPACK_IMPORTED_MODULE_0___default()(new Date()).format('YYYY-MM-DD'),
-        // Date: null,
+        IdDevRiskAssesment: [{
+          RiskAssesment: '',
+          Question: '',
+          Value: ''
+        }],
+        IdDevRiskAssesment2: [{
+          RiskAssesment: '',
+          Question: '',
+          Value: ''
+        }],
+        IdDevRiskAssesment3: [{
+          RiskAssesment: '',
+          Question: '',
+          Value: ''
+        }],
+        DeviationLevel: '',
+        OtherCorrectAction: '',
+        DescriptionOPA: '',
         FileEventDownload: [],
         FileCorrectiveActionDownload: [],
-        Time: '09:00',
-        dueDate: moment__WEBPACK_IMPORTED_MODULE_0___default()(new Date()).format('YYYY-MM-DD'),
-        dueTime: '09:00',
+        Date: moment__WEBPACK_IMPORTED_MODULE_0___default()(new Date()).format('YYYY-MM-DD'),
         Dept: '',
         Lampiran: ''
       },
-      HistoryCorrectionData: [],
-      getCorrectorData: [],
       allErrors: [],
       isNotif: false,
-      isEdit: false,
       alertNotif: '',
       alertVariant: 'alert-dark-danger',
-      opsProduct: [],
-      opsLocation: [],
-      opsTypeIncident: [],
-      opsPublish: [],
       OldEventFile: [],
       OldCorrectiveActionFile: [],
-      isAnswered: false,
+      opsVerified: [{
+        'value': 'Tindakan koreksi telah dilaksanakan dengan baik',
+        'text': 'Tindakan koreksi telah dilaksanakan dengan baik'
+      }, {
+        'value': 'Perlu tindakan koreksi lain',
+        'text': 'Perlu tindakan koreksi lain'
+      }],
+      opsRelevantDept: [],
+      valDept: false,
+      opsRiskAssesment: [],
+      opsRiskAssesment2: [],
+      opsRiskAssesment3: [],
+      opsOPA: [{
+        'value': 'Ada',
+        'text': 'Ada'
+      }, {
+        'value': 'Tidak Ada',
+        'text': 'Tidak Ada'
+      }],
+      DescOPA: false,
+      resultValue: 0,
+      IdDeviationLevel: 0,
+      Position: 0,
+      //1 = unit head; 2 = sect head; 3 = dept head;
       valStatus: 0,
       isShow: false,
       isComment: false,
-      isTypeUser: false,
-      isChildToAnswer: false,
-      isNOEAcc: false,
       BaseUrl: "/",
-      isButton: false,
+      isCaretaker: false,
+      deptStatus: false,
+      opsPublish: [],
+      isNOEAcc: false,
       dateFormat: 'DD.MM.YYYY',
       locale: {
         lang: 'en'
       },
-      noBets: '',
-      noControl: '',
-      deptStatus: false,
+      isInputCorrection: false,
       checkAnswer: false,
+      HistoryCorrectionData: [],
+      getCorrectorData: [],
       showMore: false,
-      isCorrection: false,
-      maxVisibleItems: 2
+      maxVisibleItems: 2,
+      isTypeUser: false,
+      isChildToAnswer: false,
+      isAnswered: false,
+      isCorrection: false
     };
   },
   computed: {
@@ -111,100 +138,201 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     submitForm: function submitForm() {
-      var _this = this;
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var formData, incidentArr, i, file, n, _file, config;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              _this.showLoading();
-              formData = new FormData();
-              formData.append("Id", _this.field.Id);
-              formData.append("NOENumber", _this.field.NOENumber);
-              formData.append("Date", _this.field.Date);
-              if (_this.field.Time) formData.append("Time", _this.field.Time);
-              formData.append("BatchNo", _this.field.BatchNo);
-              if (_this.field.IdProduct) formData.append("IdProduct", _this.field.IdProduct.Id);
-              if (_this.field.IdLocation) formData.append("IdLocation", _this.field.IdLocation.Id);
-              incidentArr = [];
-              if (_this.field.IdTypeIncident.Id !== undefined) {
-                incidentArr.push(_this.field.IdTypeIncident);
-                if (_this.field.IdTypeIncident) formData.append("IdTypeIncident", JSON.stringify(incidentArr));
-              } else {
-                if (_this.field.IdTypeIncident) formData.append("IdTypeIncident", JSON.stringify(_this.field.IdTypeIncident));
-              }
-              formData.append("Event", _this.field.Event);
-              formData.append("CorrectiveAction", _this.field.CorrectiveAction);
-              formData.append("DueDate", _this.field.dueDate);
-              if (_this.field.dueTime) formData.append("DueTime", _this.field.dueTime);
-              for (i = 0; i < _this.field.EventFile.length; i++) {
-                file = _this.field.EventFile[i];
-                formData.append('EventFile[' + i + ']', file);
-              }
-              formData.append("OldEventFile", JSON.stringify(_this.OldEventFile));
-              for (n = 0; n < _this.field.CorrectiveActionFile.length; n++) {
-                _file = _this.field.CorrectiveActionFile[n];
-                formData.append('CorrectiveActionFile[' + n + ']', _file);
-              }
-              formData.append("OldCorrectiveActionFile", JSON.stringify(_this.OldCorrectiveActionFile));
-              if (_this.field.IdPublish) formData.append("IdPublish", _this.field.IdPublish.Id);
-              config = {
-                headers: {
-                  'content-type': 'multipart/form-data'
-                }
-              };
-              axios.post(_this.urlSubmit, formData, config).then(function (res) {
-                this.hideLoading();
-                var resp = res.data;
-                if (resp.status) {
-                  this.$router.push({
-                    name: 'noe/data-noe-report',
-                    params: {
-                      isNotif: true,
-                      gNotif: 'notifications-success',
-                      tNotif: this.textBtnSubmit + ' Data Sukses',
-                      txNotif: 'Simpan Data Sukses!'
-                    }
-                  });
-                } else {
-                  this.isNotif = true;
-                  this.alertNotif = resp.message;
-                  this.alertVariant = 'alert-dark-danger';
-                  this.allErrors = resp.validation;
-                  this.scrollTop(0, 1000);
-                }
-              }.bind(_this))["catch"](function (e) {
-                console.log(e);
-                if (e.response) {
-                  // Handle HTTP response errors
-                  console.error('HTTP Error Response:', e.response);
-                  // You can access error.response.data, error.response.status, etc. here
-                } else if (e.request) {
-                  // Handle request error (e.g., no response received)
-                  console.error('Request Error:', e.request);
-                } else {
-                  // Handle other errors
-                  console.error('Error:', e.message);
-                }
-                this.isNotif = true;
-                this.alertNotif = 'Invalid Server Side!';
-                this.alertVariant = 'alert-dark-danger';
-                this.scrollTop(0, 1000);
-                this.hideLoading();
-              }.bind(_this));
-            case 22:
-            case "end":
-              return _context.stop();
+      this.showLoading();
+      var isEmpty = false;
+      if (this.field.IdDevRiskAssesment) {
+        this.field.IdDevRiskAssesment.forEach(function (data, index) {
+          if (data.RiskAssesment == '') {
+            isEmpty = true;
+            return false;
           }
-        }, _callee);
-      }))();
+        });
+      }
+      if (this.field.IdDevRiskAssesment2) {
+        this.field.IdDevRiskAssesment2.forEach(function (data, index) {
+          if (data.RiskAssesment == '') {
+            isEmpty = true;
+            return false;
+          }
+        });
+      }
+      if (this.field.IdDevRiskAssesment3) {
+        this.field.IdDevRiskAssesment3.forEach(function (data, index) {
+          if (data.RiskAssesment == '') {
+            isEmpty = true;
+            return false;
+          }
+        });
+      }
+      if (isEmpty) this.$swal({
+        icon: 'error',
+        text: 'Silahkan lengkapi kolom *Wajib Dipilih!'
+      });else if (!this.field.Verified || this.field.Verified.value == null || !this.field.OtherProductAffect || this.field.OtherProductAffect && this.field.OtherProductAffect.value == null) this.$swal({
+        icon: 'error',
+        text: 'Silahkan lengkapi kolom *Wajib Dipilih!'
+      });else if (this.field.Verified.value == 'Perlu tindakan koreksi lain' && (!this.field.RelevantDept || !this.field.RelevantDept.length)) this.$swal({
+        icon: 'error',
+        text: 'Silahkan lengkapi kolom *Wajib Dipilih!'
+      });else {
+        var formData = new FormData();
+        formData.append("Id", this.field.Id);
+        if (this.field.Verified) formData.append("Verified", this.field.Verified.value);
+        if (this.field.OtherCorrectAction) formData.append("OtherCorrectAction", this.field.OtherCorrectAction);
+        if (this.field.RelevantDept) formData.append("RelevantDept", JSON.stringify(this.field.RelevantDept));
+        formData.append("IdDevRiskAssesment", JSON.stringify(this.field.IdDevRiskAssesment));
+        formData.append("IdDevRiskAssesment2", JSON.stringify(this.field.IdDevRiskAssesment2));
+        formData.append("IdDevRiskAssesment3", JSON.stringify(this.field.IdDevRiskAssesment3));
+        formData.append("DeviationLevel", this.field.DeviationLevel);
+        if (this.IdDeviationLevel) formData.append("IdDeviationLevel", this.IdDeviationLevel);
+        if (this.field.OtherProductAffect) formData.append("OtherProductAffect", this.field.OtherProductAffect.value);
+        formData.append("DescriptionOPA", this.field.DescriptionOPA);
+        if (this.field.IdPublish) formData.append("IdPublish", this.field.IdPublish.Id);
+        var config = {
+          headers: {
+            'content-type': 'multipart/form-data'
+          }
+        };
+        axios.post(this.urlSubmit, formData, config).then(function (res) {
+          var resp = res.data;
+          if (resp.status) {
+            this.$router.push({
+              name: 'noe/data-noe-verification',
+              params: {
+                isNotif: true,
+                gNotif: 'notifications-success',
+                tNotif: this.textBtnSubmit + ' Data Sukses',
+                txNotif: 'Simpan Data Sukses!'
+              }
+            });
+          } else {
+            this.isNotif = true;
+            this.alertNotif = resp.message;
+            this.alertVariant = 'alert-dark-danger';
+            this.allErrors = resp.validation;
+            this.scrollTop(0, 1000);
+          }
+          this.hideLoading();
+        }.bind(this))["catch"](function (e) {
+          console.log(e);
+          this.isNotif = true;
+          this.alertNotif = 'Invalid Server Side!';
+          this.alertVariant = 'alert-dark-danger';
+          this.scrollTop(0, 1000);
+          this.hideLoading();
+        }.bind(this));
+      }
+    },
+    onChangeVerified: function onChangeVerified(option) {
+      if (option.value == "Perlu tindakan koreksi lain" || option == "Perlu tindakan koreksi lain") {
+        this.valDept = true;
+        this.isInputCorrection = false;
+      } else if (option.value == "Tindakan koreksi telah dilaksanakan dengan baik") {
+        this.isInputCorrection = true;
+      } else {
+        // sebelumnya keluar jika 'Verified' == 'Perlu tindakan koreksi lain'
+        this.valDept = false;
+        // this.field.OtherCorrectAction = ''
+      }
+
+      console.log(this.isInputCorrection);
+    },
+    onChangeOPA: function onChangeOPA(option) {
+      if (option.value == "Ada" || option == "Ada") {
+        this.DescOPA = true;
+      } else {
+        this.DescOPA = false;
+        this.field.DescriptionOPA = '';
+      }
+    },
+    onSelectDevRisk: function onSelectDevRisk(value, index) {
+      var isExist = false;
+      if (this.field.IdDevRiskAssesment.length && this.field.IdDevRiskAssesment.length > 1) {
+        this.field.IdDevRiskAssesment.forEach(function (data, index) {
+          if (data.RiskAssesment.RiskAssesment == value.RiskAssesment) {
+            isExist = true;
+          }
+        });
+      }
+      if (isExist) {
+        this.$swal({
+          icon: 'error',
+          text: 'Penilaian Risiko Deviasi tidak boleh sama!'
+        }).then(function () {
+          setTimeout(function () {
+            document.getElementById("btambah-risk").focus();
+          }, 500);
+        });
+        this.removeDetail(index);
+        this.addDetail();
+      } else {
+        this.field.IdDevRiskAssesment[index].Question = value.Question;
+        this.field.IdDevRiskAssesment[index].Value = value.Value;
+        this.field.IdDevRiskAssesment[index].AssesmentGroup = value.AssesmentGroup;
+        this.countValue();
+      }
+    },
+    onSelectDevRisk2: function onSelectDevRisk2(value, index) {
+      this.field.IdDevRiskAssesment2[index].Question = value.Question;
+      this.field.IdDevRiskAssesment2[index].Value = value.Value;
+      this.countValue();
+    },
+    onSelectDevRisk3: function onSelectDevRisk3(value, index) {
+      this.field.IdDevRiskAssesment3[index].Question = value.Question;
+      this.field.IdDevRiskAssesment3[index].Value = value.Value;
+      this.countValue();
+    },
+    countValue: function countValue() {
+      var _this = this;
+      this.resultValue = 0;
+      this.field.IdDevRiskAssesment.forEach(function (data, index) {
+        if (data.RiskAssesment != '') {
+          if (_this.resultValue == 0) _this.resultValue += parseInt(data.Value);else _this.resultValue *= parseInt(data.Value);
+        }
+      });
+      this.field.IdDevRiskAssesment2.forEach(function (data, index) {
+        if (data.RiskAssesment != '') {
+          if (_this.resultValue == 0) _this.resultValue += parseInt(data.Value);else _this.resultValue *= parseInt(data.Value);
+        }
+      });
+      this.field.IdDevRiskAssesment3.forEach(function (data, index) {
+        if (data.RiskAssesment != '') {
+          if (_this.resultValue == 0) _this.resultValue += parseInt(data.Value);else _this.resultValue *= parseInt(data.Value);
+        }
+      });
+      this.getDeviationLevel(this.resultValue);
     },
     getData: function getData(Id) {
-      axios.post('/AdminVue/noe-report-edit', {
+      axios.post('/AdminVue/noe-verification-edit', {
         Id: Id
       }).then(function (res) {
         var resp = res.data;
+        this.Position = res.data.position;
         this.field = resp.data;
+        if (resp.data.NOENumberAcc == null) {
+          this.field.NOENumber = resp.data.NOENumber;
+        } else {
+          this.field.NOENumber = resp.data.NOENumberAcc;
+          this.isNOEAcc = true;
+        }
+        this.IdDeviationLevel = resp.data.IdDeviationLevel;
+        this.onChangeVerified(this.field.Verified);
+        this.onChangeOPA(this.field.OtherProductAffect);
+        if (resp.data.IdDevRiskAssesment == null || resp.data.IdDevRiskAssesment == '') this.field.IdDevRiskAssesment = [{
+          RiskAssesment: '',
+          Question: '',
+          Value: ''
+        }];
+        if (resp.data.IdDevRiskAssesment2 == null || resp.data.IdDevRiskAssesment2 == '') this.field.IdDevRiskAssesment2 = [{
+          RiskAssesment: '',
+          Question: '',
+          Value: ''
+        }];
+        if (resp.data.IdDevRiskAssesment3 == null || resp.data.IdDevRiskAssesment3 == '') this.field.IdDevRiskAssesment3 = [{
+          RiskAssesment: '',
+          Question: '',
+          Value: ''
+        }];
+        if (resp.data.IdDeviationLevel) this.countValue();
         this.field.EventFile = [];
         this.field.CorrectiveActionFile = [];
         if (this.field.FileEvent != '') {
@@ -228,24 +356,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           this.OldCorrectiveActionFile = '';
         }
         if (this.field.Status) {
-          if (this.field.Status == 'UnPublish') this.valStatus = 1;
           if (this.field.Status == 'Dilaporkan ke Unit Head') this.valStatus = 2;
           if (this.field.Status == 'Dilaporkan ke Sect Head') this.valStatus = 3;
           if (this.field.Status == 'Disetujui oleh Unit Head') this.valStatus = 4;
           if (this.field.Status == 'Disetujui oleh Sect Head') this.valStatus = 5;
           if (this.field.Status == 'Disetujui oleh Dept Head') this.valStatus = 6;
           if (this.field.Status == 'Disetujui oleh QA Sect.Head') this.valStatus = 7;
-          if (this.field.Status == 'Disetujui oleh QA Dept.Head') this.valStatus = 8;
-          if (this.field.Status == 'Ditolak') this.valStatus = 9;
+          if (this.field.Status == 'Disetujui oleh QA APJ') this.valStatus = 8;
+          if (this.field.Status == 'Disetujui oleh QA Dept.Head') this.valStatus = 9;
+          if (this.field.Status == 'Ditolak') this.valStatus = 10;
         }
-        if (resp.data.NOENumberAcc == null) {
-          this.field.NOENumber = resp.data.NOENumber;
+        this.isCaretaker = res.data.isCaretaker;
+        if (this.opsRiskAssesment.length > 0) {
+          this.field.IdDevRiskAssesment[0].Question = this.opsRiskAssesment[0].Question;
         } else {
-          this.field.NOENumber = resp.data.NOENumberAcc;
-          this.isNOEAcc = true;
+          this.field.IdDevRiskAssesment[0].Question = ''; // Set a default value or handle the situation differently
         }
-        this.isButton = resp.isButton;
+
+        if (this.opsRiskAssesment2.length > 0) {
+          this.field.IdDevRiskAssesment2[0].Question = this.opsRiskAssesment2[0].Question;
+        } else {
+          this.field.IdDevRiskAssesment2[0].Question = ''; // Set a default value or handle the situation differently
+        }
+
+        if (this.opsRiskAssesment3.length > 0) {
+          this.field.IdDevRiskAssesment3[0].Question = this.opsRiskAssesment3[0].Question;
+        } else {
+          this.field.IdDevRiskAssesment3[0].Question = ''; // Set a default value or handle the situation differently
+        }
+
         this.isCorrection = resp.isCorrection;
+
+        // this.field.IdDevRiskAssesment[0].Question = this.opsRiskAssesment[0].Question
+        // this.field.IdDevRiskAssesment2[0].Question = this.opsRiskAssesment2[0].Question
+        // this.field.IdDevRiskAssesment3[0].Question = this.opsRiskAssesment3[0].Question
       }.bind(this))["catch"](function (e) {
         console.log(e);
         this.isNotif = true;
@@ -294,77 +438,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.showMore = !this.showMore;
       console.log(this.showMore);
     },
-    generateNumber: function generateNumber() {
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-      axios.post('/AdminVue/noe-report-get-number', {
-        Date: date
+    getRelevantDept: function getRelevantDept() {
+      axios.post('/AdminVue/noe-verification-get-relevant-dept').then(function (res) {
+        this.opsRelevantDept = res.data.data;
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+        this.opsRelevantDept = [];
+      }.bind(this));
+    },
+    getDeviationRisk: function getDeviationRisk() {
+      axios.post('/AdminVue/noe-verification-get-deviation-risk').then(function (res) {
+        this.opsRiskAssesment = res.data.data;
+        this.field.IdDevRiskAssesment[0].Question = res.data.data[0].Question;
+        this.opsRiskAssesment2 = res.data.data2;
+        this.field.IdDevRiskAssesment2[0].Question = res.data.data2[0].Question;
+        this.opsRiskAssesment3 = res.data.data3;
+        this.field.IdDevRiskAssesment3[0].Question = res.data.data3[0].Question;
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+        this.opsRiskAssesment = [];
+        this.opsRiskAssesment2 = [];
+        this.opsRiskAssesment3 = [];
+      }.bind(this));
+    },
+    getDeviationLevel: function getDeviationLevel(value) {
+      axios.post('/AdminVue/noe-verification-get-deviation-level', {
+        value: value
       }).then(function (res) {
-        // this.field.NOENumber = res.data.data
-        this.$set(this.field, 'NOENumber', res.data.data); // this.$set -> untuk merubah variabel dan value di field inputnya
+        this.field.DeviationLevel = res.data.data;
+        this.IdDeviationLevel = res.data.iddeviation;
       }.bind(this))["catch"](function (e) {
         console.log(e);
-        this.field.NOENumber = '';
-      }.bind(this));
-    },
-    getProduct: function getProduct() {
-      axios.post('/AdminVue/noe-report-get-product').then(function (res) {
-        this.opsProduct = res.data.data;
-      }.bind(this))["catch"](function (e) {
-        console.log(e);
-        this.opsProduct = [];
-      }.bind(this));
-    },
-    getIncident: function getIncident() {
-      axios.post('/AdminVue/noe-report-get-incident').then(function (res) {
-        this.opsTypeIncident = res.data.data;
-      }.bind(this))["catch"](function (e) {
-        console.log(e);
-        this.opsTypeIncident = [];
-      }.bind(this));
-    },
-    handleFileEvent: function handleFileEvent(files) {
-      this.field.EventFile = files.map(function (files) {
-        return files.file;
-      });
-    },
-    handleRemoveEvent: function handleRemoveEvent(error, files) {
-      var result = _typeof(files.source);
-      if (this.isEdit == true && result === 'string') {
-        var index = this.OldEventFile.indexOf(files.source.replace('/clouds', 'clouds'));
-        this.OldEventFile.splice(index, 1);
-      }
-    },
-    handleFileCorrective: function handleFileCorrective(files) {
-      // console.log('FilePond Updated')
-      // example of instance method call on pond reference
-      this.field.CorrectiveActionFile = files.map(function (files) {
-        return files.file;
-      });
-      // console.log( this.field.myFile )
-    },
-
-    handleRemoveCorrective: function handleRemoveCorrective(error, files) {
-      var result = _typeof(files.source);
-      if (this.isEdit == true && result === 'string') {
-        var index = this.OldCorrectiveActionFile.indexOf(files.source.replace('/clouds', 'clouds'));
-        this.OldCorrectiveActionFile.splice(index, 1);
-      }
-    },
-    allowedDates: function allowedDates(date) {
-      var today = new Date();
-      var dd = String(today.getDate()).padStart(2, '0');
-      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-      var yyyy = today.getFullYear();
-      today = yyyy + '-' + mm + '-' + dd;
-      return date <= today;
-    },
-    onControlBets: function onControlBets(value) {
-      axios.post('/AdminVue/noe-report-get-location-bets', {
-        Value: value
-      }).then(function (res) {
-        this.opsLocation = res.data.data;
-      }.bind(this))["catch"](function (e) {
-        console.log(e);
+        this.field.DeviationLevel = '';
+        this.IdDeviationLevel = '';
       }.bind(this));
     },
     getPublish: function getPublish() {
@@ -381,16 +487,43 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.opsPublish = [];
       }.bind(this));
     },
+    addDetail: function addDetail() {
+      this.field.IdDevRiskAssesment.push({
+        'RiskAssesment': '',
+        'Question': '',
+        'Value': '',
+        'AssesmentGroup': ''
+      });
+    },
+    removeDetail: function removeDetail(index) {
+      this.field.IdDevRiskAssesment.splice(index, 1);
+      this.countValue();
+    },
     backIndex: function backIndex() {
-      this.$router.push('/RoleAdmin/noe/data-noe-report');
+      this.$router.push('/RoleAdmin/noe/data-noe-verification');
     },
     onAction: function onAction(action) {
       if (action == 'sendAnswer') {
-        return this.sendAnswer('/AdminVue/noe-report-answer', this.field.NOENumber, this.field.Answer, this.$parent, true);
+        return this.sendAnswer('/AdminVue/noe-report-answer', this.field.NOENumber, this.field.Answer, this.$parent, true, this.valStatus);
       }
       if (this.isCorrection == false) {
-        if (action == 'publish') {
-          this.publish('/AdminVue/noe-report-publish', this.field.Id, this.$parent, true);
+        if (action == 'publish-verify') {
+          this.publishVerify('/AdminVue/noe-verification-publish-verify', this.field.Id, this.$parent, true);
+        }
+        if (action == 'approve') {
+          this.approve('/AdminVue/noe-verification-approve', this.field.Id, this.$parent, null, true, this.isCaretaker);
+        }
+        if (action == 'reject') {
+          this.reject('/AdminVue/noe-verification-reject', this.field.Id, this.$parent, true, this.isCaretaker);
+        }
+        if (action == 'correction') {
+          this.$router.push({
+            name: 'noe/form-correction-noe-verification',
+            params: {
+              Id: this.field.Id,
+              isCaretaker: this.isCaretaker
+            }
+          });
         }
       } else {
         return this.showNotifCustom('notifications-danger', 'Forbidden Action', 'Harus isi jawaban dari pengkoreksi');
@@ -398,40 +531,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   mounted: function mounted() {
-    this.getProduct();
-    // this.getLocation()
-    this.getIncident();
+    this.getRelevantDept();
+    this.getDeviationRisk();
     this.getPublish();
     if (this.$route.params.isFormEdit) {
       var Id = this.$route.params.Id;
-      this.isEdit = true;
       if (Id) {
         this.getData(Id);
         this.field.Id = Id;
-        this.urlSubmit = '/AdminVue/noe-report-update';
+        this.urlSubmit = '/AdminVue/noe-verification-update';
         this.textBtnSubmit = 'Simpan';
       }
     }
     if (this.$route.params.isShow) {
       this.isShow = this.$route.params.isShow;
       var Id = this.$route.params.Id;
-      var number = this.field.NOENumber;
       if (Id) {
-        this.getCorrectionData(Id);
         this.getData(Id);
+        this.getCorrectionData(Id);
         this.field.Id = Id;
       }
     }
-    if (this.isEdit == false && this.isShow == false) this.generateNumber();
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-report/form.vue?vue&type=template&id=46e12386&":
-/*!********************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/noe-report/form.vue?vue&type=template&id=46e12386& ***!
-  \********************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=template&id=4e181182&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=template&id=4e181182& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -479,13 +608,11 @@ var render = function render() {
   }, [_vm._v("No. NOE")]) : _vm._e(), _vm._v(" "), _vm.isNOEAcc == false ? _c("label", {
     staticClass: "form-label"
   }, [_vm._v("No. DRAFT NOE")]) : _vm._e(), _vm._v(" "), _c("b-input", {
-    ref: "iNOENumber",
     staticClass: "mb-1",
     attrs: {
       name: "NOENumber",
       state: _vm.allErrors.NOENumber ? false : null,
-      readonly: "",
-      required: ""
+      readonly: ""
     },
     model: {
       value: _vm.field.NOENumber,
@@ -500,21 +627,13 @@ var render = function render() {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Tanggal / Waktu")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-input-group", [_c("VueDatePicker", {
+  }, [_vm._v("Tanggal / Waktu")]), _vm._v(" "), _c("b-input-group", [_c("VueDatePicker", {
     staticClass: "mb-1",
     attrs: {
       required: "",
-      "allowed-dates": _vm.allowedDates,
       disabled: _vm.isShow,
       format: _vm.dateFormat,
       locale: _vm.locale
-    },
-    on: {
-      input: function input($event) {
-        return _vm.generateNumber(_vm.field.Date);
-      }
     },
     model: {
       value: _vm.field.Date,
@@ -539,26 +658,18 @@ var render = function render() {
       },
       expression: "field.Time"
     }
-  })], 1)], 1), _vm._v(" "), _vm.allErrors.Date ? _c("span", {
+  })], 1)], 1), _vm._v(" "), _vm.allErrors.Time ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Date[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+  }, [_vm._v(_vm._s(_vm.allErrors.Time[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("No. Kontrol / No. Bets")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-input", {
+  }, [_vm._v("No. Kontrol / No. Bets")]), _vm._v(" "), _c("b-input", {
     staticClass: "mb-1",
     attrs: {
       name: "BatchNo",
       state: _vm.allErrors.BatchNo ? false : null,
-      required: "",
-      readonly: _vm.isShow
-    },
-    on: {
-      input: function input($event) {
-        return _vm.onControlBets(_vm.field.BatchNo);
-      }
+      readonly: ""
     },
     model: {
       value: _vm.field.BatchNo,
@@ -573,17 +684,12 @@ var render = function render() {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Bahan / Produk Terkait")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Dipilih")]) : _vm._e(), _vm._v(" "), _c("multiselect", {
+  }, [_vm._v("Bahan / Produk Terkait")]), _vm._v(" "), _c("b-input", {
+    staticClass: "mb-1",
     attrs: {
-      options: _vm.opsProduct,
-      "allow-empty": false,
-      placeholder: "Pilih Bahan / Produk Terkait",
-      label: "Product",
-      "track-by": "Product",
-      required: "",
-      disabled: _vm.isShow
+      name: "IdProduct",
+      state: _vm.allErrors.IdProduct ? false : null,
+      readonly: ""
     },
     model: {
       value: _vm.field.IdProduct,
@@ -598,17 +704,12 @@ var render = function render() {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Lokasi Kejadian")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Dipilih")]) : _vm._e(), _vm._v(" "), _c("multiselect", {
+  }, [_vm._v("Lokasi Kejadian")]), _vm._v(" "), _c("b-input", {
+    staticClass: "mb-1",
     attrs: {
-      options: _vm.opsLocation,
-      "allow-empty": false,
-      placeholder: "Pilih Lokasi Kejadian",
-      label: "Location",
-      "track-by": "Location",
-      required: "",
-      disabled: _vm.isShow
+      name: "IdLocation",
+      state: _vm.allErrors.IdLocation ? false : null,
+      readonly: ""
     },
     model: {
       value: _vm.field.IdLocation,
@@ -623,17 +724,12 @@ var render = function render() {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Jenis Kejadian")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Dipilih")]) : _vm._e(), _vm._v(" "), _c("multiselect", {
+  }, [_vm._v("Jenis Kejadian")]), _vm._v(" "), _c("b-input", {
+    staticClass: "mb-1",
     attrs: {
-      options: _vm.opsTypeIncident,
-      "show-labels": false,
-      placeholder: "Pilih Jenis Kejadian",
-      label: "TypeIncident",
-      "track-by": "TypeIncident",
-      required: "",
-      disabled: _vm.isShow
+      name: "IdTypeIncident",
+      state: _vm.allErrors.IdTypeIncident ? false : null,
+      readonly: ""
     },
     model: {
       value: _vm.field.IdTypeIncident,
@@ -648,15 +744,12 @@ var render = function render() {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Uraian Kejadian")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-textarea", {
+  }, [_vm._v("Uraian Kejadian")]), _vm._v(" "), _c("b-textarea", {
     staticClass: "mb-1",
     attrs: {
       name: "Event",
       state: _vm.allErrors.Event ? false : null,
-      required: "",
-      readonly: _vm.isShow
+      readonly: ""
     },
     model: {
       value: _vm.field.Event,
@@ -667,27 +760,7 @@ var render = function render() {
     }
   }), _vm._v(" "), _vm.allErrors.Event ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Event[0]))]) : _vm._e()], 1), _vm._v(" "), _vm.isShow == false ? _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", [_vm._v("Lampiran Uraian Kejadian")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi (Max. 50 MB)")]), _vm._v(" "), _c("file-pond", {
-    ref: "pondMyFile",
-    attrs: {
-      name: "EventFile",
-      "label-idle": "Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;",
-      "allow-multiple": true,
-      files: _vm.field.EventFile,
-      "accepted-file-types": "application/*, image/*, video/*",
-      maxTotalFileSize: "50MB",
-      required: "",
-      disabled: _vm.isShow
-    },
-    on: {
-      updatefiles: _vm.handleFileEvent,
-      removefile: _vm.handleRemoveEvent
-    }
-  })], 1) : _vm._e()], 1), _vm._v(" "), _vm.isShow == true ? _c("b-card", {
+  }, [_vm._v(_vm._s(_vm.allErrors.Event[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-card", {
     staticClass: "mb-3",
     attrs: {
       header: "Lampiran Uraian Kejadian",
@@ -718,19 +791,16 @@ var render = function render() {
     }, [_c("i", {
       staticClass: "fa fa-download"
     })])])], 1)], 1);
-  }), 1)], 1) : _vm._e(), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+  }), 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Tindakan Koreksi yang Dilakukan")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-textarea", {
+  }, [_vm._v("Tindakan Koreksi yang Dilakukan")]), _vm._v(" "), _c("b-textarea", {
     staticClass: "mb-1",
     attrs: {
       name: "CorrectiveAction",
       state: _vm.allErrors.CorrectiveAction ? false : null,
-      required: "",
-      readonly: _vm.isShow
+      readonly: ""
     },
     model: {
       value: _vm.field.CorrectiveAction,
@@ -741,33 +811,14 @@ var render = function render() {
     }
   }), _vm._v(" "), _vm.allErrors.CorrectiveAction ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.CorrectiveAction[0]))]) : _vm._e()], 1), _vm._v(" "), _vm.isShow == false ? _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", [_vm._v("Lampiran Tindakan Koreksi yang Dilakukan")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("(Max. 50 MB)")]), _vm._v(" "), _c("file-pond", {
-    ref: "pondMyFile",
-    attrs: {
-      name: "CorrectiveActionFile",
-      "label-idle": "Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;",
-      "allow-multiple": true,
-      files: _vm.field.CorrectiveActionFile,
-      "accepted-file-types": "application/*, image/*, video/*",
-      maxTotalFileSize: "50MB",
-      disabled: _vm.isShow
-    },
-    on: {
-      updatefiles: _vm.handleFileCorrective,
-      removefile: _vm.handleRemoveCorrective
-    }
-  })], 1) : _vm._e()], 1), _vm._v(" "), _vm.isShow == true ? _c("b-card", {
+  }, [_vm._v(_vm._s(_vm.allErrors.CorrectiveAction[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-card", {
     staticClass: "mb-3",
     attrs: {
       header: "Lampiran Tindakan Koreksi yang Dilakukan",
       "header-tag": "h5"
     }
   }, [_c("b-form-row", _vm._l(_vm.field.FileCorrectiveActionDownload, function (item, index) {
-    return _vm.field.FileCorrectiveActionDownload && _vm.field.FileCorrectiveActionDownload.length ? _c("b-form-group", {
+    return _c("b-form-group", {
       key: index,
       staticClass: "col-md-4"
     }, [_c("b-input-group", [_c("b-form-input", {
@@ -790,52 +841,366 @@ var render = function render() {
       }
     }, [_c("i", {
       staticClass: "fa fa-download"
-    })])])], 1)], 1) : _vm._e();
-  }), 1)], 1) : _vm._e(), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+    })])])], 1)], 1);
+  }), 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Due Date Review")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+  }, [_vm._v("Verifikasi Tindakan")]), _vm._v(" "), _c("label", {
     staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-input-group", [_c("VueDatePicker", {
-    staticClass: "mb-1",
+  }, [_vm._v("*Wajib Dipilih")]), _vm._v(" "), _c("multiselect", {
     attrs: {
+      options: _vm.opsVerified,
+      "allow-empty": false,
+      placeholder: "Pilih Verifikasi Tindakan",
+      label: "text",
+      "track-by": "text",
       required: "",
-      disabled: _vm.isShow,
-      format: _vm.dateFormat,
-      locale: _vm.locale
+      disabled: _vm.isShow
     },
     on: {
-      input: function input($event) {
-        return _vm.generateNumber(_vm.field.dueDate);
-      }
+      input: _vm.onChangeVerified
     },
     model: {
-      value: _vm.field.dueDate,
+      value: _vm.field.Verified,
       callback: function callback($$v) {
-        _vm.$set(_vm.field, "dueDate", $$v);
+        _vm.$set(_vm.field, "Verified", $$v);
       },
-      expression: "field.dueDate"
+      expression: "field.Verified"
     }
-  }), _vm._v(" "), _c("b-input-group-append", [_c("masked-input", {
-    staticClass: "form-control",
+  }), _vm._v(" "), _vm.allErrors.Verified ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.Verified[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Tindakan Koreksi Lain")]), _vm._v(" "), _vm.valDept ? _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _vm.isInputCorrection == false ? _c("b-textarea", {
+    staticClass: "mb-1",
     attrs: {
-      type: "text",
-      placeholder: "Contoh 4 digit : 09:00",
-      guide: false,
-      mask: [/\d/, /\d/, ".", /\d/, /\d/],
+      name: "OtherCorrectAction",
+      state: _vm.allErrors.OtherCorrectAction ? false : null,
+      required: _vm.valDept,
+      readonly: _vm.isShow
+    },
+    model: {
+      value: _vm.field.OtherCorrectAction,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "OtherCorrectAction", $$v);
+      },
+      expression: "field.OtherCorrectAction"
+    }
+  }) : _vm._e(), _vm._v(" "), _vm.isInputCorrection == true ? _c("b-textarea", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "OtherCorrectAction",
+      state: _vm.allErrors.OtherCorrectAction ? false : null,
+      required: _vm.valDept,
+      readonly: _vm.isShow,
+      disabled: ""
+    },
+    model: {
+      value: _vm.field.OtherCorrectAction,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "OtherCorrectAction", $$v);
+      },
+      expression: "field.OtherCorrectAction"
+    }
+  }) : _vm._e(), _vm._v(" "), _vm.allErrors.OtherCorrectAction ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.OtherCorrectAction[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Departemen Terkait")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Dipilih")]), _vm._v(" "), _c("multiselect", {
+    attrs: {
+      options: _vm.opsRelevantDept,
+      "show-labels": false,
+      multiple: true,
+      placeholder: "Pilih Departemen Terkait",
+      label: "RelevantDept",
+      "track-by": "RelevantDept",
       disabled: _vm.isShow
     },
     model: {
-      value: _vm.field.dueTime,
+      value: _vm.field.RelevantDept,
       callback: function callback($$v) {
-        _vm.$set(_vm.field, "dueTime", $$v);
+        _vm.$set(_vm.field, "RelevantDept", $$v);
       },
-      expression: "field.dueTime"
+      expression: "field.RelevantDept"
     }
-  })], 1)], 1), _vm._v(" "), _vm.allErrors.dueDate ? _c("span", {
+  }), _vm._v(" "), _vm.allErrors.RelevantDept ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.dueDate[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+  }, [_vm._v(_vm._s(_vm.allErrors.RelevantDept[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-card", {
+    staticClass: "md-4"
+  }, [_vm._l(_vm.field.IdDevRiskAssesment, function (item, index) {
+    return _c("b-form-row", {
+      key: "IdDevRiskAssesment" + index
+    }, [_c("b-form-group", {
+      staticClass: "col-lg-5"
+    }, [index == 0 ? _c("label", [_vm._v("Pertanyaan (SEVERITY)")]) : _vm._e(), _vm._v(" "), _c("b-input", {
+      staticClass: "mb-1",
+      attrs: {
+        name: "Question",
+        readonly: ""
+      },
+      model: {
+        value: item.Question,
+        callback: function callback($$v) {
+          _vm.$set(item, "Question", $$v);
+        },
+        expression: "item.Question"
+      }
+    })], 1), _vm._v(" "), _c("b-form-group", {
+      staticClass: "col-lg-6"
+    }, [index == 0 ? [_c("label", [_vm._v("Penilaian Risiko Deviasi (SEVERITY)")]), _vm._v(" "), _c("label", {
+      staticClass: "form-label float-right text-danger"
+    }, [_vm._v("*Wajib Dipilih")])] : _vm._e(), _vm._v(" "), _c("multiselect", {
+      attrs: {
+        options: _vm.opsRiskAssesment,
+        "allow-empty": false,
+        placeholder: "Pilih Penilaian Risiko Deviasi",
+        selectLabel: "",
+        deselectLabel: "",
+        label: "RiskAssesment",
+        "track-by": "RiskAssesment",
+        disabled: _vm.isShow
+      },
+      on: {
+        input: function input($event) {
+          return _vm.onSelectDevRisk($event, index);
+        }
+      },
+      model: {
+        value: item.RiskAssesment,
+        callback: function callback($$v) {
+          _vm.$set(item, "RiskAssesment", $$v);
+        },
+        expression: "item.RiskAssesment"
+      }
+    })], 2), _vm._v(" "), _c("b-form-group", {
+      staticClass: "col-lg-1"
+    }, [index == 0 ? _c("label", [_vm._v("Nilai")]) : _vm._e(), _vm._v(" "), _c("b-input", {
+      staticClass: "mb-1",
+      attrs: {
+        name: "Value",
+        type: "number",
+        min: "1",
+        max: "100",
+        readonly: ""
+      },
+      model: {
+        value: item.Value,
+        callback: function callback($$v) {
+          _vm.$set(item, "Value", $$v);
+        },
+        expression: "item.Value"
+      }
+    })], 1)], 1);
+  }), _vm._v(" "), _vm._l(_vm.field.IdDevRiskAssesment2, function (item, index) {
+    return _c("b-form-row", {
+      key: "IdDevRiskAssesment2" + index
+    }, [_c("b-form-group", {
+      staticClass: "col-lg-5"
+    }, [index == 0 ? _c("label", [_vm._v("Pertanyaan (PROBABILITY)")]) : _vm._e(), _vm._v(" "), _c("b-input", {
+      staticClass: "mb-1",
+      attrs: {
+        name: "Question",
+        readonly: ""
+      },
+      model: {
+        value: item.Question,
+        callback: function callback($$v) {
+          _vm.$set(item, "Question", $$v);
+        },
+        expression: "item.Question"
+      }
+    })], 1), _vm._v(" "), _c("b-form-group", {
+      staticClass: "col-lg-6"
+    }, [index == 0 ? [_c("label", [_vm._v("Penilaian Risiko Deviasi (PROBABILITY)")]), _vm._v(" "), _c("label", {
+      staticClass: "form-label float-right text-danger"
+    }, [_vm._v("*Wajib Dipilih")])] : _vm._e(), _vm._v(" "), _c("multiselect", {
+      attrs: {
+        options: _vm.opsRiskAssesment2,
+        "allow-empty": false,
+        placeholder: "Pilih Penilaian Risiko Deviasi",
+        selectLabel: "",
+        deselectLabel: "",
+        label: "RiskAssesment",
+        "track-by": "RiskAssesment",
+        disabled: _vm.isShow
+      },
+      on: {
+        input: function input($event) {
+          return _vm.onSelectDevRisk2($event, index);
+        }
+      },
+      model: {
+        value: item.RiskAssesment,
+        callback: function callback($$v) {
+          _vm.$set(item, "RiskAssesment", $$v);
+        },
+        expression: "item.RiskAssesment"
+      }
+    })], 2), _vm._v(" "), _c("b-form-group", {
+      staticClass: "col-lg-1"
+    }, [index == 0 ? _c("label", [_vm._v("Nilai")]) : _vm._e(), _vm._v(" "), _c("b-input", {
+      staticClass: "mb-1",
+      attrs: {
+        name: "Value",
+        type: "number",
+        min: "1",
+        max: "100",
+        readonly: ""
+      },
+      model: {
+        value: item.Value,
+        callback: function callback($$v) {
+          _vm.$set(item, "Value", $$v);
+        },
+        expression: "item.Value"
+      }
+    })], 1)], 1);
+  }), _vm._v(" "), _vm._l(_vm.field.IdDevRiskAssesment3, function (item, index) {
+    return _c("b-form-row", {
+      key: "IdDevRiskAssesment3" + index
+    }, [_c("b-form-group", {
+      staticClass: "col-lg-5"
+    }, [index == 0 ? _c("label", [_vm._v("Pertanyaan (DETECTABILITY)")]) : _vm._e(), _vm._v(" "), _c("b-input", {
+      staticClass: "mb-1",
+      attrs: {
+        name: "Question",
+        readonly: ""
+      },
+      model: {
+        value: item.Question,
+        callback: function callback($$v) {
+          _vm.$set(item, "Question", $$v);
+        },
+        expression: "item.Question"
+      }
+    })], 1), _vm._v(" "), _c("b-form-group", {
+      staticClass: "col-lg-6"
+    }, [index == 0 ? [_c("label", [_vm._v("Penilaian Risiko Deviasi (DETECTABILITY)")]), _vm._v(" "), _c("label", {
+      staticClass: "form-label float-right text-danger"
+    }, [_vm._v("*Wajib Dipilih")])] : _vm._e(), _vm._v(" "), _c("multiselect", {
+      attrs: {
+        options: _vm.opsRiskAssesment3,
+        "allow-empty": false,
+        placeholder: "Pilih Penilaian Risiko Deviasi",
+        selectLabel: "",
+        deselectLabel: "",
+        label: "RiskAssesment",
+        "track-by": "RiskAssesment",
+        disabled: _vm.isShow
+      },
+      on: {
+        input: function input($event) {
+          return _vm.onSelectDevRisk3($event, index);
+        }
+      },
+      model: {
+        value: item.RiskAssesment,
+        callback: function callback($$v) {
+          _vm.$set(item, "RiskAssesment", $$v);
+        },
+        expression: "item.RiskAssesment"
+      }
+    })], 2), _vm._v(" "), _c("b-form-group", {
+      staticClass: "col-lg-1"
+    }, [index == 0 ? _c("label", [_vm._v("Nilai")]) : _vm._e(), _vm._v(" "), _c("b-input", {
+      staticClass: "mb-1",
+      attrs: {
+        name: "Value",
+        type: "number",
+        min: "1",
+        max: "100",
+        readonly: ""
+      },
+      model: {
+        value: item.Value,
+        callback: function callback($$v) {
+          _vm.$set(item, "Value", $$v);
+        },
+        expression: "item.Value"
+      }
+    })], 1)], 1);
+  })], 2), _c("br"), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Level Deviasi")]), _vm._v(" "), _c("b-textarea", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "DeviationLevel",
+      state: _vm.allErrors.DeviationLevel ? false : null,
+      readonly: "",
+      required: ""
+    },
+    model: {
+      value: _vm.field.DeviationLevel,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "DeviationLevel", $$v);
+      },
+      expression: "field.DeviationLevel"
+    }
+  }), _vm._v(" "), _vm.allErrors.DeviationLevel ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.DeviationLevel[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Produk / Bets Lain yang Terdampak")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Dipilih")]), _vm._v(" "), _c("multiselect", {
+    attrs: {
+      options: _vm.opsOPA,
+      "allow-empty": false,
+      placeholder: "Pilih Produk / Bets Lain yang Terdampak",
+      label: "text",
+      "track-by": "text",
+      required: "",
+      disabled: _vm.isShow
+    },
+    on: {
+      input: _vm.onChangeOPA
+    },
+    model: {
+      value: _vm.field.OtherProductAffect,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "OtherProductAffect", $$v);
+      },
+      expression: "field.OtherProductAffect"
+    }
+  }), _vm._v(" "), _vm.allErrors.OtherProductAffect ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.OtherProductAffect[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_vm.DescOPA ? _c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Bets Terdampak")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-textarea", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "DescriptionOPA",
+      state: _vm.allErrors.DescriptionOPA ? false : null,
+      required: _vm.DescOPA,
+      readonly: _vm.isShow
+    },
+    model: {
+      value: _vm.field.DescriptionOPA,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "DescriptionOPA", $$v);
+      },
+      expression: "field.DescriptionOPA"
+    }
+  }), _vm._v(" "), _vm.allErrors.DescriptionOPA ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.DescriptionOPA[0]))]) : _vm._e()], 1) : _vm._e()], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
@@ -1102,7 +1467,7 @@ var render = function render() {
     attrs: {
       label: ""
     }
-  }, [_vm.isShow == true && _vm.valStatus == 1 && _vm.isButton ? _c("b-btn", {
+  }, [_vm.isShow == true && _vm.field.IsPublish == 1 && (_vm.Position == 1 && _vm.valStatus == 2 || _vm.Position == 2 && _vm.valStatus == 3) ? _c("b-btn", {
     staticClass: "float-right ml-2",
     attrs: {
       type: "button",
@@ -1110,15 +1475,58 @@ var render = function render() {
     },
     on: {
       click: function click($event) {
-        return _vm.onAction("publish");
+        return _vm.onAction("publish-verify");
       }
     }
-  }, [_vm._v("Publish")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.valStatus >= 2 && _vm.isButton ? _c("b-btn", {
+  }, [_vm._v("Publish Verifikasi")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.field.IsPublish == 1 && _vm.isCaretaker == false && (_vm.Position == 1 && _vm.valStatus >= 4 || _vm.Position == 2 && _vm.valStatus >= 5) ? _c("b-btn", {
     staticClass: "float-right ml-2",
     attrs: {
       variant: "success"
     }
-  }, [_vm._v("Diajukan")]) : _vm._e(), _vm._v(" "), _vm.isShow == false ? _c("b-btn", {
+  }, [_vm._v("Diajukan")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.field.IsPublish == 1 && ((_vm.Position == 3 || _vm.isCaretaker == true) && _vm.valStatus == 5 || _vm.Position == 2 && _vm.valStatus == 4) ? _c("b-btn", {
+    staticClass: "float-right ml-2",
+    attrs: {
+      type: "button",
+      variant: "primary"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.onAction("approve");
+      }
+    }
+  }, [_vm._v("Setujui")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && (_vm.Position == 3 || _vm.isCaretaker == true) && _vm.valStatus == 5 ? _c("b-btn", {
+    staticClass: "float-right ml-2",
+    attrs: {
+      type: "button",
+      variant: "danger"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.onAction("reject");
+      }
+    }
+  }, [_vm._v("Tolak")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.valStatus < 10 && ((_vm.Position == 3 || _vm.isCaretaker == true) && _vm.valStatus >= 6 || _vm.Position == 2 && _vm.valStatus >= 5) ? _c("b-btn", {
+    staticClass: "float-right ml-2",
+    attrs: {
+      variant: "success"
+    }
+  }, [_vm._v("Disetujui")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.valStatus == 10 ? _c("b-btn", {
+    staticClass: "float-right ml-2",
+    attrs: {
+      variant: "warning"
+    }
+  }, [_vm._v("Ditolak")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.field.IsPublish == 1 && (_vm.Position == 1 && _vm.valStatus == 2 || _vm.Position == 2 && _vm.valStatus == 3 || _vm.valStatus == 4 || (_vm.Position == 3 || _vm.isCaretaker == true) && _vm.valStatus == 5) ? _c("b-btn", {
+    staticClass: "float-right ml-2",
+    attrs: {
+      type: "button",
+      variant: "warning"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.onAction("correction");
+      }
+    }
+  }, [_vm._v("Koreksi")]) : _vm._e(), _vm._v(" "), _vm.isShow == false ? _c("b-btn", {
     staticClass: "float-right ml-2",
     attrs: {
       type: "submit",
@@ -1154,17 +1562,17 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/noe-report/form.vue":
-/*!*************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/noe-report/form.vue ***!
-  \*************************************************************************/
+/***/ "./resources/assets/src/components/backend/noe/noe-verification/form.vue":
+/*!*******************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/noe/noe-verification/form.vue ***!
+  \*******************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _form_vue_vue_type_template_id_46e12386___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=46e12386& */ "./resources/assets/src/components/backend/noe/noe-report/form.vue?vue&type=template&id=46e12386&");
-/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/noe/noe-report/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _form_vue_vue_type_template_id_4e181182___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=4e181182& */ "./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=template&id=4e181182&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -1175,8 +1583,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _form_vue_vue_type_template_id_46e12386___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _form_vue_vue_type_template_id_46e12386___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _form_vue_vue_type_template_id_4e181182___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _form_vue_vue_type_template_id_4e181182___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -1186,38 +1594,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/assets/src/components/backend/noe/noe-report/form.vue"
+component.options.__file = "resources/assets/src/components/backend/noe/noe-verification/form.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/noe-report/form.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/noe-report/form.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-report/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/noe-report/form.vue?vue&type=template&id=46e12386&":
-/*!********************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/noe-report/form.vue?vue&type=template&id=46e12386& ***!
-  \********************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=template&id=4e181182&":
+/*!**************************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=template&id=4e181182& ***!
+  \**************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_46e12386___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=46e12386& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-report/form.vue?vue&type=template&id=46e12386&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_46e12386___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_4e181182___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=4e181182& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/noe-verification/form.vue?vue&type=template&id=4e181182&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_4e181182___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_46e12386___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_4e181182___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
