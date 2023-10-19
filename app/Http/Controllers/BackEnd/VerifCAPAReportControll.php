@@ -70,16 +70,21 @@ class VerifCAPAReportControll extends Controller
 
         $getDataVerifikasiCapa =  DB::table('verifikasi_capa_nod as vcn')
         ->select('*')
-        ->where('vcn.status_capa', 1)
         ->get();
-        
+    
         $notExistNOD = [];
         if(count($getDataVerifikasiCapa) > 0) {
             foreach($getDataNODAcc as $keyNod => $valNod) {
                 foreach($getDataVerifikasiCapa as $keyCapa => $valCapa) {
+                    
                     if($valNod->Id === $valCapa->id_approved_nod && $valCapa->actived === 1) {
+                            
                        $notExistNOD;
                     } elseif($valNod->Id === $valCapa->id_approved_nod && $valCapa->actived === 0) {
+                        
+                        array_push($notExistNOD, $valNod);
+                    } elseif($valNod->Id !== $valCapa->id_approved_nod && count($getDataNODAcc) !== count($getDataVerifikasiCapa)) {
+                        
                         array_push($notExistNOD, $valNod);
                     }
                 }
@@ -351,7 +356,11 @@ class VerifCAPAReportControll extends Controller
             }
             $item->FileCAPADownload = $FileCAPADownload;
             $item->efektivitasCapa = json_decode($item->efektivitasCapa);
-            
+
+            if($item->statusCapa === 'Disetujui oleh QA Section Head') {
+                $item->deptHead = session('adminvue')->Name;
+            }
+
         }
         
         $dtRelDept = DB::table('noe_verif_evaluation as nve')
@@ -637,6 +646,7 @@ class VerifCAPAReportControll extends Controller
         try{
             DB::table('verifikasi_capa_nod')
             ->where('id_approved_nod', $request->input('Id'))
+            ->where('actived',1)
             ->update([
                 'status_capa'=>$valStatus,
                 'is_publish' => 1,
@@ -652,7 +662,7 @@ class VerifCAPAReportControll extends Controller
                         ->where('emp.Actived', 1)
                         ->get();
                     
-                    $this->Helper->sendEmailVerifiCapa($item, $NODCA, $NODPA, $itemMail);
+                    $this->Helper->sendEmailVerifiCapa($item, $NODCA, $NODPA, $itemMail, $valStatus);
                 }
 
                 $this->History->store(31,4,json_encode($item));
@@ -679,6 +689,216 @@ class VerifCAPAReportControll extends Controller
     }
 
     public function approve(Request $request) {
+        dd($request);
+        $item = DB::table('verifikasi_capa_nod as vcn')
+                    ->select('*', 'nod.NODNumber')
+                    ->leftjoin('nod_report as nod','nod.Id','=','vcn.id_approved_nod')
+                    ->where('vcn.id_approved_nod', $request->input('Id'))
+                    ->first();
+        $valStatus = 3;
+       
+        $NODCA = DB::table('nod_report_action as nra')
+            ->select(
+                'nra.IdPIC as IdCAPIC',
+                'nra.Date as CADate',
+                'nra.Description as CADescription',
+                'nra.File as CAFile',
+                'nra.File as CAFileName',
+                'emp.Name as CAPIC'
+            )
+            ->leftjoin('employee as emp','emp.Id','=','nra.IdPIC')
+            ->where('nra.IdNODReport', $request->input('Id'))
+            ->where('nra.Type', 0)
+            ->where('nra.Actived', 1)
+            ->get(); 
         
+        $NODPA = DB::table('nod_report_action as nra')
+            ->select(
+                'nra.IdPIC as IdPAPIC',
+                'nra.Date as PADate',
+                'nra.Description as PADescription',
+                'nra.File as PAFile',
+                'nra.File as PAFileName',
+                'emp.Name as PAPIC'
+            )
+            ->leftjoin('employee as emp','emp.Id','=','nra.IdPIC')
+            ->where('nra.IdNODReport', $request->input('Id'))
+            ->where('nra.Type', 1)
+            ->where('nra.Actived', 1)
+            ->get();
+
+        DB::begintransaction();
+        try {
+            DB::table('verifikasi_capa_nod as vcn')
+                ->where('vcn.id_approved_nod', $request->input('Id'))
+                ->where('actived',1)
+                ->update([
+                    'vcn.status_capa' => $valStatus,
+                    'vcn.name_verfication'=> $request->input('deptHeadVerification'),
+                    'vcn.time_finished_verfication' => Carbon::now()->format('Y-m-d H:i:s')
+                ]);
+
+            try {
+                
+                $itemPosition = DB::table('position')
+                        ->select('Id')
+                        ->where('IdDepartment', 67) 
+                        ->where('Id', $item->user_entry)
+                        ->where('Actived', 1)
+                        ->first();
+                    
+                if($itemPosition!=null) $IdPosition = $itemPosition->Id;
+                else $IdPosition = 0;
+                
+                if($IdPosition!=0) {
+                    $itemMail = $this->MainDB->table('employee as emp')
+                        ->select('emp.Name as Employee','emp.Email')
+                        ->where('emp.IdPosition', $IdPosition)
+                        ->where('emp.Actived', 1)
+                        ->get();
+                    
+                    $this->Helper->sendEmailVerifiCapa($item, $NODCA, $NODPA, $itemMail, $valStatus);   
+                }
+                
+                $this->History->store(25,13,json_encode($item));
+                DB::commit();
+            } catch (Exception $e) {
+                return json_encode(array(
+                    'status'=>false,
+                    'message'=>'Publish Data Gagal, Pengiriman Email Invalid!',
+                    'validation'=>$validation->errors(),
+                ));
+            }
+
+        } catch (Exception $e) {
+            DB::rollback();
+            return json_encode(array(
+                'status'=>false,
+                'message'=>'Setujui Data Gagal, Invalid Server Side!',
+            ));
+        }
+
+        return json_encode(array(
+            'status'=>true,
+            'message'=>'Setujui Data Sukses!',
+        ));
+    }
+
+    public function reject(Request $request) {
+        
+        $item = DB::table('verifikasi_capa_nod as vcn')
+                    ->select('*', 'nod.NODNumber')
+                    ->leftjoin('nod_report as nod','nod.Id','=','vcn.id_approved_nod')
+                    ->where('vcn.id_approved_nod', $request->input('Id'))
+                    ->first();
+
+        $valStatus = 4;
+
+        $NODCA = DB::table('nod_report_action as nra')
+            ->select(
+                'nra.IdPIC as IdCAPIC',
+                'nra.Date as CADate',
+                'nra.Description as CADescription',
+                'nra.File as CAFile',
+                'nra.File as CAFileName',
+                'emp.Name as CAPIC'
+            )
+            ->leftjoin('employee as emp','emp.Id','=','nra.IdPIC')
+            ->where('nra.IdNODReport', $request->input('Id'))
+            ->where('nra.Type', 0)
+            ->where('nra.Actived', 1)
+            ->get(); 
+        
+        $NODPA = DB::table('nod_report_action as nra')
+            ->select(
+                'nra.IdPIC as IdPAPIC',
+                'nra.Date as PADate',
+                'nra.Description as PADescription',
+                'nra.File as PAFile',
+                'nra.File as PAFileName',
+                'emp.Name as PAPIC'
+            )
+            ->leftjoin('employee as emp','emp.Id','=','nra.IdPIC')
+            ->where('nra.IdNODReport', $request->input('Id'))
+            ->where('nra.Type', 1)
+            ->where('nra.Actived', 1)
+            ->get();
+
+        if(!empty($item)) {
+            $item->rejectdesc = $request->input('Description');
+        }
+
+        DB::begintransaction();
+        try{
+            DB::table('verifikasi_capa_nod as vcn')
+                ->where('vcn.id_approved_nod', $request->input('Id'))
+                ->where('vcn.actived',1)
+                ->update([
+                    'status_capa' => $valStatus,
+                    'reject_description' => $request->input('Description'),
+                    'is_approved' => 0,
+                    'actived' => 0
+                ]);
+
+            try{
+                $itemPosition = DB::table('position')
+                        ->select('Id')
+                        ->where('IdDepartment', session('adminvue')->IdDepartment) 
+                        ->where('Id', $item->user_entry)
+                        ->where('Actived', 1)
+                        ->first();
+                
+                if($itemPosition!=null) $IdPosition = $itemPosition->Id;
+                else $IdPosition = 0;
+                
+                if($IdPosition!=0) {
+                    $itemMail = $this->MainDB->table('employee as emp')
+                        ->select('emp.Name as Employee','emp.Email')
+                        ->where('emp.IdPosition', $IdPosition)
+                        ->where('emp.Actived', 1)
+                        ->get();
+                    
+                    $this->Helper->sendEmailVerifiCapa($item, $NODCA, $NODPA, $itemMail, $valStatus);   
+                }
+
+                $this->History->store(25,14,json_encode($item));
+                DB::commit();
+            }catch (Exception $e){
+                return json_encode(array(
+                    'status'=>false,
+                    'message'=>'Tolak Data Gagal, Pengiriman Email Invalid!',
+                    'validation'=>$validation->errors(),
+                ));
+            }
+        }catch (Exception $e){
+            DB::rollback();
+            return json_encode(array(
+                'status'=>false,
+                'message'=>'Tolak Data Gagal, Invalid Server Side!',
+            ));
+        }
+
+        return json_encode(array(
+            'status'=>true,
+            'message'=>'Tolak Data Sukses!',
+        ));
+    }
+
+    function descriptionReject(Request $request) {
+        $item = DB::table('verifikasi_capa_nod as vcn')
+            ->select('vcn.reject_description as description')
+            ->where('vcn.reject_description','<>',null)
+            ->where('vcn.id',$request->Id)
+            ->where('vcn.actived',1)
+            ->first();
+
+        $description = 'Deskripsi tidak tertulis';
+
+        if($item!=null) $description = $item->description;
+        
+        return json_encode(array(
+            'status'=>true,
+            'data'=>$description,
+        ));
     }
 }

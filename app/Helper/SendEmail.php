@@ -214,10 +214,18 @@ class Helper {
         } }
     }
 
-    function sendEmailVerifiCapa($item, $NODCA, $NODPA, $itemMail) {
-        $data['Subject'] = 'Pengajuan efektivitas CAPA - Published';
-        $data['Title'] = 'Berikut pengajuan efektivitas CAPA dengan rincian sebagai berikut';
-        
+    function sendEmailVerifiCapa($item, $NODCA, $NODPA, $itemMail, $statusCapa) {
+        if($statusCapa === 2) {
+            $data['Subject'] = 'Pengajuan efektivitas CAPA - Published';
+            $data['Title'] = 'Berikut pengajuan efektivitas CAPA dengan rincian sebagai berikut';
+        } elseif ($statusCapa === 3) {
+            $data['Subject'] = 'Pengajuan efektivitas CAPA - Approved';
+            $data['Title'] = 'Pengajuan efektivitas CAPA telah disetujui dengan rincian sebagai berikut';
+        } else if ($statusCapa === 4) {
+            $data['Subject'] = 'Pengajuan efektivitas CAPA - Rejected';
+            $data['Title'] = 'Pengajuan efektivitas CAPA telah ditolak dengan rincian sebagai berikut';
+        }
+
         $dataMail['Pelapor'] = session('adminvue')->Name .' | '. session('adminvue')->Position .' - '. session('adminvue')->Department;
         $dataMail['NOD Number'] = $item->NODNumber;
 
@@ -227,7 +235,11 @@ class Helper {
         foreach($NODPA as $keyPa => $valPa) {
             $dataMail['Dekskripsi Corrective Action (PA) ' . ($keyPa + 1)] = $valPa->PADescription;
         }
-
+        
+        if($statusCapa === 4) {
+            $dataMail['Deskripsi ditolak'] = $item->rejectdesc;
+        }
+        
         if(count($itemMail)>0) { foreach ($itemMail as $key => $val) {
             $data['Employee'] = $val->Employee;
             $data['Email'] = $val->Email;

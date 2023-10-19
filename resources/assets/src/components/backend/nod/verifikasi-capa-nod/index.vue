@@ -63,7 +63,19 @@
             <i class="fas fa-bars"></i>
           </b-btn>
         </template>
-  
+      
+        <template slot="statusCAPA" slot-scope="props">
+          <div class="custom-actions">
+            <template v-if="props.rowData.statusCAPA == 'ditolak'">
+              {{props.rowData.statusCAPA}}
+              <b-btn class="btn btn-outline-info btn-xs ml-1" v-on:click="showReject(props.rowData.id)"> <i class="ion ion-ios-eye"></i></b-btn>
+            </template>
+            <template v-else>
+              {{props.rowData.statusCAPA}}
+            </template>
+          </div>
+        </template>
+
         <template slot="action" slot-scope="props">
           <div class="custom-actions">
             <b-btn class="btn btn-outline-info btn-sm mr-1 mt-1"
@@ -85,9 +97,9 @@
               @click="onAction('publish', props.rowData, props.rowIndex)">
               <i class="ion-md-cloud-upload"></i> Publish
             </b-btn>
-  
+            
             <b-btn v-if="props.rowData.Status != 'UnPublish'" class="btn btn-warning btn-sm mr-1 mt-1"
-              :href="'/AdminVue/nod-report/'+props.rowData.id+'/export'" target="_blank">
+              :href="'/AdminVue/nod-report/'+props.rowData.id_Approve+'/export'" target="_blank">
               <i class="ion ion-md-print"></i> Export
             </b-btn>
   
@@ -238,6 +250,24 @@
         for (let i = 0; i < this.idDetail.length; i++) {
           this.$refs.vuetable.hideDetailRow(this.idDetail[i])
         }
+      },
+
+      showReject (id) {
+      axios.post('/AdminVue/nod-verifikasi-capa-description-reject-data',{
+        Id: id
+        })
+        .then( function (res) {
+          var resp = res.data.data
+          this.$swal({
+            icon: 'info',
+            title: 'Deskripsi Verifikasi CAPA Ditolak',
+            text: resp,
+            confirmButtonText: 'Tutup',
+          })
+        }.bind(this))
+        .catch( function (e) {
+          console.log(e)
+        }.bind(this))
       },
   
       createData () {
