@@ -54,7 +54,11 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         SectionPublish: 0,
         userEntry: 0,
         CAPAFile: [],
+        FileCAPA: [],
+        verifPAFile: [],
+        verifFilePA: [],
         FileCAPADownload: [],
+        FileVerifPADownload: [],
         Status: '',
         selectedEfektifitasValue: ''
       },
@@ -89,6 +93,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       text: [],
       dataAnotherEffect: [],
       OldCAPAFile: [],
+      OldVerifPAFile: [],
       deptHeadVerification: ''
     };
   },
@@ -136,6 +141,11 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           formData.append('CAPAFile[' + i + ']', file);
         }
         formData.append("OldCAPAFile", JSON.stringify(this.OldCAPAFile));
+        for (var i = 0; i < this.field.verifPAFile.length; i++) {
+          var _file = this.field.verifPAFile[i];
+          formData.append('verifPAFile[' + i + ']', _file);
+        }
+        formData.append("OldVerifPAFile", JSON.stringify(this.OldVerifPAFile));
         var collectedEfektivitas = [];
         if (this.selectedEfektifitasCapa === true) {
           collectedEfektivitas = {
@@ -208,19 +218,33 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           this.selectedEfektifitasCapa = null;
         }
         vue__WEBPACK_IMPORTED_MODULE_1___default.a.set(this.field, 'FileCAPADownload', resp.data.FileCAPADownload);
+        vue__WEBPACK_IMPORTED_MODULE_1___default.a.set(this.field, 'FileVerifPADownload', resp.data.FileVerifPADownload);
         if (this.field.Status == 'Disetujui oleh QA Section Head') this.valStatus = 2;
         if (this.field.Status == 'Diverifikasi oleh QA Dept Head') this.valStatus = 3;
         if (this.field.Status == 'ditolak') this.valStatus = 4;
-        this.field.CAPAFile = resp.data.fileCAPA;
-        if (this.field.CAPAFile != '') {
-          var countFileCAPA = this.field.CAPAFile.length;
+        this.field.CAPAFile = [];
+        this.field.verifPAFile = [];
+        this.field.FileCAPA = resp.data.fileCAPA;
+        this.field.verifFilePA = resp.data.verifFilePA;
+        if (this.field.FileCAPA != '') {
+          var countFileCAPA = this.field.FileCAPA.length;
           for (var i = 0; i < countFileCAPA; i++) {
-            this.OldCAPAFile.push(this.field.CAPAFile[i]);
-            this.field.CAPAFile.push("/" + this.field.CAPAFile[i]);
+            this.OldCAPAFile.push(this.field.FileCAPA[i]);
+            this.field.CAPAFile.push("/" + this.field.FileCAPA[i]);
           }
         }
         if (this.field.CAPAFile == '') {
           this.OldCAPAFile = '';
+        }
+        if (this.field.verifFilePA != '') {
+          var countFilePA = this.field.verifFilePA.length;
+          for (var _i = 0; _i < countFilePA; _i++) {
+            this.OldVerifPAFile.push(this.field.verifFilePA[_i]);
+            this.field.verifPAFile.push("/" + this.field.verifFilePA[_i]);
+          }
+        }
+        if (this.field.verifPAFile == '') {
+          this.OldVerifPAFile = '';
         }
         this.getDataNODAcc(resp.data.IdNOEReport, resp.data.Id);
         this.getDataPIC(resp.data.IdNOEReport);
@@ -377,11 +401,23 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         return files.file;
       });
     },
+    handleFileVerifPA: function handleFileVerifPA(files) {
+      this.field.verifPAFile = files.map(function (files) {
+        return files.file;
+      });
+    },
     handleRemoveCAPA: function handleRemoveCAPA(error, files) {
       var result = _typeof(files.source);
       if (this.isEdit == true && result === 'string') {
         var index = this.OldCAPAFile.indexOf(files.source.replace('/clouds', 'clouds'));
         this.OldCAPAFile.splice(index, 1);
+      }
+    },
+    handleRemoveVerifPA: function handleRemoveVerifPA(error, files) {
+      var result = _typeof(files.source);
+      if (this.isEdit == true && result === 'string') {
+        var index = this.OldVerifPAFile.indexOf(files.source.replace('/clouds', 'clouds'));
+        this.OldVerifPAFile.splice(index, 1);
       }
     },
     addDetail: function addDetail(type) {
@@ -889,7 +925,9 @@ var render = function render() {
         staticClass: "fa fa-download"
       })])])], 1)];
     })], 2)], 1), _vm._v(" "), _c("hr")];
-  }), _vm._v(" "), _vm.isShow == false ? _c("b-btn", {
+  }), _vm._v(" "), _c("div", {
+    staticClass: "col-md-12"
+  }, [_vm.isShow == false ? _c("b-btn", {
     staticClass: "float-left btn-info",
     attrs: {
       type: "button",
@@ -903,7 +941,60 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "fas fa-plus"
-  }), _vm._v(" Tambah")]) : _vm._e()], 2), _vm._v(" "), _c("b-card", {
+  }), _vm._v(" Tambah")]) : _vm._e()], 1)], 2), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+    staticClass: "col-md-12"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Lampiran CA (Corrective Action)")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("(Max. 50 MB)")]), _vm._v(" "), _c("file-pond", {
+    ref: "pondMyFile",
+    attrs: {
+      name: "CAPAFile",
+      "label-idle": "Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;",
+      "allow-multiple": true,
+      files: _vm.field.CAPAFile,
+      "accepted-file-types": "application/*, image/*, video/*",
+      maxTotalFileSize: "50MB",
+      required: "",
+      disabled: _vm.isShow || _vm.Position === 4
+    },
+    on: {
+      updatefiles: _vm.handleFileCAPA,
+      removefile: _vm.handleRemoveCAPA
+    }
+  })], 1), _vm._v(" "), _vm.isShow == true ? _c("b-card", {
+    staticClass: "mb-3",
+    attrs: {
+      header: "Lampiran CA (Corrective Action)",
+      "header-tag": "h5"
+    }
+  }, [_c("b-form-row", _vm._l(_vm.field.FileCAPADownload, function (item, index) {
+    return _c("b-form-group", {
+      key: index,
+      staticClass: "col-md-12"
+    }, [_c("b-input-group", [_c("b-form-input", {
+      attrs: {
+        name: "FileCAPADownload",
+        readonly: ""
+      },
+      model: {
+        value: item[0],
+        callback: function callback($$v) {
+          _vm.$set(item, 0, $$v);
+        },
+        expression: "item[0]"
+      }
+    }), _vm._v(" "), _c("b-input-group-append", [_c("a", {
+      staticClass: "input-group-text btn-outline-success",
+      attrs: {
+        href: _vm.BaseUrl + item[1],
+        target: "_blank"
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-download"
+    })])])], 1)], 1);
+  }), 1)], 1) : _vm._e()], 1), _vm._v(" "), _c("b-card", {
     staticClass: "mb-4",
     attrs: {
       header: "Tindakan Pencegahan (Preventive Action)",
@@ -1049,7 +1140,60 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "fas fa-plus"
-  }), _vm._v(" Tambah")]) : _vm._e()], 2), _vm._v(" "), _vm.Position == 2 || _vm.Position == 4 ? _c("b-card", {
+  }), _vm._v(" Tambah")]) : _vm._e()], 2), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+    staticClass: "col-md-12"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Lampiran PA (Preventive Action)")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("(Max. 50 MB)")]), _vm._v(" "), _c("file-pond", {
+    ref: "pondMyFile",
+    attrs: {
+      name: "verifPAFile",
+      "label-idle": "Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;",
+      "allow-multiple": true,
+      files: _vm.field.verifPAFile,
+      "accepted-file-types": "application/*, image/*, video/*",
+      maxTotalFileSize: "50MB",
+      required: "",
+      disabled: _vm.isShow || _vm.Position === 4
+    },
+    on: {
+      updatefiles: _vm.handleFileVerifPA,
+      removefile: _vm.handleRemoveVerifPA
+    }
+  })], 1), _vm._v(" "), _vm.isShow == true ? _c("b-card", {
+    staticClass: "mb-3",
+    attrs: {
+      header: "Lampiran PA (Preventive Action)",
+      "header-tag": "h5"
+    }
+  }, [_c("b-form-row", _vm._l(_vm.field.FileVerifPADownload, function (item, index) {
+    return _c("b-form-group", {
+      key: index,
+      staticClass: "col-md-12"
+    }, [_c("b-input-group", [_c("b-form-input", {
+      attrs: {
+        name: "FileVerifPADownload",
+        readonly: ""
+      },
+      model: {
+        value: item[0],
+        callback: function callback($$v) {
+          _vm.$set(item, 0, $$v);
+        },
+        expression: "item[0]"
+      }
+    }), _vm._v(" "), _c("b-input-group-append", [_c("a", {
+      staticClass: "input-group-text btn-outline-success",
+      attrs: {
+        href: _vm.BaseUrl + item[1],
+        target: "_blank"
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-download"
+    })])])], 1)], 1);
+  }), 1)], 1) : _vm._e()], 1), _vm._v(" "), _vm.Position == 2 || _vm.Position == 4 ? _c("b-card", {
     staticClass: "mb-4",
     attrs: {
       header: "Sistem Lain Yang Terdampak (Bila Ada)",
@@ -1125,60 +1269,7 @@ var render = function render() {
         expression: "text[item.id_effect]"
       }
     })], 1) : _vm._e()], 1);
-  }), 0) : _vm._e()], 1) : _vm._e(), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-12"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Lampiran CAPA")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("(Max. 50 MB)")]), _vm._v(" "), _c("file-pond", {
-    ref: "pondMyFile",
-    attrs: {
-      name: "CAPAFile",
-      "label-idle": "Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;",
-      "allow-multiple": true,
-      files: _vm.field.CAPAFile,
-      "accepted-file-types": "application/*, image/*, video/*",
-      maxTotalFileSize: "50MB",
-      required: "",
-      disabled: _vm.isShow || _vm.Position === 4
-    },
-    on: {
-      updatefiles: _vm.handleFileCAPA,
-      removefile: _vm.handleRemoveCAPA
-    }
-  })], 1), _vm._v(" "), _vm.isShow == true ? _c("b-card", {
-    staticClass: "mb-3",
-    attrs: {
-      header: "Lampiran CAPA",
-      "header-tag": "h5"
-    }
-  }, [_c("b-form-row", _vm._l(_vm.field.FileCAPADownload, function (item, index) {
-    return _c("b-form-group", {
-      key: index,
-      staticClass: "col-md-12"
-    }, [_c("b-input-group", [_c("b-form-input", {
-      attrs: {
-        name: "FileCAPADownload",
-        readonly: ""
-      },
-      model: {
-        value: item[0],
-        callback: function callback($$v) {
-          _vm.$set(item, 0, $$v);
-        },
-        expression: "item[0]"
-      }
-    }), _vm._v(" "), _c("b-input-group-append", [_c("a", {
-      staticClass: "input-group-text btn-outline-success",
-      attrs: {
-        href: _vm.BaseUrl + item[1],
-        target: "_blank"
-      }
-    }, [_c("i", {
-      staticClass: "fa fa-download"
-    })])])], 1)], 1);
-  }), 1)], 1) : _vm._e()], 1), _vm._v(" "), _vm.Position == 2 || _vm.Position == 4 ? _c("b-card", {
+  }), 0) : _vm._e()], 1) : _vm._e(), _vm._v(" "), _vm.Position == 2 || _vm.Position == 4 ? _c("b-card", {
     staticClass: "mb-4",
     attrs: {
       header: "Verifikasi Efektifitas CAPA",

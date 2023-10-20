@@ -283,13 +283,30 @@ class VerifCAPAReportControll extends Controller
         } else {
             $capaFile = json_encode($capaFile);
         }
+
+        $verifPAFile = [];
+        if($request->has('verifPAFile') && $request->file('verifPAFile')!=null) {
+            $arrFilePA = $request->file('verifPAFile');
+            foreach($arrFilePA as $key=>$val) {
+                if(pathinfo($val->getClientOriginalName(), PATHINFO_EXTENSION)) {
+                    $verifPAFile[$key] = $this->UploadFile->uploadFile($val,5); //5 path noe-report
+                }
+            }
+        }
         
+        if(count($verifPAFile) > 0) {
+            $verifPAFile = json_encode($verifPAFile);
+        } else {
+            $verifPAFile = json_encode($verifPAFile);
+        }
+    
         DB::begintransaction();
         try{
             DB::table('verifikasi_capa_nod')
                 ->insert([
                     'id_approved_nod' => $request->input('NODAccNumber'),
                     'attachment_capa' => $capaFile,
+                    'another_attachment_capa' => $verifPAFile,
                     'status_capa'=> 1,
                     'user_entry'=> $request->input('userEntry'),
                     'is_approved'=> 0,
@@ -329,7 +346,8 @@ class VerifCAPAReportControll extends Controller
             'nod.*',
             'vcn.attachment_capa as fileCAPA',
             'vcn.status_capa as statusCapa',
-            'vcn.verifikasi_efektifitas_capa as efektivitasCapa'
+            'vcn.verifikasi_efektifitas_capa as efektivitasCapa',
+            'vcn.another_attachment_capa as verifFilePA'
         )
         ->leftjoin('nod_report as nod','nod.IdNOEReport', '=', 'noe.Id')
         ->leftjoin('verifikasi_capa_nod as vcn', 'vcn.id_approved_nod', '=', 'nod.Id')
@@ -343,7 +361,7 @@ class VerifCAPAReportControll extends Controller
         if (!empty($item)) {
             $fileCAPA = json_decode($item->fileCAPA);
             $item->fileCAPA = $fileCAPA;
-
+            
             $FileCAPADownload = [];
             foreach ($fileCAPA as $key => $val) {
                 $arr = [];
@@ -355,6 +373,22 @@ class VerifCAPAReportControll extends Controller
                 array_push($FileCAPADownload, $arr);
             }
             $item->FileCAPADownload = $FileCAPADownload;
+
+            $verifPAFile = json_decode($item->verifFilePA);
+            $item->verifFilePA = $verifPAFile;
+        
+            $FileVerifPADownload = [];
+            foreach ($verifPAFile as $key => $val) {
+                $arr = [];
+                if($val) {
+                    $result = explode("/",$val);
+                    array_push($arr, $result[4]);
+                }
+                array_push($arr, $val);
+                array_push($FileVerifPADownload, $arr);
+            }
+            $item->FileVerifPADownload = $FileVerifPADownload;
+
             $item->efektivitasCapa = json_decode($item->efektivitasCapa);
 
             if($item->statusCapa === 'Disetujui oleh QA Section Head') {
@@ -570,6 +604,27 @@ class VerifCAPAReportControll extends Controller
             $capaFile = '';
         }
 
+        $verifPAFile = [];
+        if($request->has('verifPAFile') && $request->file('verifPAFile')!=null) {
+            $arrFile = $request->file('verifPAFile');
+            foreach($arrFile as $key=>$val) {
+                if(pathinfo($val->getClientOriginalName(), PATHINFO_EXTENSION)) {
+                    $verifPAFile[$key] = $this->UploadFile->uploadFile($val,5); //5 path noe-report
+                }
+            }
+        }
+
+        $OldVerifPAFile = json_decode($request->input('OldVerifPAFile'));
+        foreach($OldVerifPAFile as $key=>$val){
+            array_push($verifPAFile,$val);
+        }
+
+        if(count($verifPAFile) > 0) {
+            $verifPAFile = json_encode($verifPAFile);
+        } else {
+            $verifPAFile = '';
+        }
+
         $isApproved = 0;
         if(!empty(json_decode($request->input('verifikasiEfektivitasCapa')))) {
             $isApproved = 1;
@@ -581,6 +636,7 @@ class VerifCAPAReportControll extends Controller
             ->where('id_approved_nod', $request->input('NODAccNumber'))
             ->update([
                 'attachment_capa' => $capaFile,
+                'another_attachment_capa' => $verifPAFile,
                 'verifikasi_efektifitas_capa' => $request->input('verifikasiEfektivitasCapa'),
                 'is_approved' => $isApproved,
                 'updated_at'=> Carbon::now()->format('Y-m-d H:i:s')
