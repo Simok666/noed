@@ -821,10 +821,9 @@
         }
         if(action == 'correction'){
           this.$router.push({
-            name: 'nod/form-correction-nod-report',
+            name: 'nod/form-correction-verifikasi-capa',
             params: {
-              Id: this.field.Id,
-              isCaretaker: this.isCaretaker
+              Id: this.field.Id
             }
           })
         }

@@ -508,11 +508,7 @@ var render = function render() {
           }
         }, [_c("i", {
           staticClass: "ion ion-md-print"
-        }), _vm._v(" Export\n           ")]) : _vm._e(), _vm._v(" "), _c("div", [_vm.position != 4 && props.rowData.Status == "UnPublish" || _vm.position == 1 && props.rowData.Status == "Dilaporkan ke Unit Head" || _vm.position == 2 && props.rowData.Status == "Disetujui oleh Unit Head" || (_vm.position == 4 || _vm.isCaretaker == true) && (props.rowData.Status == "Disetujui oleh Section Head" && props.rowData.IdDepartment == _vm.userDepartment || props.rowData.IdDepartment != _vm.userDepartment && props.rowData.Status == "Disetujui oleh Dept Head" || _vm.userDepartment == 67 && props.rowData.Status == "Disetujui oleh Dept Head Terkait") ? _c("span", {
-          staticClass: "btn btn-md btn-warning"
-        }) : _c("span", {
-          staticClass: "btn btn-md btn-success"
-        })])], 1)];
+        }), _vm._v(" Export\n           ")]) : _vm._e()], 1)];
       }
     }, {
       key: "more",

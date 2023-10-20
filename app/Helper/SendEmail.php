@@ -217,13 +217,13 @@ class Helper {
     function sendEmailVerifiCapa($item, $NODCA, $NODPA, $itemMail, $statusCapa) {
         if($statusCapa === 2) {
             $data['Subject'] = 'Pengajuan efektivitas CAPA - Published';
-            $data['Title'] = 'Berikut pengajuan efektivitas CAPA dengan rincian sebagai berikut';
+            $data['Title'] = 'Berikut pengajuan efektivitas CAPA dengan rincian sebagai berikut :';
         } elseif ($statusCapa === 3) {
             $data['Subject'] = 'Pengajuan efektivitas CAPA - Approved';
-            $data['Title'] = 'Pengajuan efektivitas CAPA telah disetujui dengan rincian sebagai berikut';
+            $data['Title'] = 'Pengajuan efektivitas CAPA telah disetujui dengan rincian sebagai berikut :';
         } else if ($statusCapa === 4) {
             $data['Subject'] = 'Pengajuan efektivitas CAPA - Rejected';
-            $data['Title'] = 'Pengajuan efektivitas CAPA telah ditolak dengan rincian sebagai berikut';
+            $data['Title'] = 'Pengajuan efektivitas CAPA telah ditolak dengan rincian sebagai berikut :';
         }
 
         $dataMail['Pelapor'] = session('adminvue')->Name .' | '. session('adminvue')->Position .' - '. session('adminvue')->Department;

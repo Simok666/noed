@@ -689,7 +689,6 @@ class VerifCAPAReportControll extends Controller
     }
 
     public function approve(Request $request) {
-        dd($request);
         $item = DB::table('verifikasi_capa_nod as vcn')
                     ->select('*', 'nod.NODNumber')
                     ->leftjoin('nod_report as nod','nod.Id','=','vcn.id_approved_nod')
@@ -900,5 +899,149 @@ class VerifCAPAReportControll extends Controller
             'status'=>true,
             'data'=>$description,
         ));
+    }
+
+    public function correction(Request $request) {
+        $requestData = $request->all();
+        $validation = Validator::make($request->all(),$this->validationCorrection(),
+            $messages = ['required' => 'This field is required.']);
+
+        if ($validation->fails()) {
+            return json_encode(array(
+                'status'=>false,
+                'message'=>'Silahkan lengkapi kolom *Wajib Diisi',
+                'validation'=>$validation->errors(),
+            ));
+        }
+
+        $item = DB::table('verifikasi_capa_nod as vcn')
+        ->select('*', 'nod.NODNumber')
+        ->leftjoin('nod_report as nod','nod.Id','=','vcn.id_approved_nod')
+        ->where('vcn.id_approved_nod', $request->input('Id'))
+        ->first();
+
+        $NODCA = DB::table('nod_report_action as nra')
+            ->select(
+                'nra.IdPIC as IdCAPIC',
+                'nra.Date as CADate',
+                'nra.Description as CADescription',
+                'nra.File as CAFile',
+                'nra.File as CAFileName',
+                'emp.Name as CAPIC'
+            )
+            ->leftjoin('employee as emp','emp.Id','=','nra.IdPIC')
+            ->where('nra.IdNODReport', $request->input('Id'))
+            ->where('nra.Type', 0)
+            ->where('nra.Actived', 1)
+            ->get(); 
+        
+        $NODPA = DB::table('nod_report_action as nra')
+            ->select(
+                'nra.IdPIC as IdPAPIC',
+                'nra.Date as PADate',
+                'nra.Description as PADescription',
+                'nra.File as PAFile',
+                'nra.File as PAFileName',
+                'emp.Name as PAPIC'
+            )
+            ->leftjoin('employee as emp','emp.Id','=','nra.IdPIC')
+            ->where('nra.IdNODReport', $request->input('Id'))
+            ->where('nra.Type', 1)
+            ->where('nra.Actived', 1)
+            ->get();
+        
+        $arr = [
+            'TypeData'=>6, // -> type koreksi nod verifikasi CAPA
+            'Number'=>$request->input('Number'),
+            'Description'=>$request->input('Description'),
+            'TypeUser'=>0,
+            'ChildToAnswer'=>0,
+            'Attachment'=>'[]',
+            'UserEntry'=>session('adminvue')->Id,
+        ];
+
+        DB::begintransaction();
+        try {
+            $status = 1;
+            
+            DB::table('correction')
+                ->insert($arr);
+            
+            DB::table('verifikasi_capa_nod as vcn')
+                ->where('vcn.id_approved_nod', $request->input('Id'))
+                ->update([
+                    'vcn.status_capa' => $status,
+                    'vcn.is_publish' => 0
+                ]);
+            try {
+              
+                $itemPosition = DB::table('position')
+                        ->select('Id')
+                        ->where('IdDepartment', session('adminvue')->IdDepartment) 
+                        ->where('Id', $item->user_entry)
+                        ->where('Actived', 1)
+                        ->first();
+                
+                if($itemPosition!=null) $idPosition = $itemPosition->Id;
+                else $idPosition = 0;
+                
+                if($idPosition != 0) {
+                    $itemMail = $this->MainDB->table('employee as emp')
+                        ->select('emp.Name as Employee','emp.Email')
+                        ->where('emp.IdPosition', $idPosition)
+                        ->where('emp.Actived', 1)
+                        ->get();
+                }
+                
+                $data['Subject'] = 'Verifikasi CAPA - Correction';
+                $data['Title'] = 'Pengajuan efektivitas CAPA terdapat koreksi/diperlukan perbaikan dengan rincian sebagai berikut :';
+
+                $dataMail['Korektor'] = session('adminvue')->Name .' | '. session('adminvue')->Position .' - '. session('adminvue')->Department;
+                $dataMail['NOD Number'] = $item->NODNumber;
+                foreach($NODCA as $keyCa => $valCa) {      
+                    $dataMail['Dekskripsi Corrective Action (CA) ' . ($keyCa + 1)] = $valCa->CADescription;
+                }
+                foreach($NODPA as $keyPa => $valPa) {
+                    $dataMail['Dekskripsi Corrective Action (PA) ' . ($keyPa + 1)] = $valPa->PADescription;
+                }
+                
+                $dataMail['Correction'] = $request->input('Description');
+                
+                if(count($itemMail)>0) { foreach ($itemMail as $key => $val) {
+                    $data['Employee'] = $val->Employee;
+                    $data['Email'] = $val->Email;
+                    
+                    $this->History->sendMail($data, $dataMail, $dataObjectEmail=[]);
+                } }
+
+                $this->History->store(33,15,json_encode($requestData));
+                DB::commit();
+            } catch (Exception $e) {
+                return json_encode(array(
+                    'status'=>false,
+                    'message'=>'Koreksi Data Gagal, Pengiriman Email Invalid!',
+                    'validation'=>$validation->errors(),
+                ));
+            }
+
+        } catch(Exception $e) {
+            DB::rollback();
+            return json_encode(array(
+                'status'=>false,
+                'message'=>'Koreksi Data Gagal, Server Invalid!',
+                'validation'=>$validation->errors(),
+            ));
+        }
+
+        return json_encode(array(
+            'status'=>true,
+            'message'=>'Koreksi Data Sukses!',
+        ));
+    }
+
+    function validationCorrection(){
+        return [
+            'Description'=>'required'
+        ];
     }
 }

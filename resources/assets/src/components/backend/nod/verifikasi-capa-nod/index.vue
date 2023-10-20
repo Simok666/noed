@@ -97,17 +97,17 @@
               @click="onAction('publish', props.rowData, props.rowIndex)">
               <i class="ion-md-cloud-upload"></i> Publish
             </b-btn>
-            
+
             <b-btn v-if="props.rowData.Status != 'UnPublish'" class="btn btn-warning btn-sm mr-1 mt-1"
               :href="'/AdminVue/nod-report/'+props.rowData.id_Approve+'/export'" target="_blank">
               <i class="ion ion-md-print"></i> Export
             </b-btn>
   
-            <div>
+            <!-- <div>
               <span v-if="(position != 4 && props.rowData.Status == 'UnPublish') || (position == 1 && props.rowData.Status == 'Dilaporkan ke Unit Head') || (position == 2 && props.rowData.Status == 'Disetujui oleh Unit Head') || ( (position == 4 || isCaretaker == true) && ( (props.rowData.Status == 'Disetujui oleh Section Head' && props.rowData.IdDepartment == userDepartment) || ( (props.rowData.IdDepartment != userDepartment) && props.rowData.Status == 'Disetujui oleh Dept Head') || (userDepartment == 67 && props.rowData.Status == 'Disetujui oleh Dept Head Terkait') ) )" class="btn btn-md btn-warning"></span>
   
               <span v-else class="btn btn-md btn-success"></span>
-            </div>
+            </div> -->
             
           </div>
         </template>

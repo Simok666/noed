@@ -2694,6 +2694,8 @@ class NODReportControll extends Controller
             $setCapaFalse = false;
             $setCapaTrue = false;
             $getdataCapaTrue = '';
+            $nameVerificationCAPA = '';
+            $timeVerificationCAPA = '';
             if($itemReport->StatusCapa === 'Disetujui oleh QA Section Head' || $itemReport->StatusCapa === 'Diverifikasi oleh QA Dept Head') {
                 $verifikasiCapa = json_decode($itemReport->verifikasiCapa);
                 if($verifikasiCapa->selected === true) {
@@ -2704,6 +2706,7 @@ class NODReportControll extends Controller
                 }
                 $nameVerificationCAPA = $itemReport->name_verfication;
                 $timeVerificationCAPA = $itemReport->time_finished_verfication;
+                $timeVerificationCAPA = \DateTime::createFromFormat('Y-m-d H:i:s',$timeVerificationCAPA )->format('d.m.y');
             }
         }     
         
@@ -2744,7 +2747,6 @@ class NODReportControll extends Controller
 
         $canvas = $dom_pdf ->get_canvas();
         $canvas->page_text(257, 10, "Halaman {PAGE_NUM} dari {PAGE_COUNT}", null, 10, array(0, 0, 0));
-        // $canvas->page_text(35, 815, $header->Title .' '. $_SERVER['HTTP_HOST'], null, 10, array(0, 0, 0));
         $canvas->page_text(35, 815, $header->Title, null, 10, array(0, 0, 0));
         return $pdf->stream();
     }

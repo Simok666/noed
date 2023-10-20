@@ -72,5 +72,9 @@ export default [{
     path: 'show-master-verifikasi-capa',
     name: 'nod/show-master-verifikasi-capa',
     component: () => import('@/components/backend/nod/verifikasi-capa-nod/form')
+  },{
+    path: 'form-correction-verifikasi-capa',
+    name: 'nod/form-correction-verifikasi-capa',
+    component: () => import('@/components/backend/nod/verifikasi-capa-nod/correctionform')
   }]
 }]

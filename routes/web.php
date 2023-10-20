@@ -294,6 +294,8 @@ Route::group(['middleware'=>['adminvue']], function () {
 		Route::post('nod-verifikasi-capa-approve-data','BackEnd\VerifCAPAReportControll@approve');
 		Route::post('nod-verifikasi-capa-reject-data','BackEnd\VerifCAPAReportControll@reject');
 		Route::post('nod-verifikasi-capa-description-reject-data','BackEnd\VerifCAPAReportControll@descriptionReject');
+		Route::post('nod-verifikasi-capa-correction-data','BackEnd\VerifCAPAReportControll@correction');
+	
 
 		Route::get('nod-chat-rooms', 'BackEnd\ChatController@rooms');
 		Route::post('nod-chat-teams', 'BackEnd\ChatController@teams');
