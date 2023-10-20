@@ -168,9 +168,45 @@
             </b-form-row>
             <hr/>
             </template>
-  
-            <b-btn v-if="isShow == false" type="button" disabled @click="addDetail('CA')" id="btambah-CA" class="float-left btn-info"><i class="fas fa-plus"></i> Tambah</b-btn>
+              <div class="col-md-12">
+                <b-btn v-if="isShow == false" type="button" disabled @click="addDetail('CA')" id="btambah-CA" class="float-left btn-info"><i class="fas fa-plus"></i> Tambah</b-btn>
+              </div>
           </b-card>
+
+          <b-form-row>
+                <b-form-group class="col-md-12" >
+                  <label class="form-label">Lampiran CA (Corrective Action)</label>
+                  <label class="form-label float-right text-danger">(Max. 50 MB)</label>
+                  <file-pond
+                  name="CAPAFile"
+                  ref="pondMyFile"
+                  label-idle="Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;"
+                  :allow-multiple="true"
+                  @updatefiles="handleFileCAPA"
+                  @removefile="handleRemoveCAPA"
+                  :files="field.CAPAFile"
+                  accepted-file-types="application/*, image/*, video/*"
+                  maxTotalFileSize="50MB"
+                  required
+                  :disabled = "isShow || Position === 4"
+                />
+                </b-form-group>
+    
+                <b-card v-if="isShow == true" class="mb-3" header="Lampiran CA (Corrective Action)" header-tag="h5">
+                  <b-form-row>
+                    <b-form-group class="col-md-12" v-for="(item, index) in field.FileCAPADownload" :key="index">
+                      <b-input-group>
+                        <b-form-input name="FileCAPADownload" v-model="item[0]" readonly></b-form-input>
+                        <b-input-group-append>
+                          <a class="input-group-text btn-outline-success" :href="BaseUrl+item[1]" target="_blank">
+                            <i class="fa fa-download"></i>
+                          </a>
+                        </b-input-group-append>
+                      </b-input-group>
+                    </b-form-group>
+                  </b-form-row>
+                </b-card>
+            </b-form-row>
   
           <b-card class="mb-4" header="Tindakan Pencegahan (Preventive Action)" header-tag="h5">
             <template v-for="(item, index) in field.NODPA">
@@ -246,6 +282,41 @@
             <b-btn v-if="isShow == false" :disabled = "true" type="button" @click="addDetail('PA')" id="btambah-PA" class="float-left btn-info"><i class="fas fa-plus"></i> Tambah</b-btn>
   
           </b-card>
+
+          <b-form-row>
+                <b-form-group class="col-md-12" >
+                  <label class="form-label">Lampiran PA (Preventive Action)</label>
+                  <label class="form-label float-right text-danger">(Max. 50 MB)</label>
+                  <file-pond
+                  name="verifPAFile"
+                  ref="pondMyFile"
+                  label-idle="Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;"
+                  :allow-multiple="true"
+                  @updatefiles="handleFileVerifPA"
+                  @removefile="handleRemoveVerifPA"
+                  :files="field.verifPAFile"
+                  accepted-file-types="application/*, image/*, video/*"
+                  maxTotalFileSize="50MB"
+                  required
+                  :disabled = "isShow || Position === 4"
+                />
+                </b-form-group>
+    
+                <b-card v-if="isShow == true" class="mb-3" header="Lampiran PA (Preventive Action)" header-tag="h5">
+                  <b-form-row>
+                    <b-form-group class="col-md-12" v-for="(item, index) in field.FileVerifPADownload" :key="index">
+                      <b-input-group>
+                        <b-form-input name="FileVerifPADownload" v-model="item[0]" readonly></b-form-input>
+                        <b-input-group-append>
+                          <a class="input-group-text btn-outline-success" :href="BaseUrl+item[1]" target="_blank">
+                            <i class="fa fa-download"></i>
+                          </a>
+                        </b-input-group-append>
+                      </b-input-group>
+                    </b-form-group>
+                  </b-form-row>
+                </b-card>
+            </b-form-row>
       
           <b-card class="mb-4" v-if="Position == 2 || Position == 4" header="Sistem Lain Yang Terdampak (Bila Ada)" header-tag="h5">
             <label v-if="isShow == false" class="form-label float-right text-danger">*Wajib Diisi</label>
@@ -280,42 +351,6 @@
             </b-form-group>
             
           </b-card>
-
-          <b-form-row>
-              <b-form-group class="col-md-12" >
-                <label class="form-label">Lampiran CAPA</label>
-                <label class="form-label float-right text-danger">(Max. 50 MB)</label>
-                <file-pond
-                name="CAPAFile"
-                ref="pondMyFile"
-                label-idle="Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;"
-                :allow-multiple="true"
-                @updatefiles="handleFileCAPA"
-                @removefile="handleRemoveCAPA"
-                :files="field.CAPAFile"
-                accepted-file-types="application/*, image/*, video/*"
-                maxTotalFileSize="50MB"
-                required
-                :disabled = "isShow || Position === 4"
-               />
-              </b-form-group>
-  
-              <b-card v-if="isShow == true" class="mb-3" header="Lampiran CAPA" header-tag="h5">
-              <b-form-row>
-                <b-form-group class="col-md-12" v-for="(item, index) in field.FileCAPADownload" :key="index">
-                  <b-input-group>
-                    <b-form-input name="FileCAPADownload" v-model="item[0]" readonly></b-form-input>
-                    <b-input-group-append>
-                      <a class="input-group-text btn-outline-success" :href="BaseUrl+item[1]" target="_blank">
-                        <i class="fa fa-download"></i>
-                      </a>
-                    </b-input-group-append>
-                  </b-input-group>
-                </b-form-group>
-              </b-form-row>
-            </b-card>
-  
-          </b-form-row>
           
           <b-card class="mb-4" v-if="Position == 2 || Position == 4" header="Verifikasi Efektifitas CAPA" header-tag="h5">
             
@@ -408,7 +443,11 @@
           SectionPublish: 0,
           userEntry: 0,
           CAPAFile: [],
+          FileCAPA: [],
+          verifPAFile:[],
+          verifFilePA:[],
           FileCAPADownload: [],
+          FileVerifPADownload:[],
           Status: '',
           selectedEfektifitasValue: ''
         },
@@ -442,6 +481,7 @@
         text: [],
         dataAnotherEffect: [],
         OldCAPAFile: [],
+        OldVerifPAFile: [],
         deptHeadVerification:''
       }
     },
@@ -495,6 +535,13 @@
           }
           
           formData.append("OldCAPAFile", JSON.stringify(this.OldCAPAFile))
+
+          for( var i = 0; i < this.field.verifPAFile.length; i++ ) {
+            let file = this.field.verifPAFile[i];
+            formData.append('verifPAFile[' + i + ']', file);
+          }
+          
+          formData.append("OldVerifPAFile", JSON.stringify(this.OldVerifPAFile))
 
           let collectedEfektivitas = []
 
@@ -580,22 +627,40 @@
           }
           
           Vue.set(this.field, 'FileCAPADownload', resp.data.FileCAPADownload)
+          Vue.set(this.field, 'FileVerifPADownload', resp.data.FileVerifPADownload)
           
           if(this.field.Status == 'Disetujui oleh QA Section Head') this.valStatus = 2
           if(this.field.Status == 'Diverifikasi oleh QA Dept Head') this.valStatus = 3
           if(this.field.Status == 'ditolak') this.valStatus = 4
           
-          this.field.CAPAFile = resp.data.fileCAPA
 
-          if(this.field.CAPAFile != ''){
-          let countFileCAPA = this.field.CAPAFile.length
+          this.field.CAPAFile = []
+          this.field.verifPAFile = []
+
+          this.field.FileCAPA = resp.data.fileCAPA
+          this.field.verifFilePA = resp.data.verifFilePA
+
+          if(this.field.FileCAPA != ''){
+          let countFileCAPA = this.field.FileCAPA.length
             for (let i = 0; i < countFileCAPA; i++) {
-              this.OldCAPAFile.push(this.field.CAPAFile[i])
-              this.field.CAPAFile.push(process.env.BASE_URL + this.field.CAPAFile[i])
+              this.OldCAPAFile.push(this.field.FileCAPA[i])
+              this.field.CAPAFile.push(process.env.BASE_URL + this.field.FileCAPA[i])
             }
           }
+        
           if(this.field.CAPAFile == ''){
             this.OldCAPAFile = '';
+          }
+
+          if(this.field.verifFilePA != ''){
+          let countFilePA = this.field.verifFilePA.length
+            for (let i = 0; i < countFilePA; i++) {
+              this.OldVerifPAFile.push(this.field.verifFilePA[i])
+              this.field.verifPAFile.push(process.env.BASE_URL + this.field.verifFilePA[i])
+            }
+          }
+          if(this.field.verifPAFile == ''){
+            this.OldVerifPAFile = '';
           }
           
           this.getDataNODAcc(resp.data.IdNOEReport, resp.data.Id)
@@ -765,6 +830,11 @@
       this.field.CAPAFile = files.map(files => files.file)
       },
 
+      handleFileVerifPA: function(files) {
+      this.field.verifPAFile = files.map(files => files.file)
+      },
+      
+
       handleRemoveCAPA: function(error,files){
         let result = typeof(files.source)
         if(this.isEdit == true && result === 'string'){
@@ -772,6 +842,15 @@
           this.OldCAPAFile.splice(index,1)
         }
       },
+
+      handleRemoveVerifPA: function(error,files){
+        let result = typeof(files.source)
+        if(this.isEdit == true && result === 'string'){
+          let index = this.OldVerifPAFile.indexOf(files.source.replace('/clouds','clouds'))
+          this.OldVerifPAFile.splice(index,1)
+        }
+      },
+      
   
       addDetail(type) {
         

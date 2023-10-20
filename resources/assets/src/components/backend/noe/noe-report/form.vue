@@ -499,6 +499,7 @@ export default {
       .then( function (res) {
         var resp = res.data
         this.field = resp.data
+       
         this.field.EventFile = []
         this.field.CorrectiveActionFile = []
         
