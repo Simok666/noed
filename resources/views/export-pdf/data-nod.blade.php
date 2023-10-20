@@ -157,6 +157,54 @@
         @endif
         @endforeach
         @endif
+        @if($itemReport->StatusCapa === 'Disetujui oleh QA Section Head' || $itemReport->StatusCapa === 'Diverifikasi oleh QA Dept Head')
+        <tr>
+            <th colspan="3" width="50%">VERIFIKASI CAPA</th>
+            <tr>
+                <th>VERIFIKASI EFEKTIFITAS CAPA</th>
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            @if($setCapaFalse === 'approved')
+                                <td>
+                                    <input type="radio" id="html" name="fav_language" checked>
+                                </td>
+                            @else
+                                <td>
+                                    <input type="radio" id="html" name="fav_language">
+                                </td>
+                            @endif
+                            <td>
+                                <label for="html">CAPA telah dilaksanakan dengan baik</label>
+                            </td>
+                            @if($setCapaTrue === true) 
+                                <td>
+                                    <input type="radio" id="css" name="fav_language" checked>
+                                </td>
+                                @else
+                                <td>
+                                    <input type="radio" id="css" name="fav_language">
+                                </td>
+                            @endif
+                            <td>
+                                <label for="css">Perlu CAPA lain yaitu :</label>
+                                @if($setCapaTrue === true) 
+                                    <p><b>{{$getdataCapaTrue}}<b></p>
+                                @else
+                                    <p></p>
+                                @endif
+                            </td>
+                        </tr>
+                    </table>                    
+                </td>
+            </tr>
+        </tr>
+        <tr>
+            <th width="50%">DIVERIFIKASI OLEH</th>
+            <td>{{$nameVerificationCAPA}}</td>
+            <td>{{$timeVerificationCAPA}}</td>
+        </tr>
+        @endif
     </tbody>
 </table>
 {{-- End Data NOD Report --}}

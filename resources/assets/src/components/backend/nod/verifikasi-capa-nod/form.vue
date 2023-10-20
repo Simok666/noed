@@ -318,12 +318,12 @@
           </b-form-row>
           
           <b-card class="mb-4" v-if="Position == 2 || Position == 4" header="Verifikasi Efektifitas CAPA" header-tag="h5">
-
-            <b-form-row v-if="(isShow == true || isEdit == true) && (Position === 4 && valStatus === 2 && userDepartment === 67)">
+            
+            <b-form-row v-if="(isShow == true || isEdit == true) && ((Position === 4 || Position === 2) && (valStatus === 2 || valStatus === 3 || valStatus === 4) && userDepartment === 67)">
               <b-form-group class="col-md-12" >
                 <label v-if="isShow == false" class="form-label float-right text-danger">*Wajib Diisi</label>
                 <b-form-group > 
-                  <b-form-radio v-model="selectedEfektifitasCapa" :state="allErrors.selectedEfektifitasCapa?false:null"  :value="false" :disabled="isShow">CAPA telah dilaksanakan dengan baik</b-form-radio>
+                  <b-form-radio v-model="selectedEfektifitasCapa" :state="allErrors.selectedEfektifitasCapa?false:null"  value="approved" :disabled="isShow">CAPA telah dilaksanakan dengan baik</b-form-radio>
                   <b-form-radio v-model="selectedEfektifitasCapa" :state="allErrors.selectedEfektifitasCapa?false:null"  :value="true" :disabled="isShow">Perlu CAPA lain, yaitu :</b-form-radio>
                   <span class="text-danger" v-if="allErrors.selectedEfektifitasCapa">{{ allErrors.selectedEfektifitasCapa[0] }}</span>
                 </b-form-group>
@@ -442,6 +442,7 @@
         text: [],
         dataAnotherEffect: [],
         OldCAPAFile: [],
+        deptHeadVerification:''
       }
     },
   
@@ -569,12 +570,20 @@
           this.statusDeptTerkait = res.data.statusDeptTerkait
           this.field.NODAccNumber = resp.data
           this.field.Status = resp.data.statusCapa
-          this.selectedEfektifitasCapa = resp.data.efektivitasCapa.selected
-          this.field.selectedEfektifitasValue = resp.data.efektivitasCapa.efektifitasDesc
+          this.deptHeadVerification = resp.data.deptHead
+
+          if(resp.data.efektivitasCapa !== null) {
+            this.selectedEfektifitasCapa = resp.data.efektivitasCapa.selected
+            this.field.selectedEfektifitasValue = resp.data.efektivitasCapa.efektifitasDesc
+          } else {
+            this.selectedEfektifitasCapa = null
+          }
           
           Vue.set(this.field, 'FileCAPADownload', resp.data.FileCAPADownload)
           
           if(this.field.Status == 'Disetujui oleh QA Section Head') this.valStatus = 2
+          if(this.field.Status == 'Diverifikasi oleh QA Dept Head') this.valStatus = 3
+          if(this.field.Status == 'ditolak') this.valStatus = 4
           
           this.field.CAPAFile = resp.data.fileCAPA
 
@@ -805,17 +814,16 @@
           this.publish('/AdminVue/nod-report-publish', this.field.Id, this.$parent, true)
         }
         if(action == 'approve'){
-          this.approveVerifikasiCapa('/AdminVue/nod-verifikasi-capa-approve-data', this.field.Id, this.$parent, null, true, this.selectedEfektifitasCapa)
+          this.approveVerifikasiCapa('/AdminVue/nod-verifikasi-capa-approve-data', this.field.Id, this.$parent, null, true, this.selectedEfektifitasCapa, this.deptHeadVerification)
         }
         if(action == 'reject'){
-          this.rejectOld('/AdminVue/nod-report-reject', this.field.Id, this.$parent, null, true, this.isCaretaker)
+          this.rejectCAPA('/AdminVue/nod-verifikasi-capa-reject-data', this.field.Id, this.$parent, null, true)
         }
         if(action == 'correction'){
           this.$router.push({
-            name: 'nod/form-correction-nod-report',
+            name: 'nod/form-correction-verifikasi-capa',
             params: {
-              Id: this.field.Id,
-              isCaretaker: this.isCaretaker
+              Id: this.field.Id
             }
           })
         }

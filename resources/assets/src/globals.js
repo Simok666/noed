@@ -842,8 +842,8 @@ export default function () {
       }
     },
 
-    approveVerifikasiCapa(url, id, elmTable, rowId=null, isShow=false, isSelected=null) {
-      if(isSelected == null) {
+    approveVerifikasiCapa(url, id, elmTable, rowId=null, isShow=false, isSelected=null, deptHeadVerification) {
+      if(isSelected == null || isSelected == '') {
         this.$router.push({
           name: 'nod/master-verifikasi-capa',
           params: {
@@ -868,7 +868,8 @@ export default function () {
           if (result.value) {
             this.showLoading()
               axios.post(url, {
-                Id: id
+                Id: id,
+                deptHeadVerification: deptHeadVerification
               })
               .then( function (res) {
                 
@@ -1199,7 +1200,57 @@ export default function () {
         }.bind(this))
       }
     },
+    
+    rejectCAPA(url, id, elmTable, rowId=null, isShow=false) {
+      Vue.swal({
+        input: 'textarea',
+          title: 'Deskripsi Tolak',
+          inputPlaceholder: 'Ketik Deskripsi disini...',
+          inputAttributes: {
+            'aria-label': 'Ketik Deskripsi disini'
+          },
+          showCancelButton: true,
+          confirmButtonColor: '#D0D630',
+          cancelButtonColor: '#D63030',
+          cancelButtonText: 'Batal',
+          confirmButtonText: 'Tolak',
+          reverseButtons: true
+      }).then((result) => {
+          if(result.value) {
 
+              this.showLoading()
+              axios.post(url, {
+                Id: id,
+                Description: result.value,
+              })
+              .then( function (res) {
+
+                var resp = res.data
+
+                if(isShow) {
+                  if(url === '/AdminVue/nod-verifikasi-capa-reject-data') {
+                    this.$router.push({
+                      name: 'nod/master-verifikasi-capa',
+                      params: {
+                        isNotif: true,
+                        gNotif: 'notifications-success',
+                        tNotif: 'Notifikasi Sukses',
+                        txNotif: 'Setujui Data Sukses!'
+                      }
+                    })
+                  }
+                } 
+                this.hideLoading()
+              }.bind(this))
+              .catch( function (e) {
+                console.log(e);
+                this.hideLoading()
+              }.bind(this))
+            
+          } 
+      })
+    },
+    
     rejectOld(url,id,elmTable,rowId=null,isShow=false,isCaretaker=false){
       if(id!=0) {
         Vue.swal({

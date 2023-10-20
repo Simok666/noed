@@ -2568,7 +2568,11 @@ class NODReportControll extends Controller
                 'empy.Name as IdPAPIC',
                 'emp1.Name as UserEntry',
                 'emp2.Name as UserDept',
-                'emp3.Name as UserQA'
+                'emp3.Name as UserQA',
+                'vcn.status_capa as StatusCapa',
+                'vcn.verifikasi_efektifitas_capa as verifikasiCapa',
+                'vcn.name_verfication',
+                'vcn.time_finished_verfication'
             )
             ->join('noe_report as noe','noe.Id','=','nod.IdNOEReport')
             ->join('noe_verif_evaluation as nve','nve.IdNOEReport','=','nod.IdNOEReport')
@@ -2580,11 +2584,12 @@ class NODReportControll extends Controller
             ->leftjoin('employee as emp2','emp2.Id','=','usr2.IdEmployee')
             ->leftjoin('users as usr3','usr3.Id','=','nod.UserQA')
             ->leftjoin('employee as emp3','emp3.Id','=','usr3.IdEmployee')
+            ->leftjoin('verifikasi_capa_nod as vcn','vcn.id_approved_nod','=','nod.Id')
             ->where('nve.TypeData',1)
             ->where('nod.Actived',1)
             ->where('nod.Id',$id)
             ->first();
-    
+        
         $itemReview = null;
         $itemDetail = [];
         if($itemReport != null) {
@@ -2684,6 +2689,25 @@ class NODReportControll extends Controller
                     }
                 } 
             }
+            
+            $verifikasiCapa = [];
+            $setCapaFalse = false;
+            $setCapaTrue = false;
+            $getdataCapaTrue = '';
+            $nameVerificationCAPA = '';
+            $timeVerificationCAPA = '';
+            if($itemReport->StatusCapa === 'Disetujui oleh QA Section Head' || $itemReport->StatusCapa === 'Diverifikasi oleh QA Dept Head') {
+                $verifikasiCapa = json_decode($itemReport->verifikasiCapa);
+                if($verifikasiCapa->selected === true) {
+                    $setCapaTrue = $verifikasiCapa->selected;
+                    $getdataCapaTrue = $verifikasiCapa->efektifitasDesc;
+                } else {
+                    $setCapaFalse = $verifikasiCapa->selected;
+                }
+                $nameVerificationCAPA = $itemReport->name_verfication;
+                $timeVerificationCAPA = $itemReport->time_finished_verfication;
+                $timeVerificationCAPA = \DateTime::createFromFormat('Y-m-d H:i:s',$timeVerificationCAPA )->format('d.m.y');
+            }
         }     
         
         $itemDeptTerkait = DB::table('nod_relevant as nrl')
@@ -2709,7 +2733,7 @@ class NODReportControll extends Controller
         $SubHeader = "Notice Of Deviation";
 
         $view = view('export-pdf.header-noe-nod',compact('Title','Header','SubHeader','dtHeader'))->render();
-        $view .= view('export-pdf.data-nod',compact('itemReport','itemDeptTerkait','itemReview','itemDetail','itemCA','itemPA','setSelectedFalse','setSelectedTrue','dataAnotherEffect'))->render();
+        $view .= view('export-pdf.data-nod',compact('itemReport','itemDeptTerkait','itemReview','itemDetail','itemCA','itemPA','setSelectedFalse','setSelectedTrue','dataAnotherEffect','setCapaFalse','setCapaTrue','getdataCapaTrue','nameVerificationCAPA','timeVerificationCAPA'))->render();
         $view .= view('export-pdf.footer-noe-nod')->render();
         $pdf = PDF::loadHTML($view);
         $dom_pdf = $pdf->getDomPDF();
@@ -2723,7 +2747,6 @@ class NODReportControll extends Controller
 
         $canvas = $dom_pdf ->get_canvas();
         $canvas->page_text(257, 10, "Halaman {PAGE_NUM} dari {PAGE_COUNT}", null, 10, array(0, 0, 0));
-        // $canvas->page_text(35, 815, $header->Title .' '. $_SERVER['HTTP_HOST'], null, 10, array(0, 0, 0));
         $canvas->page_text(35, 815, $header->Title, null, 10, array(0, 0, 0));
         return $pdf->stream();
     }

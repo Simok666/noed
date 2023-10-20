@@ -1,9 +1,9 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[9],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/nod-report/form.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/nod-report/form.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -13,7 +13,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -24,8 +23,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
   components: {},
   data: function data() {
     return {
-      urlSubmit: '/AdminVue/nod-verifikasi-capa-insert-data',
-      headerCard: 'Verifikasi CAPA NOD',
+      urlSubmit: '/AdminVue/nod-report-insert',
+      headerCard: 'Laporan NOD',
       textBtnSubmit: 'Simpan',
       field: {
         Date: '',
@@ -51,19 +50,14 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           PAFile: []
         }],
         PublishTo: 0,
-        SectionPublish: 0,
-        userEntry: 0,
-        CAPAFile: [],
-        FileCAPADownload: [],
-        Status: '',
-        selectedEfektifitasValue: ''
+        SectionPublish: 0
       },
       allErrors: [],
       isNotif: false,
       isEdit: false,
       alertNotif: '',
       alertVariant: 'alert-dark-danger',
-      opsNODAccNumber: [],
+      opsNOENumber: [],
       opsCAPIC: [],
       opsPAPIC: [],
       Position: 0,
@@ -83,12 +77,10 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       relevantDeptExist: 0,
       min: moment__WEBPACK_IMPORTED_MODULE_0___default()(new Date()).format('YYYY-MM-DD'),
       selected: '',
-      selectedEfektifitasCapa: '',
       getAnotherEffect: [],
       checkedEffect: [],
       text: [],
-      dataAnotherEffect: [],
-      OldCAPAFile: []
+      dataAnotherEffect: []
     };
   },
   created: function created() {
@@ -120,6 +112,22 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     submitForm: function submitForm() {
       this.showLoading();
       var isEmpty = false;
+      if (this.field.NODCA) {
+        this.field.NODCA.forEach(function (data, index) {
+          if (data.IdCAPIC == '' || data.CADate == '') {
+            isEmpty = true;
+            return false;
+          }
+        });
+      }
+      if (this.field.NODPA) {
+        this.field.NODPA.forEach(function (data, index) {
+          if (data.IdPAPIC == '' || data.PADate == '') {
+            isEmpty = true;
+            return false;
+          }
+        });
+      }
       if (isEmpty) {
         this.$swal({
           icon: 'error',
@@ -128,25 +136,58 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       } else {
         var formData = new FormData();
         formData.append("Id", this.field.Id);
-        formData.append("userEntry", this.field.userEntry);
-        if (this.field.NODAccNumber) formData.append("NODAccNumber", this.field.NODAccNumber.Id);
-        for (var i = 0; i < this.field.CAPAFile.length; i++) {
-          var file = this.field.CAPAFile[i];
-          formData.append('CAPAFile[' + i + ']', file);
-        }
-        formData.append("OldCAPAFile", JSON.stringify(this.OldCAPAFile));
-        var collectedEfektivitas = [];
-        if (this.selectedEfektifitasCapa === true) {
-          collectedEfektivitas = {
-            selected: this.selectedEfektifitasCapa,
-            efektifitasDesc: this.field.selectedEfektifitasValue
-          };
+        formData.append("NODNumber", this.field.NODNumber);
+        if (this.field.NOENumber) formData.append("NOENumber", this.field.NOENumber.Id);
+        formData.append("Date", this.field.Date);
+        formData.append("ProperCondition", this.field.ProperCondition);
+        formData.append("Man", this.field.Man);
+        formData.append("Machine", this.field.Machine);
+        formData.append("Method", this.field.Method);
+        formData.append("Material", this.field.Material);
+        formData.append("Milieu", this.field.Milieu);
+        var collected = [];
+        if (this.selected == true) {
+          for (var idEffect in this.checkedEffect) {
+            if (this.checkedEffect[idEffect]) {
+              collected[idEffect] = {
+                id_effect: idEffect,
+                selected: this.selected,
+                text: this.text[idEffect] || ''
+              };
+            }
+          }
         } else {
-          collectedEfektivitas = {
-            selected: this.selectedEfektifitasCapa
-          };
+          collected.push(this.selected);
         }
-        formData.append("verifikasiEfektivitasCapa", JSON.stringify(collectedEfektivitas));
+        if (this.Position == 2 || this.Position == 4) {
+          formData.append("DescAnotherEffect", JSON.stringify(collected));
+        }
+
+        // sebelumnya hanya 1 data group, sekarang lebih dari 1 data group
+        for (var i = 0; i < this.field.NODCA.length; i++) {
+          formData.append('IdCAPIC[' + i + ']', this.field.NODCA[i].IdCAPIC.Id);
+          formData.append('CADate[' + i + ']', this.field.NODCA[i].CADate);
+          formData.append('CADescription[' + i + ']', this.field.NODCA[i].CADescription);
+          var file = this.field.NODCA[i].CAFile;
+          for (var j = 0; j < file.length; j++) {
+            formData.append('CAFile[' + i + '][' + j + ']', file[j]);
+          }
+        }
+        formData.append("OldCAFile", JSON.stringify(this.OldCAFile));
+
+        // sebelumnya hanya 1 data group, sekarang lebih dari 1 data group
+        for (var i = 0; i < this.field.NODPA.length; i++) {
+          formData.append('IdPAPIC[' + i + ']', this.field.NODPA[i].IdPAPIC.Id);
+          formData.append('PADate[' + i + ']', this.field.NODPA[i].PADate);
+          formData.append('PADescription[' + i + ']', this.field.NODPA[i].PADescription);
+          var file = this.field.NODPA[i].PAFile;
+          for (var j = 0; j < file.length; j++) {
+            formData.append('PAFile[' + i + '][' + j + ']', file[j]);
+          }
+        }
+        formData.append("OldPAFile", JSON.stringify(this.OldPAFile));
+        formData.append("IdPublish", this.field.PublishTo);
+        formData.append("publishSection", this.field.SectionPublish);
         var config = {
           headers: {
             'content-type': 'multipart/form-data'
@@ -156,7 +197,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           var resp = res.data;
           if (resp.status) {
             this.$router.push({
-              name: 'nod/master-verifikasi-capa',
+              name: 'nod/data-nod-report',
               params: {
                 isNotif: true,
                 gNotif: 'notifications-success',
@@ -184,83 +225,35 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     },
     onChange: function onChange(option) {
       if (option) {
-        this.getDataNODAcc(option.IdNOEReport, option.Id);
+        this.getDataNOE(option.Id);
+        this.generateNumber(option.NOENumber, option.NOENumberAcc, option.Date);
         this.getDataPIC(option.Id);
       }
     },
     getData: function getData(Id) {
-      axios.post('/AdminVue/nod-verifikasi-capa-edit-data', {
+      axios.post('/AdminVue/nod-report-edit', {
         Id: Id
       }).then(function (res) {
+        var _this2 = this;
         var resp = res.data;
         this.Position = res.data.position;
         this.userDepartment = res.data.department;
         this.deptTerkait = res.data.deptTerkait;
         this.statusDeptTerkait = res.data.statusDeptTerkait;
-        this.field.NODAccNumber = resp.data;
-        this.field.Status = resp.data.statusCapa;
-        this.selectedEfektifitasCapa = resp.data.efektivitasCapa.selected;
-        this.field.selectedEfektifitasValue = resp.data.efektivitasCapa.efektifitasDesc;
-        vue__WEBPACK_IMPORTED_MODULE_1___default.a.set(this.field, 'FileCAPADownload', resp.data.FileCAPADownload);
-        if (this.field.Status == 'Disetujui oleh QA Section Head') this.valStatus = 2;
-        this.field.CAPAFile = resp.data.fileCAPA;
-        if (this.field.CAPAFile != '') {
-          var countFileCAPA = this.field.CAPAFile.length;
-          for (var i = 0; i < countFileCAPA; i++) {
-            this.OldCAPAFile.push(this.field.CAPAFile[i]);
-            this.field.CAPAFile.push("/" + this.field.CAPAFile[i]);
-          }
-        }
-        if (this.field.CAPAFile == '') {
-          this.OldCAPAFile = '';
-        }
-        this.getDataNODAcc(resp.data.IdNOEReport, resp.data.Id);
-        this.getDataPIC(resp.data.IdNOEReport);
-      }.bind(this))["catch"](function (e) {
-        console.log(e);
-        this.isNotif = true;
-        this.alertNotif = 'Invalid Server Side!';
-        this.alertVariant = 'alert-dark-danger';
-      }.bind(this));
-    },
-    getNODAccNumber: function getNODAccNumber() {
-      axios.post('/AdminVue/nod-report-get-acc-number').then(function (res) {
-        this.opsNODAccNumber = res.data.data;
-      }.bind(this))["catch"](function (e) {
-        console.log(e);
-        this.opsNODAccNumber = [];
-      }.bind(this));
-    },
-    getDataNODAcc: function getDataNODAcc(Id, IdNOD) {
-      axios.post('/AdminVue/nod-verifikasi-capa-get-data', {
-        Id: Id,
-        IdNOD: IdNOD
-      }).then(function (res) {
-        var _this2 = this;
-        this.Position = res.data.position;
-        this.field.BatchNo = res.data.data.BatchNo;
-        this.field.IdProduct = res.data.data.Product;
-        this.field.Event = res.data.data.Event;
-        this.field.PublishTo = res.data.data.IdPublish;
-        this.field.SectionPublish = res.data.data.publishSection;
-        this.field.userEntry = res.data.getUserEntry;
-        this.field.Date = moment__WEBPACK_IMPORTED_MODULE_0___default()(res.data.data.Date).format('DD/MM/YYYY HH:mm:ss');
-        this.field.NODCA = res.data.NODCA;
-        this.field.NODPA = res.data.NODPA;
-        this.field.ProperCondition = res.data.data.ProperCondition;
-        this.field.Man = res.data.data.Man;
-        this.field.Machine = res.data.data.Machine;
-        this.field.Method = res.data.data.Method;
-        this.field.Material = res.data.data.Material;
-        this.field.Milieu = res.data.data.Milieu;
-        this.opsRelevantDept = res.data.data.RelevantDept;
-        if (res.data.data.IdRelevantDept != 0) {
-          JSON.parse(res.data.data.IdRelevantDept).filter(function (value) {
-            return value == res.data.data.IdDepartmentSession ? _this2.isRelevantDept = true : _this2.isRelevantDept;
+        this.field = resp.data;
+        this.getDataNOE(this.field.IdNOEReport);
+        this.getDataPIC(this.field.IdNOEReport);
+        this.field.NODCA = resp.NODCA;
+        this.field.NODPA = resp.NODPA;
+        this.opsNOENumber.unshift(this.field.NOENumber);
+        this.opsRelevantDept = resp.data.RelevantDept;
+        if (resp.data.IdRelevantDept != 0) {
+          JSON.parse(resp.data.IdRelevantDept).filter(function (value) {
+            return value == resp.data.IdDepartmentSession ? _this2.isRelevantDept = true : _this2.isRelevantDept;
           }, {});
         }
-        res.data.data.TypeUser == 15 ? this.isDept = true : this.isDept;
-        this.relevantDeptExist = res.data.data.IdRelevantDept;
+        resp.data.TypeUser == 15 ? this.isDept = true : this.isDept;
+        this.relevantDeptExist = resp.data.IdRelevantDept;
         this.field.NODCA.forEach(function (value, index) {
           if (value) {
             if (value.CAFile != '') {
@@ -301,8 +294,21 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
             }
           }
         });
-        this.getAnotherEffect = res.data.getAnotherEffect;
-        var selectedAnotherEffect = Object.values(res.data.selectedAnotherEffect);
+        if (this.field.Status) {
+          if (this.field.Status == 'UnPublish') this.valStatus = 1;
+          if (this.field.Status == 'Dilaporkan ke Unit Head') this.valStatus = 2;
+          if (this.field.Status == 'Disetujui oleh Unit Head') this.valStatus = 3;
+          if (this.field.Status == 'Disetujui oleh Section Head') this.valStatus = 4;
+          if (this.field.Status == 'Disetujui oleh Dept Head') this.valStatus = 5;
+          if (this.field.Status == 'Disetujui oleh Dept Head Terkait') this.valStatus = 6;
+          if (this.field.Status == 'Disetujui oleh QA APJ') this.valStatus = 7;
+          if (this.field.Status == 'Disetujui oleh QA Dept.Head') this.valStatus = 8;
+          if (this.field.Status == 'Ditolak') this.valStatus = 9;
+          if (this.field.Status == 'Disetujui Oleh QA Section Head') this.valStatus = 10;
+        }
+        this.isCaretaker = res.data.isCaretaker;
+        this.getAnotherEffect = resp.getAnotherEffect;
+        var selectedAnotherEffect = Object.values(resp.selectedAnotherEffect);
         if (selectedAnotherEffect) {
           selectedAnotherEffect.forEach(function (item, index) {
             if (item !== false) {
@@ -314,6 +320,46 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
             }
           });
         }
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+        this.isNotif = true;
+        this.alertNotif = 'Invalid Server Side!';
+        this.alertVariant = 'alert-dark-danger';
+      }.bind(this));
+    },
+    generateNumber: function generateNumber(noeNumber) {
+      var noeNumberAcc = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      var date = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      axios.post('/AdminVue/nod-report-get-number', {
+        NOENumber: noeNumber,
+        NOENumberAcc: noeNumberAcc,
+        Date: date
+      }).then(function (res) {
+        // this.field.NODNumber = res.data.data
+        this.$set(this.field, 'NODNumber', res.data.data);
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+        this.field.NODNumber = '';
+      }.bind(this));
+    },
+    getNOENumber: function getNOENumber() {
+      axios.post('/AdminVue/nod-report-get-noe-number').then(function (res) {
+        this.opsNOENumber = res.data.data;
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+        this.opsNOENumber = [];
+      }.bind(this));
+    },
+    getDataNOE: function getDataNOE(Id) {
+      axios.post('/AdminVue/nod-report-get-data-noe', {
+        Id: Id
+      }).then(function (res) {
+        this.field.BatchNo = res.data.data.BatchNo;
+        this.field.IdProduct = res.data.data.Product;
+        this.field.Event = res.data.data.Event;
+        this.field.PublishTo = res.data.data.IdPublish;
+        this.field.SectionPublish = res.data.data.publishSection;
+        this.field.Date = moment__WEBPACK_IMPORTED_MODULE_0___default()(res.data.data.Date).format('DD/MM/YYYY HH:mm:ss');
         this.min = moment__WEBPACK_IMPORTED_MODULE_0___default()(res.data.data.Date).format('YYYY-MM-DD');
       }.bind(this))["catch"](function (e) {
         console.log(e);
@@ -364,18 +410,6 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         });
       });
     },
-    handleFileCAPA: function handleFileCAPA(files) {
-      this.field.CAPAFile = files.map(function (files) {
-        return files.file;
-      });
-    },
-    handleRemoveCAPA: function handleRemoveCAPA(error, files) {
-      var result = _typeof(files.source);
-      if (this.isEdit == true && result === 'string') {
-        var index = this.OldCAPAFile.indexOf(files.source.replace('/clouds', 'clouds'));
-        this.OldCAPAFile.splice(index, 1);
-      }
-    },
     addDetail: function addDetail(type) {
       if (type == 'CA') {
         var newCA = {
@@ -384,6 +418,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           'CADescription': '',
           'CAFile': []
         };
+        // this.field.NODCA.push({'IdCAPIC':'','CADate':'','CADescription':'','CAFile':[]})
         vue__WEBPACK_IMPORTED_MODULE_1___default.a.set(this.field.NODCA, this.field.NODCA.length, newCA);
         this.$forceUpdate();
       } else {
@@ -393,6 +428,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           'PADescription': '',
           'PAFile': []
         };
+        // this.field.NODPA.push({'IdPAPIC':'','PADate':'','PADescription':'','PAFile':[]})
         vue__WEBPACK_IMPORTED_MODULE_1___default.a.set(this.field.NODPA, this.field.NODPA.length, newPA);
         this.$forceUpdate();
       }
@@ -410,14 +446,14 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       }
     },
     backIndex: function backIndex() {
-      this.$router.push('/RoleAdmin/nod/master-verifikasi-capa');
+      this.$router.push('/RoleAdmin/nod/data-nod-report');
     },
     onAction: function onAction(action) {
       if (action == 'publish') {
         this.publish('/AdminVue/nod-report-publish', this.field.Id, this.$parent, true);
       }
       if (action == 'approve') {
-        this.approveVerifikasiCapa('/AdminVue/nod-verifikasi-capa-approve-data', this.field.Id, this.$parent, null, true, this.selectedEfektifitasCapa);
+        this.approve('/AdminVue/nod-report-approve', this.field.Id, this.$parent, null, true, this.isCaretaker, this.opsRelevantDept, this.isDept, this.isRelevantDept, this.relevantDeptExist);
       }
       if (action == 'reject') {
         this.rejectOld('/AdminVue/nod-report-reject', this.field.Id, this.$parent, null, true, this.isCaretaker);
@@ -434,14 +470,16 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     }
   },
   mounted: function mounted() {
-    this.getNODAccNumber();
+    this.getNOENumber();
+    // this.getDataPIC()
+
     if (this.$route.params.isFormEdit) {
       var Id = this.$route.params.Id;
       this.isEdit = true;
       if (Id) {
         this.getData(Id);
         this.field.Id = Id;
-        this.urlSubmit = '/AdminVue/nod-verifikasi-capa-update-data';
+        this.urlSubmit = '/AdminVue/nod-report-update';
         this.textBtnSubmit = 'Simpan';
       }
     }
@@ -453,15 +491,16 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         this.field.Id = Id;
       }
     }
+    // if(this.isEdit == false && this.isShow == false) this.generateNumber()
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=template&id=3feb3352&":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=template&id=3feb3352& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/nod-report/form.vue?vue&type=template&id=2cc35ff8&":
+/*!********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/nod-report/form.vue?vue&type=template&id=2cc35ff8& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -506,31 +545,52 @@ var render = function render() {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("No. NOD Disetujui")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+  }, [_vm._v("No. NOD")]), _vm._v(" "), _c("b-input", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "NODNumber",
+      state: _vm.allErrors.NODNumber ? false : null,
+      readonly: "",
+      required: ""
+    },
+    model: {
+      value: _vm.field.NODNumber,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "NODNumber", $$v);
+      },
+      expression: "field.NODNumber"
+    }
+  }), _vm._v(" "), _vm.allErrors.NODNumber ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.NODNumber[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("No. NOE")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
     staticClass: "form-label float-right text-danger"
   }, [_vm._v("*Wajib Dipilih")]) : _vm._e(), _vm._v(" "), _c("multiselect", {
     attrs: {
-      options: _vm.opsNODAccNumber,
+      options: _vm.opsNOENumber,
       "allow-empty": false,
-      placeholder: "Pilih No. NOD disetujui",
-      label: "NODNumber",
-      "track-by": "NODNumber",
+      placeholder: "Pilih No. NOE",
+      label: "NOENumber",
+      "track-by": "NOENumber",
       required: "",
-      disabled: _vm.isEdit || _vm.isShow
+      disabled: _vm.isShow
     },
     on: {
       input: _vm.onChange
     },
     model: {
-      value: _vm.field.NODAccNumber,
+      value: _vm.field.NOENumber,
       callback: function callback($$v) {
-        _vm.$set(_vm.field, "NODAccNumber", $$v);
+        _vm.$set(_vm.field, "NOENumber", $$v);
       },
-      expression: "field.NODAccNumber"
+      expression: "field.NOENumber"
     }
-  }), _vm._v(" "), _vm.allErrors.NODAccNumber ? _c("span", {
+  }), _vm._v(" "), _vm.allErrors.NOENumber ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.NODAccNumber[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+  }, [_vm._v(_vm._s(_vm.allErrors.NOENumber[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
@@ -619,7 +679,7 @@ var render = function render() {
       name: "ProperCondition",
       state: _vm.allErrors.ProperCondition ? false : null,
       required: "",
-      readonly: ""
+      readonly: _vm.isShow
     },
     model: {
       value: _vm.field.ProperCondition,
@@ -642,7 +702,7 @@ var render = function render() {
       name: "Man",
       state: _vm.allErrors.Man ? false : null,
       required: "",
-      readonly: ""
+      readonly: _vm.isShow
     },
     model: {
       value: _vm.field.Man,
@@ -665,7 +725,7 @@ var render = function render() {
       name: "Machine",
       state: _vm.allErrors.Machine ? false : null,
       required: "",
-      readonly: ""
+      readonly: _vm.isShow
     },
     model: {
       value: _vm.field.Machine,
@@ -688,7 +748,7 @@ var render = function render() {
       name: "Method",
       state: _vm.allErrors.Method ? false : null,
       required: "",
-      readonly: ""
+      readonly: _vm.isShow
     },
     model: {
       value: _vm.field.Method,
@@ -711,7 +771,7 @@ var render = function render() {
       name: "Material",
       state: _vm.allErrors.Material ? false : null,
       required: "",
-      readonly: ""
+      readonly: _vm.isShow
     },
     model: {
       value: _vm.field.Material,
@@ -734,7 +794,7 @@ var render = function render() {
       name: "Milieu",
       state: _vm.allErrors.Milieu ? false : null,
       required: "",
-      readonly: ""
+      readonly: _vm.isShow
     },
     model: {
       value: _vm.field.Milieu,
@@ -766,7 +826,7 @@ var render = function render() {
         label: "PIC",
         "track-by": "PIC",
         required: "",
-        disabled: ""
+        disabled: _vm.isShow
       },
       on: {
         input: function input($event) {
@@ -793,7 +853,7 @@ var render = function render() {
         min: _vm.min,
         "date-format-options": _vm.datePickerFormat,
         required: "",
-        disabled: ""
+        disabled: _vm.isShow
       },
       model: {
         value: item.CADate,
@@ -807,8 +867,7 @@ var render = function render() {
     }, [_c("label", [_vm._v("Tindakan")]), _c("br"), _vm._v(" "), _c("b-button", {
       staticClass: "btn btn-sm btn-danger text-white",
       attrs: {
-        pill: true,
-        disabled: ""
+        pill: true
       },
       on: {
         click: function click($event) {
@@ -828,7 +887,7 @@ var render = function render() {
       attrs: {
         name: "CADescription",
         required: "",
-        readonly: ""
+        readonly: _vm.isShow
       },
       model: {
         value: item.CADescription,
@@ -853,7 +912,7 @@ var render = function render() {
         files: item.CAFile,
         "accepted-file-types": "application/*, image/*, video/*",
         maxTotalFileSize: "50MB",
-        disabled: "true"
+        disabled: _vm.isShow
       },
       on: {
         updatefiles: function updatefiles($event) {
@@ -861,7 +920,7 @@ var render = function render() {
         },
         removefile: _vm.handleRemoveCA
       }
-    })], 1) : _vm._e(), _vm._v(" "), _c("b-form-group", {
+    })], 1) : _vm._e(), _vm._v(" "), _vm.isShow ? _c("b-form-group", {
       staticClass: "col-md-4"
     }, [_c("label", {
       staticClass: "form-label"
@@ -881,12 +940,11 @@ var render = function render() {
       }, [_c("i", {
         staticClass: "fa fa-download"
       })])])], 1)];
-    })], 2)], 1), _vm._v(" "), _c("hr")];
+    })], 2) : _vm._e()], 1), _vm._v(" "), _c("hr")];
   }), _vm._v(" "), _vm.isShow == false ? _c("b-btn", {
     staticClass: "float-left btn-info",
     attrs: {
       type: "button",
-      disabled: "",
       id: "btambah-CA"
     },
     on: {
@@ -917,7 +975,7 @@ var render = function render() {
         label: "PIC",
         "track-by": "PIC",
         required: "",
-        disabled: ""
+        disabled: _vm.isShow
       },
       model: {
         value: item.IdPAPIC,
@@ -939,7 +997,7 @@ var render = function render() {
         min: _vm.min,
         "date-format-options": _vm.datePickerFormat,
         required: "",
-        disabled: ""
+        disabled: _vm.isShow
       },
       model: {
         value: item.PADate,
@@ -953,7 +1011,6 @@ var render = function render() {
     }, [_c("label", [_vm._v("Tindakan")]), _c("br"), _vm._v(" "), _c("b-button", {
       staticClass: "btn btn-sm btn-danger text-white",
       attrs: {
-        disabled: "",
         pill: true
       },
       on: {
@@ -974,7 +1031,7 @@ var render = function render() {
       attrs: {
         name: "PADescription",
         required: "",
-        readonly: ""
+        readonly: _vm.isShow
       },
       model: {
         value: item.PADescription,
@@ -999,7 +1056,7 @@ var render = function render() {
         files: item.PAFile,
         "accepted-file-types": "application/*, image/*, video/*",
         maxTotalFileSize: "50MB",
-        disabled: "true"
+        disabled: _vm.isShow
       },
       on: {
         updatefiles: function updatefiles($event) {
@@ -1007,7 +1064,7 @@ var render = function render() {
         },
         removefile: _vm.handleRemovePA
       }
-    })], 1) : _vm._e(), _vm._v(" "), _c("b-form-group", {
+    })], 1) : _vm._e(), _vm._v(" "), _vm.isShow ? _c("b-form-group", {
       staticClass: "col-md-4"
     }, [_c("label", {
       staticClass: "form-label"
@@ -1027,11 +1084,10 @@ var render = function render() {
       }, [_c("i", {
         staticClass: "fa fa-download"
       })])])], 1)];
-    })], 2)], 1), _vm._v(" "), _c("hr")];
+    })], 2) : _vm._e()], 1), _vm._v(" "), _c("hr")];
   }), _vm._v(" "), _vm.isShow == false ? _c("b-btn", {
     staticClass: "float-left btn-info",
     attrs: {
-      disabled: true,
       type: "button",
       id: "btambah-PA"
     },
@@ -1052,8 +1108,7 @@ var render = function render() {
     staticClass: "form-label float-right text-danger"
   }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-form-group", {
     attrs: {
-      label: "Bagian ini diisi oleh QA",
-      disabled: ""
+      label: "Bagian ini diisi oleh QA"
     }
   }, [_c("b-form-radio", {
     attrs: {
@@ -1083,11 +1138,7 @@ var render = function render() {
     }
   }, [_vm._v("Ada, yaitu ...")]), _vm._v(" "), _vm.allErrors.selected ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.selected[0]))]) : _vm._e()], 1), _vm._v(" "), _vm.selected === true ? _c("b-form-group", {
-    attrs: {
-      disabled: ""
-    }
-  }, _vm._l(_vm.getAnotherEffect, function (item, index) {
+  }, [_vm._v(_vm._s(_vm.allErrors.selected[0]))]) : _vm._e()], 1), _vm._v(" "), _vm.selected === true ? _c("b-form-group", _vm._l(_vm.getAnotherEffect, function (item, index) {
     return _c("li", {
       key: index
     }, [_c("b-form-checkbox", {
@@ -1108,7 +1159,7 @@ var render = function render() {
         id: "textarea-state",
         placeholder: "Enter at least 10 characters",
         rows: "3",
-        disabled: ""
+        readonly: _vm.isShow
       },
       model: {
         value: _vm.text[item.id_effect],
@@ -1119,120 +1170,24 @@ var render = function render() {
       }
     })], 1) : _vm._e()], 1);
   }), 0) : _vm._e()], 1) : _vm._e(), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-12"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Lampiran CAPA")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("(Max. 50 MB)")]), _vm._v(" "), _c("file-pond", {
-    ref: "pondMyFile",
-    attrs: {
-      name: "CAPAFile",
-      "label-idle": "Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;",
-      "allow-multiple": true,
-      files: _vm.field.CAPAFile,
-      "accepted-file-types": "application/*, image/*, video/*",
-      maxTotalFileSize: "50MB",
-      required: "",
-      disabled: _vm.isShow || _vm.Position === 4
-    },
-    on: {
-      updatefiles: _vm.handleFileCAPA,
-      removefile: _vm.handleRemoveCAPA
-    }
-  })], 1), _vm._v(" "), _vm.isShow == true ? _c("b-card", {
-    staticClass: "mb-3",
-    attrs: {
-      header: "Lampiran CAPA",
-      "header-tag": "h5"
-    }
-  }, [_c("b-form-row", _vm._l(_vm.field.FileCAPADownload, function (item, index) {
-    return _c("b-form-group", {
-      key: index,
-      staticClass: "col-md-12"
-    }, [_c("b-input-group", [_c("b-form-input", {
-      attrs: {
-        name: "FileCAPADownload",
-        readonly: ""
-      },
-      model: {
-        value: item[0],
-        callback: function callback($$v) {
-          _vm.$set(item, 0, $$v);
-        },
-        expression: "item[0]"
-      }
-    }), _vm._v(" "), _c("b-input-group-append", [_c("a", {
-      staticClass: "input-group-text btn-outline-success",
-      attrs: {
-        href: _vm.BaseUrl + item[1],
-        target: "_blank"
-      }
-    }, [_c("i", {
-      staticClass: "fa fa-download"
-    })])])], 1)], 1);
-  }), 1)], 1) : _vm._e()], 1), _vm._v(" "), _vm.Position == 2 || _vm.Position == 4 ? _c("b-card", {
-    staticClass: "mb-4",
-    attrs: {
-      header: "Verifikasi Efektifitas CAPA",
-      "header-tag": "h5"
-    }
-  }, [(_vm.isShow == true || _vm.isEdit == true) && _vm.Position === 4 && _vm.valStatus === 2 && _vm.userDepartment === 67 ? _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-12"
-  }, [_vm.isShow == false ? _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-form-group", [_c("b-form-radio", {
-    attrs: {
-      state: _vm.allErrors.selectedEfektifitasCapa ? false : null,
-      value: false,
-      disabled: _vm.isShow
-    },
-    model: {
-      value: _vm.selectedEfektifitasCapa,
-      callback: function callback($$v) {
-        _vm.selectedEfektifitasCapa = $$v;
-      },
-      expression: "selectedEfektifitasCapa"
-    }
-  }, [_vm._v("CAPA telah dilaksanakan dengan baik")]), _vm._v(" "), _c("b-form-radio", {
-    attrs: {
-      state: _vm.allErrors.selectedEfektifitasCapa ? false : null,
-      value: true,
-      disabled: _vm.isShow
-    },
-    model: {
-      value: _vm.selectedEfektifitasCapa,
-      callback: function callback($$v) {
-        _vm.selectedEfektifitasCapa = $$v;
-      },
-      expression: "selectedEfektifitasCapa"
-    }
-  }, [_vm._v("Perlu CAPA lain, yaitu :")]), _vm._v(" "), _vm.allErrors.selectedEfektifitasCapa ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.selectedEfektifitasCapa[0]))]) : _vm._e()], 1), _vm._v(" "), _vm.selectedEfektifitasCapa === true ? _c("b-form-group", [_c("b-form-textarea", {
-    staticClass: "mb-4",
-    attrs: {
-      id: "textarea-state",
-      placeholder: "Enter at least 10 characters",
-      rows: "3",
-      disabled: _vm.isShow,
-      required: _vm.selectedEfektifitasCapa
-    },
-    model: {
-      value: _vm.field.selectedEfektifitasValue,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "selectedEfektifitasValue", $$v);
-      },
-      expression: "field.selectedEfektifitasValue"
-    }
-  })], 1) : _vm._e()], 1)], 1) : _vm._e()], 1) : _vm._e(), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }), _vm._v(" "), _c("b-form-group", {
     staticClass: "col-md-6",
     attrs: {
       label: ""
     }
-  }, [_vm.isShow == true && _vm.Position === 4 && _vm.valStatus === 2 && _vm.userDepartment === 67 ? _c("b-btn", {
+  }, [_vm.isShow == true && _vm.Position < 3 && _vm.valStatus == 1 ? _c("b-btn", {
+    staticClass: "float-right ml-2",
+    attrs: {
+      type: "button",
+      variant: "primary"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.onAction("publish");
+      }
+    }
+  }, [_vm._v("Publish")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && (_vm.valStatus == 2 && _vm.field.IdDepartment == _vm.userDepartment && _vm.Position == 1 || _vm.valStatus == 3 && _vm.field.IdDepartment == _vm.userDepartment && _vm.Position == 2 || _vm.valStatus == 4 && _vm.field.IdDepartment == _vm.userDepartment && (_vm.Position == 4 || _vm.isCaretaker == true) || _vm.valStatus == 5 && _vm.deptTerkait == true && _vm.statusDeptTerkait == false || _vm.userDepartment == 67 && (_vm.Position == 3 && _vm.valStatus == 6 || _vm.Position == 4 && _vm.valStatus == 10 || _vm.Position == 4 && _vm.valStatus == 10 || _vm.Position == 2 && _vm.valStatus == 6)) ? _c("b-btn", {
     staticClass: "float-right ml-2",
     attrs: {
       type: "button",
@@ -1243,7 +1198,7 @@ var render = function render() {
         return _vm.onAction("approve");
       }
     }
-  }, [_vm._v("\n          Setujui")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.Position === 4 && _vm.valStatus === 2 && _vm.userDepartment === 67 ? _c("b-btn", {
+  }, [_vm._v("\n          Setujui")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && (_vm.valStatus == 4 && _vm.field.IdDepartment == _vm.userDepartment && (_vm.Position == 4 || _vm.isCaretaker == true) || _vm.userDepartment == 67 && (_vm.Position == 3 && _vm.valStatus == 6 || _vm.Position == 4 && _vm.valStatus == 10 || _vm.Position == 4 && _vm.valStatus == 10)) ? _c("b-btn", {
     staticClass: "float-right ml-2",
     attrs: {
       type: "button",
@@ -1254,7 +1209,7 @@ var render = function render() {
         return _vm.onAction("reject");
       }
     }
-  }, [_vm._v("\n          Tolak")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && _vm.Position === 4 && _vm.valStatus === 2 && _vm.userDepartment === 67 ? _c("b-btn", {
+  }, [_vm._v("\n          Tolak")]) : _vm._e(), _vm._v(" "), _vm.isShow == true && (_vm.valStatus == 2 && _vm.field.IdDepartment == _vm.userDepartment && _vm.Position == 1 || _vm.valStatus == 3 && _vm.field.IdDepartment == _vm.userDepartment && _vm.Position == 2 || _vm.valStatus == 4 && _vm.field.IdDepartment == _vm.userDepartment && (_vm.Position == 4 || _vm.isCaretaker == true) || _vm.valStatus == 5 && _vm.deptTerkait == true && _vm.statusDeptTerkait == false || _vm.userDepartment == 67 && (_vm.Position == 3 && _vm.valStatus == 6 || _vm.Position == 4 && _vm.valStatus == 10 || _vm.Position == 4 && _vm.valStatus == 10)) ? _c("b-btn", {
     staticClass: "float-right ml-2",
     attrs: {
       type: "button",
@@ -1290,17 +1245,17 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue":
-/*!**********************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue ***!
-  \**********************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/nod-report/form.vue":
+/*!*************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/nod-report/form.vue ***!
+  \*************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _form_vue_vue_type_template_id_3feb3352___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=3feb3352& */ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=template&id=3feb3352&");
-/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _form_vue_vue_type_template_id_2cc35ff8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=2cc35ff8& */ "./resources/assets/src/components/backend/nod/nod-report/form.vue?vue&type=template&id=2cc35ff8&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/nod/nod-report/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -1311,8 +1266,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _form_vue_vue_type_template_id_3feb3352___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _form_vue_vue_type_template_id_3feb3352___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _form_vue_vue_type_template_id_2cc35ff8___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _form_vue_vue_type_template_id_2cc35ff8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -1322,38 +1277,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue"
+component.options.__file = "resources/assets/src/components/backend/nod/nod-report/form.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/nod-report/form.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/nod-report/form.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/nod-report/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=template&id=3feb3352&":
-/*!*****************************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=template&id=3feb3352& ***!
-  \*****************************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/nod-report/form.vue?vue&type=template&id=2cc35ff8&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/nod-report/form.vue?vue&type=template&id=2cc35ff8& ***!
+  \********************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_3feb3352___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=3feb3352& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/form.vue?vue&type=template&id=3feb3352&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_3feb3352___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_2cc35ff8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=2cc35ff8& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/nod-report/form.vue?vue&type=template&id=2cc35ff8&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_2cc35ff8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_3feb3352___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_2cc35ff8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

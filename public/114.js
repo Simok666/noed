@@ -420,7 +420,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         this.approveVerifikasiCapa('/AdminVue/nod-verifikasi-capa-approve-data', this.field.Id, this.$parent, null, true, this.selectedEfektifitasCapa);
       }
       if (action == 'reject') {
-        this.rejectOld('/AdminVue/nod-report-reject', this.field.Id, this.$parent, null, true, this.isCaretaker);
+        this.rejectCAPA('/AdminVue/nod-verifikasi-capa-reject-data', this.field.Id, this.$parent, null, true);
       }
       if (action == 'correction') {
         this.$router.push({

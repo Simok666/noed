@@ -17,9 +17,12 @@ class CreateVerifikasiCapaNodTable extends Migration
             $table->id();
             $table->integer('id_approved_nod');
             $table->text('attachment_capa');
-            $table->enum('status_capa', ['Dibuat oleh QA Section Head','Disetujui oleh QA Section Head', 'Diverifikasi oleh QA Dept Head']);
+            $table->enum('status_capa', ['Dibuat oleh QA Section Head','Disetujui oleh QA Section Head', 'Diverifikasi oleh QA Dept Head', 'ditolak']);
             $table->integer('user_entry');
             $table->text('verifikasi_efektifitas_capa')->nullable();
+            $table->text('reject_description')->nullable();
+            $table->text('name_verfication')->nullable();
+            $table->timestamp('time_finished_verfication')->nullable();
             $table->integer('is_approved');
             $table->integer('is_publish')->default(0);
             $table->integer('actived');
