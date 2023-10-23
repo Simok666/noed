@@ -197,8 +197,37 @@ class NOEReportControll extends Controller
     }
 
     public function getPublish(Request $request)
-    {
-        $publish = json_decode(session('adminvue')->ParentPosition);
+    {        
+        $getUnitHead = [];
+        $publish = [];
+        
+        if(session('adminvue')->TypeUser === 14) { // if section head
+            $getData = DB::table('position as pst')
+                            ->select('pst.Id','pst.Name')
+                            ->where('pst.Parent','LIKE','%'. session('adminvue')->IdPosition .'%')
+                            ->get();
+
+            foreach ($getData as $key => $val) {
+                $getUnitHead[$key] = $val;
+            }
+        } elseif (session('adminvue')->TypeUser === 15) { // if dept head
+            $getChild = DB::table('position as pst')
+                            ->select('pst.Id','pst.Name')
+                            ->where('pst.Parent','LIKE','%'. session('adminvue')->IdPosition .'%')
+                            ->first();
+
+            $getUnitHead = DB::table('position as pst')
+                    ->select('pst.Id','pst.Name')
+                    ->where('pst.Parent','LIKE','%'. $getChild->Id .'%')
+                    ->get();
+                    
+            foreach ($getUnitHead as $key => $val) {
+                        $getUnitHead[$key] = $val;
+            }
+        } elseif(session('adminvue')->TypeUser === 9 || session('adminvue')->TypeUser === 13) {
+            $publish = json_decode(session('adminvue')->ParentPosition);
+        }
+        
         $status = true;
         if(getType($publish) != 'array')
         {
@@ -208,7 +237,7 @@ class NOEReportControll extends Controller
         
         return response()->json([
             'status'=>$status,
-            'data'=>$publish,
+            'data'=> (session('adminvue')->TypeUser === 14 || session('adminvue')->TypeUser === 15) ? $getUnitHead : $publish,
         ]); 
     }
 
@@ -363,7 +392,20 @@ class NOEReportControll extends Controller
         $Date = $request->input('Date').' '.$request->input('Time');
         $dueDate = $request->input('DueDate').' '.$request->input('DueTime');
         $NOENumber = $this->genNumber($request);
-        
+        $statusNOE = 0; 
+        $idPublish = 0;
+
+        if(session('adminvue')->TypeUser === 13) { // unit head
+            $statusNOE = 2; // Dilaporkan Unit Head
+            $idPublish = session('adminvue')->IdPosition;
+        }elseif(session('adminvue')->TypeUser === 14 || session('adminvue')->TypeUser === 15) {
+            $statusNOE = 2; // Dilaporkan Unit Head
+            $idPublish = $request->input('IdPublish');
+        }elseif(session('adminvue')->TypeUser === 9) { // admin
+            $idPublish = $request->input('IdPublish');
+            $statusNOE = 1; // Unpublish
+        }
+
         DB::begintransaction();
         try{
             DB::table('noe_report')
@@ -376,15 +418,43 @@ class NOEReportControll extends Controller
                     'IdProduct'=>$request->input('IdProduct'),
                     'IdLocation'=>$request->input('IdLocation'),
                     'IdTypeIncident'=>$request->input('IdTypeIncident'),
-                    'IdPublish'=>$request->input('IdPublish'),
+                    'IdPublish'=>$idPublish,
                     'Event'=>$request->input('Event'),
                     'CorrectiveAction'=>$request->input('CorrectiveAction'),
                     'EventFile'=>$EventFile,
                     'CorrectiveActionFile'=>$CorrectiveActionFile,
+                    'Status' => $statusNOE,
                     'UserEntry'=>session('adminvue')->Id,
                     'UserUpdate'=>session('adminvue')->Id,
                     'due_date'=> Carbon::parse($dueDate)->format('Y-m-d H:i:s')
                 ]);
+            
+            if(session('adminvue')->TypeUser === 14 || session('adminvue')->TypeUser === 15) {
+                $itemPosition = DB::table('position')
+                        ->select('Id')
+                        ->where('IdDepartment', session('adminvue')->IdDepartment)
+                        ->where('Id', $idPublish)
+                        ->where('Actived', 1)
+                        ->first();
+                
+                $itemMail = $this->MainDB->table('employee as emp')
+                        ->select('emp.Name as Employee','emp.Email')
+                        ->where('emp.IdPosition', $itemPosition->Id)
+                        ->where('emp.Actived', 1)
+                        ->get();
+
+                $getProduct = $this->MainDB->table('product as pd')
+                            ->select('pd.Name')
+                            ->where('pd.Id', $request->IdProduct)
+                            ->first();
+
+                $getLocation = $this->MainDB->table('location as lct')
+                            ->select('lct.Name')
+                            ->where('lct.Id', $request->IdLocation)
+                            ->first();
+                
+                $this->Helper->sendEmailSectionDept($request, $itemMail, $getProduct, $getLocation, $statusNOE);
+            }
 
             $this->History->store(24,1,json_encode($requestData));
             DB::commit();

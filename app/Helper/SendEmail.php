@@ -183,6 +183,7 @@ class Helper {
             {
                 $dataObjectEmail['footer'] = '[ - APPROVAL Ini Dikeluarkan Dari Aplikasi Online NOENOD Secara Otomatis - ]';
             }
+
             if(count($itemMail)>0) { foreach ($itemMail as $key => $val) {
                 $data['Employee'] = $val->Employee;
                 $data['Email'] = $val->Email;
@@ -190,6 +191,27 @@ class Helper {
                 $this->History->sendMail($data, $dataMail, $dataObjectEmail);
             } }
         }
+    }
+
+    public function sendEmailSectionDept($request, $itemMail, $getProduct, $getLocation, $statusNOE) 
+    {
+        $data['Subject'] = 'NOE Report - Published';
+        $data['Title'] = 'Data NOE telah dilaporkan, Oleh :';
+        
+        $dataMail['Pelapor'] = session('adminvue')->Name .' | '. session('adminvue')->Position .' - '. session('adminvue')->Department;
+        $dataMail['NOE Number'] = $request->NOENumber;
+        $dataMail['Date NOE'] = $this->convertData($request->Date);
+        $dataMail['Product'] = $getProduct->Name;
+        $dataMail['Unit Location'] = $getLocation->Name;
+        $dataMail['NO Batch'] = $request->BatchNo;
+        $dataMail['Due Date'] = $this->convertData($request->DueDate);
+       
+        if(count($itemMail)>0) { foreach ($itemMail as $key => $val) {
+            $data['Employee'] = $val->Employee;
+            $data['Email'] = $val->Email;
+            
+            $this->History->sendMail($data, $dataMail, $dataObjectEmail=[]);
+        } }
     }
 
     function sendEmailNod($item, $itemMail)
