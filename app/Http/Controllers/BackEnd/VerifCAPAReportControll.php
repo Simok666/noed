@@ -82,14 +82,16 @@ class VerifCAPAReportControll extends Controller
                     array_push($nodGetCAPA, $valCapa->id_approved_nod);
             }
             foreach($getDataNODAcc as $keyNod => $valNod) {
-                    
+                if (!in_array($valNod->Id, $nodGetCAPA)) {
+                    $result[$keyNod] = $valNod;
+                }
             }
         } else {
-            $notExistNOD = $getDataNODAcc;
+            $result = $getDataNODAcc;
         }
-        dd($nodGetNOD);
+
         return response()->json([
-            'data' => $notExistNOD
+            'data' => $result
         ]);
     }
 

@@ -229,22 +229,7 @@ __webpack_require__.r(__webpack_exports__);
         titleClass: 'text-center',
         dataClass: 'text-center',
         formatter: this.formatDate
-      },
-      // {
-      //   name: 'Event',
-      //   sortField: 'noe.Event',
-      //   title: 'Uraian / Kondisi Ketidaksesuaian',
-      //   titleClass: 'text-center',
-      //   dataClass: 'text-center'
-      // },
-      // {
-      //   name: 'ProperCondition',
-      //   sortField: 'nod.ProperCondition',
-      //   title: 'Kondisi Seharusnya',
-      //   titleClass: 'text-center',
-      //   dataClass: 'text-center',
-      // },
-      {
+      }, {
         name: 'BatchNo',
         sortField: 'noe.BatchNo',
         title: 'No. Kontrol / No. Bets',
@@ -314,9 +299,7 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         value: "Disetujui oleh Dept Head Terkait",
         text: "Disetujui oleh Dept Head Terkait"
-      },
-      // {value: "Disetujui oleh QA APJ", text:"Disetujui oleh QA APJ"},
-      {
+      }, {
         value: "Disetujui oleh QA Dept.Head",
         text: "Disetujui oleh QA Dept.Head"
       }, {
@@ -331,6 +314,7 @@ __webpack_require__.r(__webpack_exports__);
       }],
       position: 0,
       //position 1 = unit; 2 = section head; 3 = APJ; 4 = dept head;
+      idUser: 0,
       idDetail: [],
       isCaretaker: false,
       deptTerkait: false,
@@ -374,6 +358,7 @@ __webpack_require__.r(__webpack_exports__);
         this.isCaretaker = res.data.isCaretaker;
         this.userDepartment = res.data.userDepartment;
         this.typeUser = res.data.typeUser;
+        this.idUser = res.data.idUser;
       }.bind(this))["catch"](function (e) {
         console.log(e);
       }.bind(this));
@@ -845,7 +830,7 @@ var render = function render() {
           }
         }, [_c("i", {
           staticClass: "ion ion-ios-eye"
-        }), _vm._v(" Tampilkan\n          ")]), _vm._v(" "), props.rowData.Status == "UnPublish" && _vm.position == 5 || props.rowData.Status == "Disetujui oleh Dept Head Terkait" && _vm.position == 2 || props.rowData.ReportDept == _vm.typeUser && props.rowData.IsUpadatedRevision != 1 ? _c("b-btn", {
+        }), _vm._v(" Tampilkan\n          ")]), _vm._v(" "), props.rowData.Status == "UnPublish" && props.rowData.IdUserEntry == _vm.idUser || props.rowData.Status == "Disetujui oleh Dept Head Terkait" && _vm.position == 2 || props.rowData.ReportDept == _vm.typeUser && props.rowData.IsUpadatedRevision != 1 ? _c("b-btn", {
           staticClass: "btn btn-outline-secondary btn-sm mr-1 mt-1",
           on: {
             click: function click($event) {
@@ -854,7 +839,7 @@ var render = function render() {
           }
         }, [_c("i", {
           staticClass: "ion ion-md-create"
-        }), _vm._v(" Ubah\n          ")]) : _vm._e(), _vm._v(" "), props.rowData.Status == "UnPublish" && _vm.position == 5 || props.rowData.ReportDept == _vm.typeUser && props.rowData.IsUpadatedRevision != 1 ? _c("b-btn", {
+        }), _vm._v(" Ubah\n          ")]) : _vm._e(), _vm._v(" "), props.rowData.Status == "UnPublish" && props.rowData.IdUserEntry == _vm.idUser || props.rowData.ReportDept == _vm.typeUser && props.rowData.IsUpadatedRevision != 1 ? _c("b-btn", {
           staticClass: "btn btn-outline-danger btn-sm mr-1 mt-1",
           on: {
             click: function click($event) {
@@ -863,7 +848,7 @@ var render = function render() {
           }
         }, [_c("i", {
           staticClass: "ion ion-md-trash"
-        }), _vm._v(" Hapus\n          ")]) : _vm._e(), _vm._v(" "), props.rowData.Status == "UnPublish" && _vm.position == 5 || props.rowData.ReportDept == _vm.typeUser && props.rowData.IsUpadatedRevision != 1 ? _c("b-btn", {
+        }), _vm._v(" Hapus\n          ")]) : _vm._e(), _vm._v(" "), props.rowData.Status == "UnPublish" && props.rowData.IdUserEntry == _vm.idUser || props.rowData.ReportDept == _vm.typeUser && props.rowData.IsUpadatedRevision != 1 ? _c("b-btn", {
           staticClass: "btn btn-outline-success btn-sm mr-1 mt-1",
           on: {
             click: function click($event) {

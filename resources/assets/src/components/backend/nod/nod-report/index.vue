@@ -96,19 +96,16 @@
             @click="onAction('view-item', props.rowData, props.rowIndex)">
             <i class="ion ion-ios-eye"></i> Tampilkan
           </b-btn>
-          <!-- <b-btn v-if="props.rowData.Status == 'UnPublish' && position == 1" class="btn btn-outline-secondary btn-sm mr-1 mt-1" -->
-          <b-btn v-if="((props.rowData.Status == 'UnPublish' && position == 5) || ( props.rowData.Status == 'Disetujui oleh Dept Head Terkait' && position == 2)) || props.rowData.ReportDept == typeUser && (props.rowData.IsUpadatedRevision != 1)" class="btn btn-outline-secondary btn-sm mr-1 mt-1"
+          <!-- {{props.rowData.IdUserEntry}} -->
+          <b-btn v-if="((props.rowData.Status == 'UnPublish' && props.rowData.IdUserEntry == idUser) || ( props.rowData.Status == 'Disetujui oleh Dept Head Terkait' && position == 2)) || props.rowData.ReportDept == typeUser && (props.rowData.IsUpadatedRevision != 1)" class="btn btn-outline-secondary btn-sm mr-1 mt-1"
             @click="onAction('edit-item', props.rowData, props.rowIndex)">
             <i class="ion ion-md-create"></i> Ubah
           </b-btn>
-          <!-- <b-btn v-if="props.rowData.Status == 'UnPublish' && position == 1" class="btn btn-outline-danger btn-sm mr-1 mt-1" -->
-          <b-btn v-if="(props.rowData.Status == 'UnPublish' && position == 5)  || props.rowData.ReportDept == typeUser && (props.rowData.IsUpadatedRevision != 1)" class="btn btn-outline-danger btn-sm mr-1 mt-1"
+          <b-btn v-if="(props.rowData.Status == 'UnPublish' && props.rowData.IdUserEntry == idUser)  || props.rowData.ReportDept == typeUser && (props.rowData.IsUpadatedRevision != 1)" class="btn btn-outline-danger btn-sm mr-1 mt-1"
             @click="onAction('delete-item', props.rowData, props.rowIndex)">
             <i class="ion ion-md-trash"></i> Hapus
           </b-btn>
-
-          <!-- <b-btn v-if="props.rowData.Status == 'UnPublish' && position == 1" class="btn btn-outline-success btn-sm mr-1 mt-1" -->
-          <b-btn v-if="(props.rowData.Status == 'UnPublish' && position == 5)  || props.rowData.ReportDept == typeUser && (props.rowData.IsUpadatedRevision != 1)" class="btn btn-outline-success btn-sm mr-1 mt-1"
+          <b-btn v-if="(props.rowData.Status == 'UnPublish' && props.rowData.IdUserEntry == idUser)  || props.rowData.ReportDept == typeUser && (props.rowData.IsUpadatedRevision != 1)" class="btn btn-outline-success btn-sm mr-1 mt-1"
             @click="onAction('publish', props.rowData, props.rowIndex)">
             <i class="ion-md-cloud-upload"></i> Publish
           </b-btn>
@@ -213,20 +210,6 @@ export default {
           dataClass: 'text-center',
           formatter: this.formatDate
         },
-        // {
-        //   name: 'Event',
-        //   sortField: 'noe.Event',
-        //   title: 'Uraian / Kondisi Ketidaksesuaian',
-        //   titleClass: 'text-center',
-        //   dataClass: 'text-center'
-        // },
-        // {
-        //   name: 'ProperCondition',
-        //   sortField: 'nod.ProperCondition',
-        //   title: 'Kondisi Seharusnya',
-        //   titleClass: 'text-center',
-        //   dataClass: 'text-center',
-        // },
         {
           name: 'BatchNo',
           sortField: 'noe.BatchNo',
@@ -295,7 +278,6 @@ export default {
         {value: "Disetujui oleh Section Head", text:"Disetujui oleh Section Head"},
         {value: "Disetujui oleh Dept Head", text:"Disetujui oleh Dept Head"},
         {value: "Disetujui oleh Dept Head Terkait", text:"Disetujui oleh Dept Head Terkait"},
-        // {value: "Disetujui oleh QA APJ", text:"Disetujui oleh QA APJ"},
         {value: "Disetujui oleh QA Dept.Head", text:"Disetujui oleh QA Dept.Head"},
         {value: "Ditolak", text:"Ditolak"},
         {value: "Direvisi Dept Head Terkait", text:"Direvisi Dept Head Terkait"},
@@ -304,6 +286,7 @@ export default {
       ],
 
       position: 0, //position 1 = unit; 2 = section head; 3 = APJ; 4 = dept head;
+      idUser: 0,
       idDetail: [],
       isCaretaker: false,
       deptTerkait: false,
@@ -356,7 +339,7 @@ export default {
         this.isCaretaker = res.data.isCaretaker
         this.userDepartment = res.data.userDepartment
         this.typeUser = res.data.typeUser
-
+        this.idUser = res.data.idUser
       }.bind(this))
       .catch( function (e) {
         console.log(e)

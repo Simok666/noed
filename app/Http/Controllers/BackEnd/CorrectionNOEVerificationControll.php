@@ -227,28 +227,46 @@ class CorrectionNOEVerificationControll extends Controller
         $itemCaretaker = $this->AppWeb->checkCaretaker(session('adminvue')->IdDepartment,session('adminvue')->IdEmployee,session('adminvue')->Id);
         $isCaretaker = false;
         if($itemCaretaker && $item->Status=='Disetujui oleh Sect Head') $isCaretaker = true;
+        
+        $getUsersDetails = [];
 
-        $getChildToAnswer =DB::table('position')
-            ->select('Id','Code')
-            ->where(function ($getChildToAnswer) use ($request) {
-                if(session('adminvue')->TypeUser == 15) // if dept head
-                {
-                    // $getChildToAnswer->where('Parent', 'LIKE','%{"Id":'.session('adminvue')->IdPosition.'%')
-                    // ->where('Id', $request->input('SectionPublish')); 
-                    $getChildToAnswer->where('Id', $request->input('IdPublish'));
-                }
-                elseif(session('adminvue')->TypeUser == 14) // if section head
-                {
-                    $getChildToAnswer->where('Parent', 'LIKE','%{"Id":'.session('adminvue')->IdPosition.'%')
-                    ->where('Id', $request->input('IdPublish'));
-                }
-                elseif(session('adminvue')->TypeUser == 13) // if unit head
-                {
-                    $getChildToAnswer->where('Parent', 'LIKE','%{"Id":'.session('adminvue')->IdPosition.'%');
-                }
-            })
-            ->where('Actived', 1)
-            ->first();
+        if(session('adminvue')->TypeUser == 13) {
+            $getUsersDetails = DB::table('users_detail as usrd')
+                        ->select('usrd.TypeUser','tu.Name', 'emp.IdPosition', 'emp.Name as employeeName')
+                        ->join('users as usr','usr.Id','=','usrd.IdUsers')
+                        ->join('employee as emp', 'emp.Id', '=', 'usr.IdEmployee')
+                        ->join('type_user as tu','tu.Id','=','usrd.TypeUser')
+                        ->where('usr.Id', $item->UserEntry)
+                        ->first();
+        } elseif(session('adminvue')->TypeUser == 14 || session('adminvue')->TypeUser == 15 || session('adminvue')->TypeUser === 16 || session('adminvue')->TypeUser === 19) {
+            $getUsersDetails = DB::table('users_detail as usrd')
+                        ->select('usrd.TypeUser','tu.Name', 'emp.IdPosition', 'emp.Name as employeeName')
+                        ->join('users as usr','usr.Id','=','usrd.IdUsers')
+                        ->join('employee as emp', 'emp.Id', '=', 'usr.IdEmployee')
+                        ->join('type_user as tu','tu.Id','=','usrd.TypeUser')
+                        ->where('emp.IdPosition', $request->input('IdPublish'))
+                        ->first();
+        }
+
+        // $getChildToAnswer =DB::table('position')
+        //     ->select('Id','Code')
+        //     ->where(function ($getChildToAnswer) use ($request) {
+        //         if(session('adminvue')->TypeUser == 15) // if dept head
+        //         {
+        //             $getChildToAnswer->where('Id', $request->input('IdPublish'));
+        //         }
+        //         elseif(session('adminvue')->TypeUser == 14) // if section head
+        //         {
+        //             $getChildToAnswer->where('Parent', 'LIKE','%{"Id":'.session('adminvue')->IdPosition.'%')
+        //             ->where('Id', $request->input('IdPublish'));
+        //         }
+        //         elseif(session('adminvue')->TypeUser == 13) // if unit head
+        //         {
+        //             $getChildToAnswer->where('Parent', 'LIKE','%{"Id":'.session('adminvue')->IdPosition.'%');
+        //         }
+        //     })
+        //     ->where('Actived', 1)
+        //     ->first();
         
         if($isCaretaker) {
             $arr = [
@@ -257,7 +275,8 @@ class CorrectionNOEVerificationControll extends Controller
                 'Description'=>$request->input('Description'),
                 'Attachment'=>$Attachment,
                 'TypeUser'=>session('adminvue')->TypeUser,
-                'ChildToAnswer'=> $getChildToAnswer->Id,
+                // 'ChildToAnswer'=> $getChildToAnswer->Id,
+                'ChildToAnswer'=> $getUsersDetails->IdPosition,
                 'IsMandatory'=>1,
                 'DescriptionMandatory'=>$request->input('DescriptionCaretaker'),
                 'UserEntry'=>session('adminvue')->Id,
@@ -269,12 +288,13 @@ class CorrectionNOEVerificationControll extends Controller
                 'Number'=>$request->input('Number'),
                 'Description'=>$request->input('Description'),
                 'TypeUser'=>session('adminvue')->TypeUser,
-                'ChildToAnswer'=> $getChildToAnswer->Id,
+                // 'ChildToAnswer'=> $getChildToAnswer->Id,
+                'ChildToAnswer'=> $getUsersDetails->IdPosition,
                 'Attachment'=>$Attachment,
                 'UserEntry'=>session('adminvue')->Id,
             ];
         }
-       
+        //  dd($getUsersDetails);
         DB::begintransaction();
         try{
             DB::table('correction')
@@ -353,7 +373,7 @@ class CorrectionNOEVerificationControll extends Controller
                         ->where('emp.Actived', 1)
                         ->get();
                 }
-                
+               
                 $this->Helper->sendEmail($item, $noeAnswer=null, $request, $itemMail, $Status);
                
                 $this->History->store($Modul,15,json_encode($item));
