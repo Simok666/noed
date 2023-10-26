@@ -576,7 +576,8 @@ export default {
             return value == resp.data.IdDepartmentSession ? this.isRelevantDept = true : this.isRelevantDept
           }, {})
         }
-        resp.data.TypeUser == 15 ? this.isDept = true : this.isDept
+        
+        resp.data.TypeUser == 15 || resp.data.TypeUser == 16 ? this.isDept = true : this.isDept
         this.relevantDeptExist = resp.data.IdRelevantDept 
         
         this.field.NODCA.forEach((value,index) => {

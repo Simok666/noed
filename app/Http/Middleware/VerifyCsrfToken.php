@@ -12,6 +12,6 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        '/AdminVue/data-verifikasi-capa-nod'
     ];
 }

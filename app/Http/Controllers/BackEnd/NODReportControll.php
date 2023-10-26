@@ -80,7 +80,7 @@ class NODReportControll extends Controller
                     $exp = explode('.', $valPosition);
                     
                     if(strpos(strtolower($exp[1]), 'dh') !== false && session('adminvue')->IdDepartment == 67) {
-                        $query->where('nod.Status','>',5);
+                        $query->where('nod.Status','>',3);
                         $query->where('nod.Actived','>',0);
                         
                         if(count($item)>0) { foreach ($item as $val) {
@@ -861,6 +861,14 @@ class NODReportControll extends Controller
             }
         }
 
+        $statusNOD = 0; 
+        
+        if(session('adminvue')->TypeUser === 13 || session('adminvue')->TypeUser === 14 || session('adminvue')->TypeUser === 15 || session('adminvue')->TypeUser === 16 || session('adminvue')->TypeUser === 19) { // unit head || dept head || section head
+            $statusNOD = 2;
+        } elseif (session('adminvue')->TypeUser === 9) { // admin
+            $statusNOD = 1;
+        }
+
         DB::begintransaction();
         try{
             $IdNOEReport = DB::table('nod_report')
@@ -881,6 +889,7 @@ class NODReportControll extends Controller
                 'Method'=>$request->input('Method'),
                 'Material'=>$request->input('Material'),
                 'Milieu'=>$request->input('Milieu'),
+                'Status'=>$statusNOD,
                 'UserEntry'=>session('adminvue')->Id,
 
                 // sebelumnya hanya 1 data group, sekarang lebih dari 1 data group
@@ -1527,7 +1536,7 @@ class NODReportControll extends Controller
             ->leftjoin('noe_report as noe','noe.Id','=','nod.IdNOEReport')
             ->where('nod.Id', $request->input('Id'))
             ->first();
-        
+       
         $itemNOEVerif = DB::table('noe_verif_evaluation')
             ->select('RelevantDept')
             ->where('IdNOEReport', $item->IdNOEReport)
@@ -1554,12 +1563,12 @@ class NODReportControll extends Controller
         $itemCaretaker = $this->AppWeb->checkCaretaker(session('adminvue')->IdDepartment,session('adminvue')->IdEmployee,session('adminvue')->Id);
         $valPosition = session('adminvue')->CodePosition;
         $exp = explode('.', $valPosition);
-
+        
         DB::begintransaction();
         try{
             // jika department pelapor sama dengan department head pelapor
             if($item->IdDepartment == session('adminvue')->IdDepartment) {
-                if($item->Status='Dilaporkan ke Unit Head' && strpos(strtolower($exp[1]), 'uh') !== false) {
+                if($item->Status === 'Dilaporkan ke Unit Head' && strpos(strtolower($exp[1]), 'uh') !== false) {
                     DB::table('nod_report')
                     ->where('Id', $request->input('Id'))
                     ->update([
@@ -1608,7 +1617,7 @@ class NODReportControll extends Controller
                         ));
                     }
 
-                } else if($item->Status='Disetujui oleh Unit Head' && strpos(strtolower($exp[1]), 'sch') !== false) {
+                } elseif($item->Status === 'Disetujui oleh Unit Head' && strpos(strtolower($exp[1]), 'sch') !== false) {
                     DB::table('nod_report')
                     ->where('Id', $request->input('Id'))
                     ->update([
@@ -1654,7 +1663,7 @@ class NODReportControll extends Controller
                         ));
                     }
 
-                } else if( $item->Status='Disetujui oleh Section Head' && (strpos(strtolower($exp[1]), 'dh') !== false || $itemCaretaker) ) {
+                } elseif($item->Status === 'Disetujui oleh Section Head' && (strpos(strtolower($exp[1]), 'dh') !== false || $itemCaretaker) ) {
                     if($itemCaretaker) {
                         DB::table('nod_report')
                         ->where('Id', $request->input('Id'))
@@ -1760,13 +1769,167 @@ class NODReportControll extends Controller
                         ));
                     }
 
+                } elseif(($item->Status=='Disetujui oleh Dept Head Terkait' || $item->Status=='Disetujui Oleh QA Section Head') && ((strpos(strtolower($exp[1]), 'sch') !== false) || (strpos(strtolower($exp[1]), 'dh') !== false))) {
+                    if(strpos(strtolower($exp[1]), 'sch') !== false) {
+                        DB::table('nod_report')
+                        ->where('Id', $request->input('Id'))
+                        ->update([
+                            'Status'=>11,
+                            'IsCorrection'=>0
+                        ]);
+                    } else {
+        
+                        DB::table('nod_report')
+                        ->where('Id', $request->input('Id'))
+                        ->update([
+                            'Status'=>8,
+                            // 'IsClosed'=>1, // Data NOD closed setelah NOD Review selesai
+                            'DateQA'=>date('Y-m-d H:i:s'),
+                            'UserQA'=>session('adminvue')->Id
+                        ]);
+                    }
+                    
+                    
+                    try {
+                        $data['Subject'] = 'NOD Report - Approved';
+                        $data['Title'] = 'Data NOD telah disetujui, Oleh :';
+
+                        $dataMail['Disetujui'] = session('adminvue')->Name .' | '. session('adminvue')->Position .' - '. session('adminvue')->Department;
+                        $dataMail['NOD Number'] = $item->NODNumber;
+                        $dataMail['Proper Condition'] = $item->ProperCondition;
+                        $dataMail['Man'] = $item->Man;
+                        $dataMail['Machine'] = $item->Machine;
+                        $dataMail['Method'] = $item->Method;
+                        $dataMail['Material'] = $item->Material;
+                        $dataMail['Milieu'] = $item->Milieu;
+
+                        if(strpos(strtolower($exp[1]), 'sch') !== false || strpos(strtolower($exp[1]), 'dh') !== false) {
+                            $getEffectEmail = [];
+                            $anotherEffectEmail = json_decode($item->DescAnotherEffect);
+                            if($anotherEffectEmail[0] === false) {
+                                array_push($getEffectEmail, $anotherEffectEmail[0]);
+                            } else {
+                                foreach($anotherEffectEmail as $key => $effectEmail) {
+                                    if($effectEmail != null) {
+                                        $getQuestion = $this->MainDB->table('another_effect as ane')
+                                                ->select('ane.title_effect')
+                                                ->where('ane.id_effect', $effectEmail->id_effect)
+                                                ->first();
+    
+                                        $getEffectEmail[$key] = 
+                                        [
+                                            'title' => $getQuestion->title_effect,
+                                            'text'  => $effectEmail->text,
+                                            'selected' => $effectEmail->selected
+                                        ];
+                                    }
+                                }
+                            }
+                            
+                            $dataMail['AnotherEffect'] = $getEffectEmail;
+                        }
+
+                        if (strpos(strtolower($exp[1]), 'sch') !== false) {
+                            $IdPosition = json_decode(session('adminvue')->ParentPosition);
+                            
+                            if($IdPosition!=0 || $IdPosition!=null) {
+                                $itemMail = $this->MainDB->table('employee as emp')
+                                    ->select('emp.Name as Employee','emp.Email')
+                                    ->where('emp.IdPosition', $IdPosition[0]->Id)
+                                    ->where('emp.Actived', 1)
+                                    ->get();
+                                
+                                if(count($itemMail)>0) { foreach ($itemMail as $key => $val) {
+                                    $data['Employee'] = $val->Employee;
+                                    $data['Email'] = $val->Email;
+
+                                    $this->History->sendMail($data, $dataMail, $dataObjectEmail = []);
+                                } }
+                            }
+                        } else {
+                            $IdPosition = session('adminvue')->IdPosition;
+                            
+                            if($IdPosition!=0 || $IdPosition!=null) {
+                                $itemMail = $this->MainDB->table('employee as emp')
+                                    ->select('emp.Name as Employee','emp.Email')
+                                    ->where('emp.IdDepartment', 67)
+                                    ->where('emp.IdPosition', '<>', $IdPosition)
+                                    ->where('emp.Actived', 1)
+                                    ->get();
+                                
+                                if(count($itemMail)>0) { foreach ($itemMail as $key => $val) {
+                                    $data['Employee'] = $val->Employee;
+                                    $data['Email'] = $val->Email;
+
+                                    $this->History->sendMail($data, $dataMail, $dataObjectEmail = []);
+                                } }
+
+                                $getPeloporPosition = [];
+                                array_push($getPeloporPosition, $item->IdPosition);
+                                array_push($getPeloporPosition, $item->IdPublish);
+                                array_push($getPeloporPosition, $item->IdSectionPublish);
+                                array_push($getPeloporPosition, $item->deptHeadPelopor);
+                                
+                                $itemMailPelopor = $this->MainDB->table('employee as emp')
+                                    ->select('emp.Name as Employee','emp.Email')
+                                    ->leftjoin('position as pst','pst.Id','=','emp.IdPosition')
+                                    ->whereIn('pst.Id', $getPeloporPosition)
+                                    ->where('emp.IdDepartment', $item->IdDepartment)
+                                    ->where('emp.Actived', 1)
+                                    ->get();
+                                
+                                if(count($itemMailPelopor)>0) { foreach ($itemMailPelopor as $key => $val) {
+                                    $data['Employee'] = $val->Employee;
+                                    $data['Email'] = $val->Email;
+
+                                    $this->History->sendMail($data, $dataMail, $dataObjectEmail = []);
+                                } }
+                                
+                                if(count($RelevantDept) > 0) {
+                                    $getPosition = [];
+            
+                                    $getPositionRelevant = DB::table('position')
+                                    ->select('Id')
+                                    ->where('Code', 'like', '%'.'.dh')
+                                    ->whereIn('IdDepartment', $resultDept)
+                                    ->where('Actived', 1)
+                                    ->get();
+                                    
+                                    foreach ($getPositionRelevant as $key => $val) {
+                                        $getPosition[$key] = $val->Id;
+                                    }
+                                   
+                                    $relevantItemMail = $this->MainDB->table('employee as emp')
+                                    ->select('emp.Name as Employee','emp.Email')
+                                    ->whereIn('emp.IdPosition', $getPosition)
+                                    ->where('emp.Actived', 1)
+                                    ->get();
+                                    
+                                    if(count($relevantItemMail)>0) { foreach ($relevantItemMail as $key => $val) {
+                                        $data['Employee'] = $val->Employee;
+                                        $data['Email'] = $val->Email;
+    
+                                        $this->History->sendMail($data, $dataMail, $dataObjectEmail = []);
+                                    } }
+                                }
+                            }
+                        }
+
+                    } catch (\exception $th) {
+                        return json_encode(array(
+                            'status'=>false,
+                            'message'=>'Setujui Data Gagal, Pengiriman Email Invalid!',
+                            'validation'=>$validation->errors(),
+                        ));
+                    }
+
                 } else {
                     return json_encode(array(
                         'status'=>false,
                         'message'=>'Anda Tidak Punya Otoritas Approve Data!',
                     ));
                 }
-            } else if($RelevantDept && $item->Status=='Disetujui oleh Dept Head') {
+            } elseif($RelevantDept && $item->Status == 'Disetujui oleh Dept Head') {
                 // jika department head terkait
                 $countDept = 0;
                 $idDept = $request->input('SubmitVal');
@@ -1910,7 +2073,7 @@ class NODReportControll extends Controller
                         }
                     }
                 }
-            } else if(session('adminvue')->IdDepartment == 67 && ($item->Status=='Disetujui oleh Dept Head Terkait' || $item->Status=='Disetujui oleh QA APJ' || $item->Status=='Disetujui Oleh QA Section Head')) {
+            } elseif(session('adminvue')->IdDepartment == 67 && ($item->Status=='Disetujui oleh Dept Head Terkait' || $item->Status=='Disetujui oleh QA APJ' || $item->Status=='Disetujui Oleh QA Section Head')) {
                 // jika department QA
                 if(strpos(strtolower($exp[1]), 'apj') !== false || strpos(strtolower($exp[1]), 'dh') !== false || strpos(strtolower($exp[1]), 'sch') !== false || $itemCaretaker) {
                     if(strpos(strtolower($exp[1]), 'apj') !== false) {
@@ -1949,7 +2112,7 @@ class NODReportControll extends Controller
                             'UserQA'=>session('adminvue')->Id
                         ]);
                     }
-
+                   
                     try{
                         /*$itemPst = DB::table('position')
                             ->select('Id')
@@ -2099,6 +2262,7 @@ class NODReportControll extends Controller
                                 }
                             }
                         }
+                        
                     }catch (Exception $e){
                         return json_encode(array(
                             'status'=>false,

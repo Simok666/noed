@@ -648,7 +648,7 @@ var render = function render() {
     }
   })], 1)], 1)], 1), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_vm.typeUser == 9 ? _c("b-btn", {
+  }, [_c("b-btn", {
     staticClass: "btn btn-success btn-md float-right mr-2",
     on: {
       click: function click($event) {
@@ -657,7 +657,7 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "ion ion-md-add-circle"
-  }), _vm._v(" Buat Data\n          ")]) : _vm._e()], 1)]), _vm._v(" "), _c("div", {
+  }), _vm._v(" Buat Data\n          ")])], 1)]), _vm._v(" "), _c("div", {
     staticClass: "table-responsive"
   }, [_c("vuetable", {
     ref: "vuetable",
