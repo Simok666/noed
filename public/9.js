@@ -252,7 +252,7 @@ __webpack_require__.r(__webpack_exports__);
             return value == resp.data.IdDepartmentSession ? _this2.isRelevantDept = true : _this2.isRelevantDept;
           }, {});
         }
-        resp.data.TypeUser == 15 ? this.isDept = true : this.isDept;
+        resp.data.TypeUser == 15 || resp.data.TypeUser == 16 ? this.isDept = true : this.isDept;
         this.relevantDeptExist = resp.data.IdRelevantDept;
         this.field.NODCA.forEach(function (value, index) {
           if (value) {

@@ -20,7 +20,7 @@
       </div>
       <div class="col-md-4">
           <!-- <b-btn @click="createData()" v-if="position == 1" class="btn btn-success btn-md float-right mr-2"> -->
-          <b-btn @click="createData()" v-if="typeUser == 9" class="btn btn-success btn-md float-right mr-2">
+          <b-btn @click="createData()" class="btn btn-success btn-md float-right mr-2">
             <i class="ion ion-md-add-circle"></i> Buat Data
           </b-btn>
       </div>

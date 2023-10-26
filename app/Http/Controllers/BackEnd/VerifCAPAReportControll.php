@@ -66,33 +66,28 @@ class VerifCAPAReportControll extends Controller
                         ->select('*')
                         ->where('nod.Status', 8) // disetujui QA Dept. Head
                         ->where('nod.Actived', 1)
+                        ->where('nod.IsCapaVerified',0)
                         ->get(); 
-
+       
         $getDataVerifikasiCapa =  DB::table('verifikasi_capa_nod as vcn')
         ->select('*')
+        ->where('vcn.is_approved',0)
         ->get();
-    
-        $notExistNOD = [];
+       
+        $result = [];
+        $nodGetCAPA = [];
         if(count($getDataVerifikasiCapa) > 0) {
+
+            foreach($getDataVerifikasiCapa as $keyCapa => $valCapa) {
+                    array_push($nodGetCAPA, $valCapa->id_approved_nod);
+            }
             foreach($getDataNODAcc as $keyNod => $valNod) {
-                foreach($getDataVerifikasiCapa as $keyCapa => $valCapa) {
                     
-                    if($valNod->Id === $valCapa->id_approved_nod && $valCapa->actived === 1) {
-                            
-                       $notExistNOD;
-                    } elseif($valNod->Id === $valCapa->id_approved_nod && $valCapa->actived === 0) {
-                        
-                        array_push($notExistNOD, $valNod);
-                    } elseif($valNod->Id !== $valCapa->id_approved_nod && count($getDataNODAcc) !== count($getDataVerifikasiCapa)) {
-                        
-                        array_push($notExistNOD, $valNod);
-                    }
-                }
             }
         } else {
             $notExistNOD = $getDataNODAcc;
         }
-        
+        dd($nodGetNOD);
         return response()->json([
             'data' => $notExistNOD
         ]);
@@ -791,6 +786,13 @@ class VerifCAPAReportControll extends Controller
                     'vcn.status_capa' => $valStatus,
                     'vcn.name_verfication'=> $request->input('deptHeadVerification'),
                     'vcn.time_finished_verfication' => Carbon::now()->format('Y-m-d H:i:s')
+                ]);
+
+            DB::table('nod_report as nod')
+                ->where('nod.Id', $request->input('Id'))
+                ->where('nod.Actived', 1)
+                ->update([
+                    'nod.IsCapaVerified' => 1
                 ]);
 
             try {

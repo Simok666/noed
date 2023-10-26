@@ -398,7 +398,7 @@ class NOEReportControll extends Controller
         if(session('adminvue')->TypeUser === 13) { // unit head
             $statusNOE = 2; // Dilaporkan Unit Head
             $idPublish = session('adminvue')->IdPosition;
-        }elseif(session('adminvue')->TypeUser === 14 || session('adminvue')->TypeUser === 15) {
+        }elseif(session('adminvue')->TypeUser === 14 || session('adminvue')->TypeUser === 15 || session('adminvue')->TypeUser === 16 || session('adminvue')->TypeUser === 19) {
             $statusNOE = 2; // Dilaporkan Unit Head
             $idPublish = $request->input('IdPublish');
         }elseif(session('adminvue')->TypeUser === 9) { // admin
