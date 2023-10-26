@@ -236,6 +236,28 @@ class Helper {
         } }
     }
 
+    function sendEmailSectionDeptNOD($request, $itemMail)
+    {
+        $data['Subject'] = 'NOD Report - Published';
+        $data['Title'] = 'Data NOD telah dilaporkan, Oleh :';
+
+        $dataMail['Pelapor'] = session('adminvue')->Name .' | '. session('adminvue')->Position .' - '. session('adminvue')->Department;
+        $dataMail['NOD Number'] = $request->NODNumber;
+        $dataMail['Proper Condition'] = $request->ProperCondition;
+        $dataMail['Man'] = $request->Man;
+        $dataMail['Machine'] = $request->Machine;
+        $dataMail['Method'] = $request->Method;
+        $dataMail['Material'] = $request->Material;
+        $dataMail['Milieu'] = $request->Milieu;
+          
+        if(count($itemMail)>0) { foreach ($itemMail as $key => $val) {
+            $data['Employee'] = $val->Employee;
+            $data['Email'] = $val->Email;
+            
+            $this->History->sendMail($data, $dataMail, $dataObjectEmail=[]);
+        } }
+    }
+
     function sendEmailVerifiCapa($item, $NODCA, $NODPA, $itemMail, $statusCapa) {
         if($statusCapa === 2) {
             $data['Subject'] = 'Pengajuan efektivitas CAPA - Published';

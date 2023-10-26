@@ -61,6 +61,7 @@ class NODReportControll extends Controller
                 'nod.IsCorrection',
                 'nod.IdReportDept as ReportDept',
                 'usr.UserName as UserEntry',
+                'nod.UserEntry as IdUserEntry',
                 'emp.Name as Employee',
                 'nod.CreateAt',
                 'nod.UpdateAt'
@@ -112,7 +113,7 @@ class NODReportControll extends Controller
                                 }
                             } } 
                         $query->orWhere('nod.IdDepartment',session('adminvue')->IdDepartment);
-                        $query->where('nod.Status','>',1);
+                        $query->where('nod.Status','>',0);
                         $query->where('nod.Actived','>',0);
                     } else {
                         $query->orWhere('nod.IdDepartment',session('adminvue')->IdDepartment);
@@ -862,7 +863,7 @@ class NODReportControll extends Controller
         }
 
         $statusNOD = 0; 
-        
+        $idPublish = $request->input('IdPublish');
         if(session('adminvue')->TypeUser === 13 || session('adminvue')->TypeUser === 14 || session('adminvue')->TypeUser === 15 || session('adminvue')->TypeUser === 16 || session('adminvue')->TypeUser === 19) { // unit head || dept head || section head
             $statusNOD = 2;
         } elseif (session('adminvue')->TypeUser === 9) { // admin
@@ -935,6 +936,24 @@ class NODReportControll extends Controller
                     'UserEntry'=>session('adminvue')->Id
                 ]);
             } }
+
+            if(session('adminvue')->TypeUser === 14 || session('adminvue')->TypeUser === 15) {
+                $itemPosition = DB::table('position')
+                        ->select('Id')
+                        ->where('IdDepartment', session('adminvue')->IdDepartment)
+                        ->where('Id', $idPublish)
+                        ->where('Actived', 1)
+                        ->first();
+                
+                $itemMail = $this->MainDB->table('employee as emp')
+                        ->select('emp.Name as Employee','emp.Email')
+                        ->where('emp.IdPosition', $itemPosition->Id)
+                        ->where('emp.Actived', 1)
+                        ->get();
+
+                
+                $this->Helper->sendEmailSectionDeptNOD($request, $itemMail);
+            }
 
             DB::table('noe_report')
             ->where('Id', $request->input('NOENumber'))
