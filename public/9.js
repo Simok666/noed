@@ -80,7 +80,12 @@ __webpack_require__.r(__webpack_exports__);
       getAnotherEffect: [],
       checkedEffect: [],
       text: [],
-      dataAnotherEffect: []
+      anotherEffectFile: [],
+      fileAnotherEffect: [],
+      fileAnotherEffectDownload: [],
+      oldFileAnotherEffect: [],
+      dataAnotherEffect: [],
+      fileResponseAnotherEffect: []
     };
   },
   created: function created() {
@@ -88,6 +93,7 @@ __webpack_require__.r(__webpack_exports__);
     // Initialize the 'text' object with default values for each 'title_effect'
     this.getAnotherEffect.forEach(function (item) {
       _this.text[item.id_effect] = '';
+      _this.anotherEffectFile[item.id_effect] = [];
     });
   },
   watch: {
@@ -96,15 +102,16 @@ __webpack_require__.r(__webpack_exports__);
         // Ketika checkbox diubah, perbarui nilai textarea sesuai dengan checkbox yang dicentang
         for (var key in this.checkedEffect) {
           if (this.checkedEffect[key]) {
-            if (!this.text[key]) {
+            if (!this.text[key] || !this.anotherEffectFile[key]) {
               this.text[key] = ''; // Inisialisasi nilai textarea jika belum ada
+              // this.anotherEffectFile[key] = []; 
             }
           } else {
             delete this.text[key]; // Hapus nilai textarea jika checkbox tidak dicentang
+            delete this.anotherEffectFile[key];
           }
         }
       },
-
       deep: true
     }
   },
@@ -149,6 +156,14 @@ __webpack_require__.r(__webpack_exports__);
         if (this.selected == true) {
           for (var idEffect in this.checkedEffect) {
             if (this.checkedEffect[idEffect]) {
+              for (var i = 0; i < this.anotherEffectFile[idEffect].length; i++) {
+                var _file = this.anotherEffectFile[idEffect][i];
+                formData.append('anotherEffectFile[' + idEffect + '][' + i + ']', _file);
+              }
+              for (var i = 0; i < this.oldFileAnotherEffect[idEffect].length; i++) {
+                var oldfile = this.oldFileAnotherEffect[idEffect][i];
+                formData.append('oldEffectFile[' + idEffect + '][' + i + ']', oldfile);
+              }
               collected[idEffect] = {
                 id_effect: idEffect,
                 selected: this.selected,
@@ -230,11 +245,27 @@ __webpack_require__.r(__webpack_exports__);
         this.getDataPIC(option.Id);
       }
     },
+    handleAnotherEffectFile: function handleAnotherEffectFile(files, checkedKey) {
+      this.anotherEffectFile[checkedKey] = files.map(function (files) {
+        return files.file;
+      });
+    },
+    handleRemoveEffectFile: function handleRemoveEffectFile(error, files) {
+      var _this2 = this;
+      var replace = files.source.replace('/clouds', 'clouds');
+      this.oldFileAnotherEffect.forEach(function (val, k) {
+        val.forEach(function (v, i) {
+          if (v == replace) {
+            _this2.oldFileAnotherEffect[k].splice(i, 1);
+          }
+        });
+      });
+    },
     getData: function getData(Id) {
       axios.post('/AdminVue/nod-report-edit', {
         Id: Id
       }).then(function (res) {
-        var _this2 = this;
+        var _this3 = this;
         var resp = res.data;
         this.Position = res.data.position;
         this.userDepartment = res.data.department;
@@ -249,7 +280,7 @@ __webpack_require__.r(__webpack_exports__);
         this.opsRelevantDept = resp.data.RelevantDept;
         if (resp.data.IdRelevantDept != 0) {
           JSON.parse(resp.data.IdRelevantDept).filter(function (value) {
-            return value == resp.data.IdDepartmentSession ? _this2.isRelevantDept = true : _this2.isRelevantDept;
+            return value == resp.data.IdDepartmentSession ? _this3.isRelevantDept = true : _this3.isRelevantDept;
           }, {});
         }
         resp.data.TypeUser == 15 || resp.data.TypeUser == 16 ? this.isDept = true : this.isDept;
@@ -262,7 +293,7 @@ __webpack_require__.r(__webpack_exports__);
                 'PIC': value.CAPIC
               };
               value.CAFile = JSON.parse(value.CAFile);
-              _this2.OldCAFile.push(value.CAFile);
+              _this3.OldCAFile.push(value.CAFile);
               value.CAFileName = [];
               value.CAFile.forEach(function (val, i) {
                 value.CAFile[i] = window.location.origin + '/' + val;
@@ -270,7 +301,7 @@ __webpack_require__.r(__webpack_exports__);
                 value.CAFileName[i] = result[4];
               });
             } else {
-              _this2.OldCAFile.push('');
+              _this3.OldCAFile.push('');
             }
           }
         });
@@ -282,7 +313,7 @@ __webpack_require__.r(__webpack_exports__);
                 'PIC': value.PAPIC
               };
               value.PAFile = JSON.parse(value.PAFile);
-              _this2.OldPAFile.push(value.PAFile);
+              _this3.OldPAFile.push(value.PAFile);
               value.PAFileName = [];
               value.PAFile.forEach(function (val, i) {
                 value.PAFile[i] = window.location.origin + '/' + val;
@@ -290,7 +321,7 @@ __webpack_require__.r(__webpack_exports__);
                 value.PAFileName[i] = result[4];
               });
             } else {
-              _this2.OldPAFile.push('');
+              _this3.OldPAFile.push('');
             }
           }
         });
@@ -311,12 +342,26 @@ __webpack_require__.r(__webpack_exports__);
         var selectedAnotherEffect = Object.values(resp.selectedAnotherEffect);
         if (selectedAnotherEffect) {
           selectedAnotherEffect.forEach(function (item, index) {
+            _this3.anotherEffectFile[item.id_effect] = [];
+            _this3.oldFileAnotherEffect[item.id_effect] = [];
             if (item !== false) {
-              _this2.selected = item.selected;
-              _this2.checkedEffect[item.id_effect] = item.id_effect;
-              _this2.text[item.id_effect] = item.text;
+              _this3.selected = item.selected;
+              _this3.checkedEffect[item.id_effect] = item.id_effect;
+              _this3.text[item.id_effect] = item.text;
+              _this3.fileResponseAnotherEffect[item.id_effect] = item.namefile;
+              _this3.fileAnotherEffectDownload[item.id_effect] = item.filedownload;
+              if (_this3.fileResponseAnotherEffect[item.id_effect] != '') {
+                var countFileAnotherEffect = _this3.fileResponseAnotherEffect[item.id_effect].length;
+                for (var i = 0; i < countFileAnotherEffect; i++) {
+                  _this3.oldFileAnotherEffect[item.id_effect].push(_this3.fileResponseAnotherEffect[item.id_effect][i]);
+                  _this3.anotherEffectFile[item.id_effect].push("/" + _this3.fileResponseAnotherEffect[item.id_effect][i]);
+                }
+              }
+              if (_this3.anotherEffectFile[item.id_effect] == '') {
+                _this3.oldFileAnotherEffect[item.id_effect] = '';
+              }
             } else {
-              _this2.selected = item;
+              _this3.selected = item;
             }
           });
         }
@@ -386,11 +431,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     handleRemoveCA: function handleRemoveCA(error, files) {
-      var _this3 = this;
+      var _this4 = this;
       this.OldCAFile.forEach(function (val, k) {
         val.forEach(function (v, i) {
           if (v == files.source) {
-            _this3.OldCAFile[k].splice(i, 1);
+            _this4.OldCAFile[k].splice(i, 1);
           }
         });
       });
@@ -401,11 +446,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     handleRemovePA: function handleRemovePA(error, files) {
-      var _this4 = this;
+      var _this5 = this;
       this.OldPAFile.forEach(function (val, k) {
         val.forEach(function (v, i) {
           if (v == files.source) {
-            _this4.OldPAFile[k].splice(i, 1);
+            _this5.OldPAFile[k].splice(i, 1);
           }
         });
       });
@@ -1168,7 +1213,63 @@ var render = function render() {
         },
         expression: "text[item.id_effect]"
       }
-    })], 1) : _vm._e()], 1);
+    }), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+      staticClass: "col-md-12"
+    }, [_c("label", {
+      staticClass: "form-label"
+    }, [_vm._v("Lampiran sistem lain yang terdampak")]), _vm._v(" "), _c("label", {
+      staticClass: "form-label float-right text-danger"
+    }, [_vm._v("(Max. 50 MB)")]), _vm._v(" "), _c("file-pond", {
+      ref: "pondMyFile",
+      refInFor: true,
+      attrs: {
+        name: "anotherEffectFile",
+        "label-idle": "Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;",
+        "allow-multiple": true,
+        files: _vm.anotherEffectFile[item.id_effect],
+        "accepted-file-types": "application/*, image/*, video/*",
+        maxTotalFileSize: "50MB",
+        required: "",
+        disabled: _vm.isShow
+      },
+      on: {
+        updatefiles: function updatefiles($event) {
+          return _vm.handleAnotherEffectFile($event, item.id_effect);
+        },
+        removefile: _vm.handleRemoveEffectFile
+      }
+    })], 1), _vm._v(" "), _c("b-card", {
+      staticClass: "mb-3",
+      attrs: {
+        header: "Lampiran Another Effect",
+        "header-tag": "h5"
+      }
+    }, [_c("b-form-row", _vm._l(_vm.fileAnotherEffectDownload[item.id_effect], function (itemFile, indexFile) {
+      return _c("b-form-group", {
+        key: indexFile,
+        staticClass: "col-md-12"
+      }, [_c("b-input-group", [_c("b-form-input", {
+        attrs: {
+          name: "FileVerifPADownload",
+          readonly: ""
+        },
+        model: {
+          value: itemFile[0],
+          callback: function callback($$v) {
+            _vm.$set(itemFile, 0, $$v);
+          },
+          expression: "itemFile[0]"
+        }
+      }), _vm._v(" "), _c("b-input-group-append", [_c("a", {
+        staticClass: "input-group-text btn-outline-success",
+        attrs: {
+          href: _vm.BaseUrl + itemFile[1],
+          target: "_blank"
+        }
+      }, [_c("i", {
+        staticClass: "fa fa-download"
+      })])])], 1)], 1);
+    }), 1)], 1)], 1)], 1) : _vm._e()], 1);
   }), 0) : _vm._e()], 1) : _vm._e(), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }), _vm._v(" "), _c("b-form-group", {

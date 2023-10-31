@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\Http\Controllers\Utils\AppWebControll;
 use App\Http\Controllers\Utils\UploadFileControll;
 use PDF;
+use Illuminate\Support\Facades\Log;
 
 class NODReportControll extends Controller
 {
@@ -26,6 +27,7 @@ class NODReportControll extends Controller
         $this->UploadFile = new UploadFileControll();
         $this->Helper = new Helper();
         $this->MainDB = DB::connection('mysql');
+        $this->logger = \Log::channel('customlog');
     }
 
     public function index(Request $request) {
@@ -829,7 +831,7 @@ class NODReportControll extends Controller
     	$requestData = $request->all();
         $validation = Validator::make($request->all(),$this->validation(),
             $messages = ['required' => 'This field is required.']);
-        
+
         if ($validation->fails()) {
             return json_encode(array(
                 'status'=>false,
@@ -1060,23 +1062,31 @@ class NODReportControll extends Controller
             $item->NOENumber = ['Id'=>$item->IdNOEReport,'NOENumber'=>$item->NOENumber];
             $item->TypeUser = session('adminvue')->TypeUser;
             $item->IdDepartmentSession = session('adminvue')->IdDepartment;
-
+            
             if($item->DescAnotherEffect !== null) {
                 $anotherEffect = json_decode($item->DescAnotherEffect);
-                
+               
                 if($anotherEffect[0] === false) {
                     array_push($dataAnotherEffect, $anotherEffect[0]);
                 } else {
                     foreach($anotherEffect as $key => $effect) {
+                        $anotherEffectFileDownload = [];
+
                         if($effect !== null) {
-                            $dataAnotherEffect[$key] = 
-    
-                                [ 
-                                    'id_effect' => $effect->id_effect, 
-                                    'selected'  => $effect->selected,
-                                    'text'      => $effect->text
-                                ];
+                            $effectFileName = $effect->namefile;
+
+                            $effect->namefile = $effect->namefile;
                             
+                            foreach($effectFileName as $keyFile => $valFile) {
+                                if($valFile) {
+                                    $resultFile = explode("/", $valFile);  
+                                }
+                                $anotherEffectFileDownload[] = [$resultFile[count($resultFile) - 1], $valFile];
+                            }
+
+                            $effect->filedownload = $anotherEffectFileDownload;
+
+                            $dataAnotherEffect[] = $effect;
                         }
                     }   
                 }
@@ -1129,7 +1139,7 @@ class NODReportControll extends Controller
 
             }
         }
-        
+
         return json_encode(array(
             'status'=>true,
             'data'=>$item,
@@ -1157,16 +1167,57 @@ class NODReportControll extends Controller
                 'validation'=>$validation->errors(),
             ));
         }
+
+        $anotherEffectFile = [];
+        if($request->has('anotherEffectFile') && $request->file('anotherEffectFile')!=null) {
+            $arrFile = $request->file('anotherEffectFile');
+            foreach($arrFile as $keyFile => $valFile) {
+                foreach($valFile as $subKey => $valSubKey) {
+                    if(pathinfo($valSubKey->getClientOriginalName(), PATHINFO_EXTENSION)) {
+                        $anotherEffectFile[$keyFile][$subKey] = $this->UploadFile->uploadFile($valSubKey, 5);
+                    }
+                }
+            }
+        }
         
+        
+        $oldAnotherEffectFile = $request->input('oldEffectFile');
+        if($oldAnotherEffectFile !== null) {
+            foreach($oldAnotherEffectFile as $key => $val){
+                if (array_key_exists($key, $anotherEffectFile)) {
+                    $anotherEffectFile[$key] = array_merge($anotherEffectFile[$key], $val);
+                } else {
+                    $anotherEffectFile[$key] = $val;
+                }
+            }
+        }
+         
+        if(count($anotherEffectFile) > 0) {
+            $anotherEffectFile = json_encode($anotherEffectFile);
+        } else {
+            $anotherEffectFile = json_encode($anotherEffectFile);
+        }
+        
+        $dataDescAnotherEffect = [];
         if($request->has('DescAnotherEffect')) {
             $anotherEffectValidation = json_decode($request->input('DescAnotherEffect'));
             
             foreach($anotherEffectValidation as $key => $val) {
-                
+                if($val !== null) {
+                   foreach(json_decode($anotherEffectFile) as $keyFile => $valFile) {
+                    foreach($valFile as $subKey => $subVal) {
+                        if($key == $keyFile) {
+                            $val->namefile[$subKey] = $subVal;
+                        }
+                    }
+                   }
+                   array_push($dataDescAnotherEffect, $val);
+                }
+
                 if($val === false) {
                     $val = 'false';
                 }
-        
+
                 if(empty($val) && $val !== null) {
                     return response()->json([
                         'status'=>false,
@@ -1175,6 +1226,7 @@ class NODReportControll extends Controller
                     ]);
                 }
             }
+
         }
         
         $CAFile = [];
@@ -1326,15 +1378,7 @@ class NODReportControll extends Controller
                     'Method'=>$request->input('Method'),
                     'Material'=>$request->input('Material'),
                     'Milieu'=>$request->input('Milieu'),
-                    'DescAnotherEffect'=>$request->input('DescAnotherEffect')
-                    /*'IdCAPIC'=>$request->input('IdCAPIC'),
-                    'CADate'=>$request->input('CADate'),
-                    'CADescription'=>$request->input('CADescription'),
-                    'CAFile'=>$CAFile,
-                    'IdPAPIC'=>$request->input('IdPAPIC'),
-                    'PADate'=>$request->input('PADate'),
-                    'PADescription'=>$request->input('PADescription'),
-                    'PAFile'=>$PAFile,*/
+                    'DescAnotherEffect'=>json_encode($dataDescAnotherEffect)
                 ]);
     
                 $IdCAPIC = $request->input('IdCAPIC');

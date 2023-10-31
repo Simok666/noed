@@ -284,6 +284,42 @@
                       class="mb-4"
                       :readonly="isShow"
                     ></b-form-textarea>
+
+                    <b-form-row>
+                        <b-form-group class="col-md-12" >
+                          <label class="form-label">Lampiran sistem lain yang terdampak</label>
+                          <label class="form-label float-right text-danger">(Max. 50 MB)</label>
+                          <file-pond
+                          name="anotherEffectFile"
+                          ref="pondMyFile"
+                          label-idle="Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;"
+                          :allow-multiple="true"
+                          @updatefiles="handleAnotherEffectFile($event, item.id_effect)"
+                          @removefile="handleRemoveEffectFile"
+                          :files="anotherEffectFile[item.id_effect]"
+                          accepted-file-types="application/*, image/*, video/*"
+                          maxTotalFileSize="50MB"
+                          required
+                          :disabled = "isShow"
+                        />
+                        </b-form-group>
+            
+                        <b-card class="mb-3" header="Lampiran Another Effect" header-tag="h5">
+                          <b-form-row>
+                            <b-form-group class="col-md-12" v-for="(itemFile, indexFile) in fileAnotherEffectDownload[item.id_effect]" :key="indexFile">
+                              <b-input-group>
+                                <b-form-input name="FileVerifPADownload" v-model="itemFile[0]" readonly></b-form-input>
+                                <b-input-group-append>
+                                  <a class="input-group-text btn-outline-success" :href="BaseUrl+itemFile[1]" target="_blank">
+                                    <i class="fa fa-download"></i>
+                                  </a>
+                                </b-input-group-append>
+                              </b-input-group>
+                            </b-form-group>
+                          </b-form-row>
+                        </b-card>
+                    </b-form-row>
+
                   </div>
 
             </li>
@@ -297,20 +333,13 @@
             
             <b-btn v-if="isShow == true && Position < 3 && valStatus == 1" type="button" variant="primary" class="float-right ml-2" @click="onAction('publish')">Publish</b-btn>
             
-            <!-- <b-btn v-if="isShow == true && Position < 3 && isCaretaker == false && valStatus > 1" variant="success" class="float-right ml-2">Published</b-btn> -->
             <b-btn v-if="isShow == true && ( (valStatus == 2 && field.IdDepartment == userDepartment && Position == 1) || (valStatus == 3 && field.IdDepartment == userDepartment && Position == 2) || (valStatus == 4 && field.IdDepartment == userDepartment && (Position == 4 || isCaretaker == true)) || (valStatus == 5 && deptTerkait == true && statusDeptTerkait==false) || (userDepartment == 67 &&  ( (Position == 3 && valStatus == 6) || (Position == 4 && valStatus == 10) || (Position == 4 && valStatus == 10) || (Position == 2 && valStatus == 6) )) )"
               type="button" variant="primary" class="float-right ml-2" @click="onAction('approve')">
             Setujui</b-btn>
 
-            <!-- || (valStatus == 5 && deptTerkait == true && statusDeptTerkait == false) munculkan tolak di dept terkait -->
-
             <b-btn v-if="isShow == true && ( (valStatus == 4 && field.IdDepartment == userDepartment && (Position == 4 || isCaretaker == true)) || (userDepartment == 67 && ( (Position == 3 && valStatus == 6) || (Position == 4 && valStatus == 10) || (Position == 4 && valStatus == 10) )) )"
               type="button" variant="danger" class="float-right ml-2" @click="onAction('reject')">
             Tolak</b-btn>
-
-            <!-- <b-btn v-if="isShow == true && (Position == 4 || isCaretaker == true) && field.IdDepartment == userDepartment && valStatus == 3 || statusDeptTerkait == true" variant="success" class="float-right ml-2">Disetujui</b-btn> -->
-
-            <!-- <b-btn v-if="isShow == true && (Position == 4 || isCaretaker == true) && valStatus == 7" variant="warning" class="float-right ml-2">Ditolak</b-btn> -->
 
             <b-btn v-if="isShow == true && ( (valStatus == 2 && field.IdDepartment == userDepartment && Position == 1) || (valStatus == 3 && field.IdDepartment == userDepartment && Position == 2) || (valStatus == 4 && field.IdDepartment == userDepartment && (Position == 4 || isCaretaker == true)) || (valStatus == 5 && deptTerkait == true && statusDeptTerkait==false) || (userDepartment == 67 && ( (Position == 3 && valStatus == 6) || (Position == 4 && valStatus == 10) || (Position == 4 && valStatus == 10) )) )"
               type="button" variant="warning" class="float-right ml-2" @click="onAction('correction')">
@@ -389,7 +418,12 @@ export default {
       getAnotherEffect: [],
       checkedEffect: [],
       text: [],
-      dataAnotherEffect: []
+      anotherEffectFile: [],
+      fileAnotherEffect: [],
+      fileAnotherEffectDownload: [],
+      oldFileAnotherEffect: [],
+      dataAnotherEffect: [],
+      fileResponseAnotherEffect: []
     }
   },
 
@@ -397,6 +431,7 @@ export default {
     // Initialize the 'text' object with default values for each 'title_effect'
     this.getAnotherEffect.forEach((item) => {
       this.text[item.id_effect] = '';
+      this.anotherEffectFile[item.id_effect] = [];
     });
   },
 
@@ -406,11 +441,13 @@ export default {
         // Ketika checkbox diubah, perbarui nilai textarea sesuai dengan checkbox yang dicentang
         for (const key in this.checkedEffect) {
           if (this.checkedEffect[key]) {
-            if (!this.text[key]) {
+            if (!this.text[key] || !this.anotherEffectFile[key]) {
               this.text[key] = ''; // Inisialisasi nilai textarea jika belum ada
+              // this.anotherEffectFile[key] = []; 
             }
           } else {
             delete this.text[key]; // Hapus nilai textarea jika checkbox tidak dicentang
+            delete this.anotherEffectFile[key]
           }
         }
       },
@@ -461,17 +498,34 @@ export default {
         formData.append("Milieu", this.field.Milieu)
         
         let collected = []
-
+        
         if(this.selected == true){
           for (const idEffect in this.checkedEffect) {
             if(this.checkedEffect[idEffect]) {
-              collected[idEffect] = {
+                
+                for( var i = 0; i < this.anotherEffectFile[idEffect].length; i++ ) {
+                  let file = this.anotherEffectFile[idEffect][i];
+                  
+                  formData.append('anotherEffectFile[' + idEffect + '][' + i + ']', file);
+                }
+                
+                for(var i = 0; i < this.oldFileAnotherEffect[idEffect].length; i++ ) {
+                  let oldfile = this.oldFileAnotherEffect[idEffect][i];
+                  
+                  formData.append('oldEffectFile[' + idEffect + '][' + i + ']', oldfile)
+                }
+                
+                
+                collected[idEffect] = {
                 id_effect: idEffect,
                 selected: this.selected,
-                text: this.text[idEffect] || ''
-              }
+                text: this.text[idEffect] || '',
+
+              }              
+
             }
           }  
+
         } else {
           collected.push(this.selected)
         }
@@ -553,6 +607,22 @@ export default {
       }
     },
 
+    handleAnotherEffectFile: function(files, checkedKey) {
+     this.anotherEffectFile[checkedKey] = files.map(files => files.file );
+    },
+  
+    handleRemoveEffectFile: function(error, files){
+      let replace = files.source.replace('/clouds','clouds')
+      this.oldFileAnotherEffect.forEach((val, k)=> {
+        val.forEach((v, i)=> {
+          if(v == replace) {
+            this.oldFileAnotherEffect[k].splice(i,1)
+            
+          }
+        })
+      })
+      },
+
     getData (Id) {
       axios.post('/AdminVue/nod-report-edit', {
         Id:Id,
@@ -633,12 +703,33 @@ export default {
 
         let selectedAnotherEffect = Object.values(resp.selectedAnotherEffect)
         
+        
+  
         if(selectedAnotherEffect) {
           selectedAnotherEffect.forEach((item, index) => {
+            this.anotherEffectFile[item.id_effect] = []
+            this.oldFileAnotherEffect[item.id_effect] = []
+
             if(item !== false) {
               this.selected = item.selected
               this.checkedEffect[item.id_effect] = item.id_effect
               this.text[item.id_effect] = item.text
+              this.fileResponseAnotherEffect[item.id_effect] = item.namefile
+              
+              this.fileAnotherEffectDownload[item.id_effect] = item.filedownload
+
+              if(this.fileResponseAnotherEffect[item.id_effect] != ''){
+              let countFileAnotherEffect = this.fileResponseAnotherEffect[item.id_effect].length
+                for (let i = 0; i < countFileAnotherEffect; i++) {
+                  this.oldFileAnotherEffect[item.id_effect].push(this.fileResponseAnotherEffect[item.id_effect][i])
+                  this.anotherEffectFile[item.id_effect].push(process.env.BASE_URL + this.fileResponseAnotherEffect[item.id_effect][i])
+                }
+              }
+            
+              if(this.anotherEffectFile[item.id_effect] == ''){
+                this.oldFileAnotherEffect[item.id_effect] = '';
+              }
+
             } else {
               this.selected = item
             }
