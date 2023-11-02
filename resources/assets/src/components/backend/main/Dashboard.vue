@@ -6,6 +6,77 @@
         <div class="text-muted text-tiny mt-1"><small class="font-weight-normal">{{date}}</small></div>
       </h4>
     </div>
+    <div class="row" v-if="idDepartment == 67 && accessTable[0]">
+      <div class="col-6">
+        <b-card no-body class="mb-4">
+          <b-card-header header-tag="h6" class="with-elements">
+            <div class="col-md-3">
+              <div class="card-header-title-report">Total Laporan NOE</div>
+              <div class="card-child-title">
+                {{dataNoe.total_laporan}}
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card-header-title-report">NOE Open</div>
+              <div class="card-child-title">
+                {{dataNoe.is_open_laporan}}
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card-header-title-report">NOE Ongoing</div>
+              <div class="card-child-title">
+                {{dataNoe.is_ongoing_laporan}}
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card-header-title-report">NOE Closed</div>
+              <div class="card-child-title">
+                {{dataNoe.is_closed_laporan}}
+              </div>
+            </div>
+          </b-card-header>
+        </b-card>
+      </div>
+      <div class="col-6">
+        <b-card no-body class="mb-4">
+          <b-card-header header-tag="h6" class="with-elements">
+            <div class="col-md-3">
+              <div class="card-header-title-report">Total Laporan NOD</div>
+              <div class="card-child-title">
+                {{dataNod.total_laporan_nod}}
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card-header-title-report">NOD Open</div>
+              <div class="card-child-title">
+                {{dataNod.is_open_laporan_nod}}
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card-header-title-report">NOD Ongoing</div>
+              <div class="card-child-title">
+                {{dataNod.is_ongoing_laporan_nod}}
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card-header-title-report">NOD Closed</div>
+              <div class="card-child-title">
+                {{dataNod.is_closed_laporan_nod}}
+              </div>
+            </div>
+          </b-card-header>
+        </b-card>
+      </div>
+    </div>
+
+    <div class="row" v-if="idDepartment == 67 && accessTable[0]">
+      <div class="col-4">
+        <doughnut-chart :chart-data="datacollection_level_noe"/>
+      </div>
+      <div class="col-4">
+        <doughnut-chart :chart-data="datacollection_level_noe"/>
+      </div>
+    </div>
 
     <b-form-row v-if="idDepartment == 67 && accessTable[0]">
       <b-form-group class="col-md-4 float-right">
@@ -505,11 +576,47 @@ import Widgets from 'fusioncharts/fusioncharts.widgets';
 import TimeSeries from 'fusioncharts/fusioncharts.timeseries';
 import moment from 'moment'
 import ChartJsLabels from 'chartjs-plugin-datalabels'
+// import DoughnutChart from '@/components/Doughnut'
 
 Vue.use(VueFusionCharts, FusionCharts, Column2D, FusionTheme, Widgets, TimeSeries)
 
 Vue.component('pie-chart', {
   extends: VueChartJs.Pie,
+  mixins: [VueChartJs.mixins.reactiveProp],
+  props: ['chartData'],
+  data: function () {
+    return {
+      options: {
+        plugins: {
+          datalabels: {
+            color: "white",
+            textAlign: "center",
+            font: {
+              weight: "bold",
+              size: 16
+            }
+          }
+        },
+
+        legend: {
+          display: true,
+          position: 'right',
+          labels: {
+            boxWidth: 12
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    }
+  },
+  mounted () {
+    this.renderChart(this.chartData, this.options)
+  }
+})
+
+Vue.component('doughnut-chart', {
+  extends: VueChartJs.Doughnut,
   mixins: [VueChartJs.mixins.reactiveProp],
   props: ['chartData'],
   data: function () {
@@ -549,7 +656,8 @@ export default {
     title: 'Dashboards'
   },
   components: {
-    PerfectScrollbar
+    PerfectScrollbar,
+    // DoughnutChart
   },
   data () {
     return {
@@ -582,6 +690,7 @@ export default {
       Department:{Id:0, Department:'ALL'},
       opsDepartment: [{Id:0, Department:'ALL'}],
       datacollection_pie: {},
+      datacollection_level_noe: {},
       valHeaderUnit: [],
       valUnitColor: [],
       valUnitLocation: [],
@@ -607,7 +716,22 @@ export default {
             value: "22"
           }
         ]
-      }
+      },
+      dataNoe: {
+        total_laporan: 0,
+        is_open_laporan: 0,
+        is_ongoing_laporan: 0,
+        is_closed_laporan: 0,
+      },
+      dataNod: {
+        total_laporan_nod: 0,
+        is_open_laporan_nod: 0,
+        is_ongoing_laporan_nod: 0,
+        is_closed_laporan_nod: 0,
+      },
+      dataLevel: [],
+      levelColor: [],
+      setDataValue:[],
     }
   },
   methods: {
@@ -621,6 +745,20 @@ export default {
           data: this.valUnitLocation
         }]
       }
+    },
+    levelNoe (datalevel, levelColor, setDataValue) {
+      this.datacollection_level_noe = {
+        labels : datalevel,
+        datasets : [{
+          borderWidth: 1,
+          borderColor:  levelColor,
+          backgroundColor: levelColor,
+          data: setDataValue
+        }]
+      }
+    },
+    betCategory() {
+
     },
     getLocation (type=null, filter='') {
       if(type=='tabel') {
@@ -870,6 +1008,43 @@ export default {
       this.getDeviationLevel(this.allYear.value)
     },
 
+    getReportData () {
+      axios.post('/AdminVue/dashboard-get-data-report')
+      .then( function (res) {
+        let response = res.data
+        
+        Vue.set(this.dataNoe, 'total_laporan', response.dataNoe.total_laporan)
+        Vue.set(this.dataNoe, 'is_open_laporan', response.dataNoe.is_open_laporan)
+        Vue.set(this.dataNoe, 'is_ongoing_laporan', response.dataNoe.is_ongoing_laporan)
+        Vue.set(this.dataNoe, 'is_closed_laporan', response.dataNoe.is_closed_laporan)
+
+        Vue.set(this.dataNod, 'total_laporan_nod', response.dataNod.total_laporan_nod)
+        Vue.set(this.dataNod, 'is_open_laporan_nod', response.dataNod.is_open_laporan_nod)
+        Vue.set(this.dataNod, 'is_ongoing_laporan_nod', response.dataNod.is_ongoing_laporan_nod)
+        Vue.set(this.dataNod, 'is_closed_laporan_nod', response.dataNod.is_closed_laporan_nod)
+        
+      }.bind(this))
+       .catch( function (e) {
+        console.log(e)
+      }.bind(this))
+    },
+
+    getLevelNoe () {
+      axios.post('/AdminVue/dashboard-get-data-noe-level')
+      .then( function (res) {
+        let response = res.data
+        this.dataLavel = response.dataLavel
+        this.levelColor = response.levelColor
+        this.setDataValue = response.setDataValue
+        this.levelNoe(this.dataLavel, this.levelColor, this.setDataValue)
+      }.bind(this))
+       .catch( function (e) {
+          console.log(e)
+       }.bind(this))
+      
+    }
+    
+
   },
 
   mounted () {
@@ -880,6 +1055,8 @@ export default {
     this.getStatusTimeNOE()
     this.getStatusTimeNOD(this.allYear)
     this.getDeviationLevel(this.allYear)
+    this.getLevelNoe()
+    this.getReportData()
     this.hideLoading()
   }
 }

@@ -989,15 +989,11 @@ class NODReportControll extends Controller
                 'noe.NOENumberAcc',
                 'noe.Event',
                 'noe.BatchNo',
-                // 'emp.Name as CAPIC',
-                // 'empy.Name as PAPIC',
                 'pdc.Name as IdProduct',
                 'nve.RelevantDept'
             )
             ->leftjoin('noe_report as noe','noe.Id','=','nod.IdNOEReport')
             ->leftjoin('product as pdc','pdc.Id','=','noe.IdProduct')
-            // ->leftjoin('employee as emp','emp.Id','=','nod.IdCAPIC')
-            // ->leftjoin('employee as empy','empy.Id','=','nod.IdPAPIC')
             ->leftjoin('noe_verif_evaluation as nve','nve.IdNOEReport','=','nod.IdNOEReport')
             ->where('nve.TypeData',0)
             ->where('nve.Actived','>',0)
@@ -1738,10 +1734,14 @@ class NODReportControll extends Controller
                             'UserDept'=>session('adminvue')->Id
                         ]);
                     } else {
+                        $statusDeptHead = 5;
+                        if($request->input('SubmitVal') == 0) {
+                            $statusDeptHead = 6;
+                        }
                         DB::table('nod_report')
                         ->where('Id', $request->input('Id'))
                         ->update([
-                            'Status'=>5,
+                            'Status'=> $statusDeptHead,
                             'DateDept'=>date('Y-m-d H:i:s'),
                             'UserDept'=>session('adminvue')->Id
                         ]);
@@ -1752,29 +1752,26 @@ class NODReportControll extends Controller
                         $IdDept = array(
                             $request->input('SubmitVal')
                         );
-                    
-                        // note this comment because for now can select approver relevant Dept.
-
-                        // foreach ($RelevantDept as $key => $val) {
-                            // $itemPst = DB::table('position')
-                            //     ->select('Id')
-                            //     ->where('Code', 'like', '%'.'.dh')
-                            //     ->where('IdDepartment', $val['Id'])
-                            //     ->where('Actived', 1)
-                            //     ->first();
-                            // if($itemPst!=null) $IdPosition[] = $itemPst->Id;
-                            // else $IdPosition[] = 0;
-                        // }
-
-                        $itemPst = DB::table('position')
+                        if($request->input('SubmitVal') == 0) {
+                            $itemPst = DB::table('position')
                                 ->select('Id')
                                 ->where('Code', 'like', '%'.'.dh')
-                                ->where('IdDepartment', $IdDept)
+                                ->where('IdDepartment', 67)
                                 ->where('Actived', 1)
                                 ->first();
-                            if($itemPst!=null) $IdPosition = $itemPst->Id;
-                            else $IdPosition = 0;
-                        
+
+                                if($itemPst!=null) $IdPosition = $itemPst->Id;
+                                else $IdPosition = 0;
+                        } else {
+                            $itemPst = DB::table('position')
+                                    ->select('Id')
+                                    ->where('Code', 'like', '%'.'.sch')
+                                    ->where('IdDepartment', $IdDept)
+                                    ->where('Actived', 1)
+                                    ->first();
+                                if($itemPst!=null) $IdPosition = $itemPst->Id;
+                                else $IdPosition = 0;
+                        }
                         
                         if($IdPosition !== null && !empty($IdPosition)) {
                             
@@ -1786,18 +1783,7 @@ class NODReportControll extends Controller
                                     'IdRelevantDept'=> json_encode($IdDept)
                                 ]);
                             }
-                            
-                            // note this comment because for now can select approver relevant Dept.
 
-                            // $itemMail = $this->MainDB->table('employee as emp')
-                            //     ->select('emp.Name as Employee','emp.Email')
-                            //     ->where(function ($query) use ($IdPosition) {
-                            //         foreach ($IdPosition as $val) {
-                            //             $query->orWhere('emp.IdPosition', $val);
-                            //         }
-                            //     })
-                            //     ->where('emp.Actived', 1)
-                            //     ->get();
 
                             $itemMail = $this->MainDB->table('employee as emp')
                                 ->select('emp.Name as Employee','emp.Email')

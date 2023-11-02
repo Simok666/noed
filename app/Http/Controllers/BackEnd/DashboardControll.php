@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use DB;
 use Carbon\Carbon;
 use App\Http\Controllers\Utils\AppWebControll;
+use Illuminate\Support\Facades\Log;
 
 class DashboardControll extends Controller
 {
@@ -17,6 +18,7 @@ class DashboardControll extends Controller
     public function __construct() {
         $this->AppWeb = new AppWebControll();
         $this->MainDB = DB::connection('mysql');
+        $this->logger = \Log::channel('customlog');
     }
 
     public function index(Request $request) {
@@ -1225,5 +1227,105 @@ class DashboardControll extends Controller
                 return $result;
             }
         }
+    }
+
+    public function getDataReport() {
+        $dataNoe = [];
+
+        $getTotalLaporanNoe = DB::table('noe_report as noe')
+                      ->select('*')
+                      ->get();
+
+        $getIsOpenNoe = DB::table('noe_report as noe')
+                    ->select('*')
+                    ->where('noe.Status', 7)
+                    ->get();
+
+        $getOngoingNoe = DB::table('noe_report as noe')
+                    ->select('*')
+                    ->where('noe.Status', 5)
+                    ->get();
+
+        $getIsClosedNoe = DB::table('noe_report as noe')
+                    ->select('*')
+                    ->where('noe.IsClosed', 1)
+                    ->get();
+        
+        $dataNoe['total_laporan'] = count($getTotalLaporanNoe);
+        $dataNoe['is_open_laporan'] = count($getIsOpenNoe);
+        $dataNoe['is_ongoing_laporan'] = count($getOngoingNoe);
+        $dataNoe['is_closed_laporan'] = count($getIsClosedNoe);
+
+        $dataNod = [];
+
+        $getTotalLaporanNod = DB::table('nod_report as nod')
+                      ->select('*')
+                      ->get();
+
+        $getIsOpenNod = DB::table('nod_report as nod')
+                    ->select('*')
+                    ->where('nod.Status', 11)
+                    ->get();
+
+        $getOngoingNod = DB::table('nod_report as nod')
+                    ->select('*')
+                    ->where('nod.Status', 4)
+                    ->get();
+
+        $getIsClosedNod = DB::table('nod_report as nod')
+                    ->select('*')
+                    ->where('nod.IsClosed', 1)
+                    ->get();
+        
+        $dataNod['total_laporan_nod'] = count($getTotalLaporanNod);
+        $dataNod['is_open_laporan_nod'] = count($getIsOpenNod);
+        $dataNod['is_ongoing_laporan_nod'] = count($getOngoingNod);
+        $dataNod['is_closed_laporan_nod'] = count($getIsClosedNod);
+        
+         return response()->json([
+            'dataNoe' => $dataNoe,
+            'dataNod' => $dataNod
+         ]);
+    }
+
+    public function getLevelNoe() {
+
+        $getLevelNoe = DB::table('noe_verif_evaluation as nve')
+                    ->select('noe.NOENumberAcc','nve.DeviationLevelQA')
+                    ->leftjoin('noe_report as noe', 'noe.Id', '=', 'nve.IdNOEReport')
+                    ->whereNotNull('nve.DeviationLevelQA')
+                    ->where('noe.Status', 9)
+                    ->where('noe.Actived', 1)
+                    ->get();
+
+        $countDataNoe = count($getLevelNoe);
+        $minor = [];
+        $major = [];
+        $critical = [];
+        $dataLabel = ['Minor', 'Major', 'Critical'];
+        $levelColor = ['#6adffc', '#ffb554', '#bdbbb9'];
+        $setDataValue = [];
+        foreach($getLevelNoe as $key => $value) {
+            if( $value->DeviationLevelQA === 'Minor' ) {
+                array_push($minor, $value->DeviationLevelQA);
+            } elseif ( $value->DeviationLevelQA === 'Major' ) {
+                array_push($major, $value->DeviationLevelQA);
+            } elseif ( $value->DeviationLevelQA === 'Critical' ) {
+                array_push($major, $value->DeviationLevelQA);
+            }
+        }
+
+        $setDataValue = [
+            round(count($minor) / $countDataNoe * 100, 2),
+            round(count($major) / $countDataNoe * 100, 2),
+            round(count($critical) / $countDataNoe * 100, 2)
+        ];
+        
+        return response()->json([
+            'dataLavel' => $dataLabel,
+            'levelColor' => $levelColor,
+            'setDataValue' => $setDataValue
+        ]);
+
     }
 }

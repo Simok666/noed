@@ -253,7 +253,7 @@
                 <b-form inline class="">
                   <label class="form-label mr-sm-1">Jawaban :</label>
                   <label v-if="isShow == false" class="form-label float-right text-danger">*Wajib Diisi</label>
-                  <b-textarea v-if="isAnswered == false && isTypeUser == false && isChildToAnswer == true" style="margin-left: 30px;" name="Answer" :state="allErrors.Answer?false:null" v-model="field.Answer" class="mb-1" required />
+                  <b-textarea v-if="isAnswered == false && (isTypeUser == false || isTypeUser == true) && isChildToAnswer == true" style="margin-left: 30px;" name="Answer" :state="allErrors.Answer?false:null" v-model="field.Answer" class="mb-1" required />
                   <b-textarea v-else-if="isTypeUser == true && isChildToAnswer == false" style="margin-left: 30px;" name="Answer" :state="allErrors.Answer?false:null" v-model="field.Answer" class="mb-1" required :readonly="isShow"  /> 
                   <b-textarea v-else="isAnswered == true && isTypeUser == true" style="margin-left: 30px;" name="Answer" :state="allErrors.Answer?false:null" v-model="field.Answer" class="mb-1" required :readonly="isShow"  />
                   <span class="text-danger" v-if="allErrors.Answer">{{ allErrors.Answer[0] }}</span>
@@ -264,7 +264,7 @@
             <b-form-row>
             <b-form-group class="col-md-6"></b-form-group>
             <b-form-group label="" class="col-md-6">
-              <b-btn v-if="isAnswered == false && isTypeUser == false && isChildToAnswer == true" variant="success" class="float-right ml-2" @click="onAction('sendAnswer')">Kirim</b-btn>
+              <b-btn v-if="isAnswered == false && (isTypeUser == false || isTypeUser == true) && isChildToAnswer == true" variant="success" class="float-right ml-2" @click="onAction('sendAnswer')">Kirim</b-btn>
             </b-form-group>
           </b-form-row>
         </b-card>
