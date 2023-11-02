@@ -40,9 +40,44 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+// import DoughnutChart from '@/components/Doughnut'
+
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_fusioncharts__WEBPACK_IMPORTED_MODULE_3___default.a, fusioncharts__WEBPACK_IMPORTED_MODULE_4___default.a, fusioncharts_fusioncharts_charts__WEBPACK_IMPORTED_MODULE_5___default.a, fusioncharts_themes_fusioncharts_theme_fusion__WEBPACK_IMPORTED_MODULE_6___default.a, fusioncharts_fusioncharts_widgets__WEBPACK_IMPORTED_MODULE_7___default.a, fusioncharts_fusioncharts_timeseries__WEBPACK_IMPORTED_MODULE_8___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('pie-chart', {
   "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_1__["default"].Pie,
+  mixins: [vue_chartjs__WEBPACK_IMPORTED_MODULE_1__["default"].mixins.reactiveProp],
+  props: ['chartData'],
+  data: function data() {
+    return {
+      options: {
+        plugins: {
+          datalabels: {
+            color: "white",
+            textAlign: "center",
+            font: {
+              weight: "bold",
+              size: 16
+            }
+          }
+        },
+        legend: {
+          display: true,
+          position: 'right',
+          labels: {
+            boxWidth: 12
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    };
+  },
+  mounted: function mounted() {
+    this.renderChart(this.chartData, this.options);
+  }
+});
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('doughnut-chart', {
+  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_1__["default"].Doughnut,
   mixins: [vue_chartjs__WEBPACK_IMPORTED_MODULE_1__["default"].mixins.reactiveProp],
   props: ['chartData'],
   data: function data() {
@@ -81,6 +116,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('pie-chart', {
   },
   components: {
     PerfectScrollbar: _vendor_libs_perfect_scrollbar_PerfectScrollbar__WEBPACK_IMPORTED_MODULE_2__["default"]
+    // DoughnutChart
   },
   data: function data() {
     return {
@@ -119,6 +155,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('pie-chart', {
         Department: 'ALL'
       }],
       datacollection_pie: {},
+      datacollection_level_noe: {},
       valHeaderUnit: [],
       valUnitColor: [],
       valUnitLocation: [],
@@ -141,7 +178,22 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('pie-chart', {
           label: "Example 2",
           value: "22"
         }]
-      }
+      },
+      dataNoe: {
+        total_laporan: 0,
+        is_open_laporan: 0,
+        is_ongoing_laporan: 0,
+        is_closed_laporan: 0
+      },
+      dataNod: {
+        total_laporan_nod: 0,
+        is_open_laporan_nod: 0,
+        is_ongoing_laporan_nod: 0,
+        is_closed_laporan_nod: 0
+      },
+      dataLevel: [],
+      levelColor: [],
+      setDataValue: []
     };
   },
   methods: {
@@ -156,6 +208,18 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('pie-chart', {
         }]
       };
     },
+    levelNoe: function levelNoe(datalevel, levelColor, setDataValue) {
+      this.datacollection_level_noe = {
+        labels: datalevel,
+        datasets: [{
+          borderWidth: 1,
+          borderColor: levelColor,
+          backgroundColor: levelColor,
+          data: setDataValue
+        }]
+      };
+    },
+    betCategory: function betCategory() {},
     getLocation: function getLocation() {
       var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
@@ -442,6 +506,32 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('pie-chart', {
       this.getStatusTimeNOE();
       this.getStatusTimeNOD(this.allYear.value);
       this.getDeviationLevel(this.allYear.value);
+    },
+    getReportData: function getReportData() {
+      axios.post('/AdminVue/dashboard-get-data-report').then(function (res) {
+        var response = res.data;
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.dataNoe, 'total_laporan', response.dataNoe.total_laporan);
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.dataNoe, 'is_open_laporan', response.dataNoe.is_open_laporan);
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.dataNoe, 'is_ongoing_laporan', response.dataNoe.is_ongoing_laporan);
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.dataNoe, 'is_closed_laporan', response.dataNoe.is_closed_laporan);
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.dataNod, 'total_laporan_nod', response.dataNod.total_laporan_nod);
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.dataNod, 'is_open_laporan_nod', response.dataNod.is_open_laporan_nod);
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.dataNod, 'is_ongoing_laporan_nod', response.dataNod.is_ongoing_laporan_nod);
+        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.dataNod, 'is_closed_laporan_nod', response.dataNod.is_closed_laporan_nod);
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+      }.bind(this));
+    },
+    getLevelNoe: function getLevelNoe() {
+      axios.post('/AdminVue/dashboard-get-data-noe-level').then(function (res) {
+        var response = res.data;
+        this.dataLavel = response.dataLavel;
+        this.levelColor = response.levelColor;
+        this.setDataValue = response.setDataValue;
+        this.levelNoe(this.dataLavel, this.levelColor, this.setDataValue);
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+      }.bind(this));
     }
   },
   mounted: function mounted() {
@@ -452,6 +542,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('pie-chart', {
     this.getStatusTimeNOE();
     this.getStatusTimeNOD(this.allYear);
     this.getDeviationLevel(this.allYear);
+    this.getLevelNoe();
+    this.getReportData();
     this.hideLoading();
   }
 });
@@ -510,7 +602,95 @@ var render = function render() {
     staticClass: "text-muted text-tiny mt-1"
   }, [_c("small", {
     staticClass: "font-weight-normal"
-  }, [_vm._v(_vm._s(_vm.date))])])])]), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("b-form-row", [_c("b-form-group", {
+  }, [_vm._v(_vm._s(_vm.date))])])])]), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-6"
+  }, [_c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      "no-body": ""
+    }
+  }, [_c("b-card-header", {
+    staticClass: "with-elements",
+    attrs: {
+      "header-tag": "h6"
+    }
+  }, [_c("div", {
+    staticClass: "col-md-3"
+  }, [_c("div", {
+    staticClass: "card-header-title-report"
+  }, [_vm._v("Total Laporan NOE")]), _vm._v(" "), _c("div", {
+    staticClass: "card-child-title"
+  }, [_vm._v("\n              " + _vm._s(_vm.dataNoe.total_laporan) + "\n            ")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-3"
+  }, [_c("div", {
+    staticClass: "card-header-title-report"
+  }, [_vm._v("NOE Open")]), _vm._v(" "), _c("div", {
+    staticClass: "card-child-title"
+  }, [_vm._v("\n              " + _vm._s(_vm.dataNoe.is_open_laporan) + "\n            ")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-3"
+  }, [_c("div", {
+    staticClass: "card-header-title-report"
+  }, [_vm._v("NOE Ongoing")]), _vm._v(" "), _c("div", {
+    staticClass: "card-child-title"
+  }, [_vm._v("\n              " + _vm._s(_vm.dataNoe.is_ongoing_laporan) + "\n            ")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-3"
+  }, [_c("div", {
+    staticClass: "card-header-title-report"
+  }, [_vm._v("NOE Closed")]), _vm._v(" "), _c("div", {
+    staticClass: "card-child-title"
+  }, [_vm._v("\n              " + _vm._s(_vm.dataNoe.is_closed_laporan) + "\n            ")])])])], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-6"
+  }, [_c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      "no-body": ""
+    }
+  }, [_c("b-card-header", {
+    staticClass: "with-elements",
+    attrs: {
+      "header-tag": "h6"
+    }
+  }, [_c("div", {
+    staticClass: "col-md-3"
+  }, [_c("div", {
+    staticClass: "card-header-title-report"
+  }, [_vm._v("Total Laporan NOD")]), _vm._v(" "), _c("div", {
+    staticClass: "card-child-title"
+  }, [_vm._v("\n              " + _vm._s(_vm.dataNod.total_laporan_nod) + "\n            ")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-3"
+  }, [_c("div", {
+    staticClass: "card-header-title-report"
+  }, [_vm._v("NOD Open")]), _vm._v(" "), _c("div", {
+    staticClass: "card-child-title"
+  }, [_vm._v("\n              " + _vm._s(_vm.dataNod.is_open_laporan_nod) + "\n            ")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-3"
+  }, [_c("div", {
+    staticClass: "card-header-title-report"
+  }, [_vm._v("NOD Ongoing")]), _vm._v(" "), _c("div", {
+    staticClass: "card-child-title"
+  }, [_vm._v("\n              " + _vm._s(_vm.dataNod.is_ongoing_laporan_nod) + "\n            ")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-3"
+  }, [_c("div", {
+    staticClass: "card-header-title-report"
+  }, [_vm._v("NOD Closed")]), _vm._v(" "), _c("div", {
+    staticClass: "card-child-title"
+  }, [_vm._v("\n              " + _vm._s(_vm.dataNod.is_closed_laporan_nod) + "\n            ")])])])], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-4"
+  }, [_c("doughnut-chart", {
+    attrs: {
+      "chart-data": _vm.datacollection_level_noe
+    }
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-4"
+  }, [_c("doughnut-chart", {
+    attrs: {
+      "chart-data": _vm.datacollection_level_noe
+    }
+  })], 1)]) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-4 float-right"
   }, [_c("label", {
     staticClass: "form-label"

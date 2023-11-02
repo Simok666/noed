@@ -43,12 +43,6 @@ Route::group(['middleware'=>['adminvue']], function () {
 				session()->put('allow_menu', $allowMenu);
 				$accessAccepted = true;
 			}
-			
-	    	// if(array_key_exists( $request->input('Url') , $allowMenu)){
-	    	// 	return response()->json(['status'=>200,'message'=>'Access Accepted']);
-	    	// }else{
-	    	// 	return response()->json(['status'=>406,'message'=>'Access Not Acceptable']);
-	    	// }
 
 			if($accessAccepted){
 	    		return response()->json(['status'=>200,'message'=>'Access Accepted']);
@@ -67,46 +61,8 @@ Route::group(['middleware'=>['adminvue']], function () {
 		Route::post('dashboard-get-status-noe','BackEnd\DashboardControll@getStatusNOE');
 		Route::post('dashboard-get-status-time','BackEnd\DashboardControll@getStatusTime');
 		Route::post('dashboard-get-deviation-level','BackEnd\DashboardControll@getDeviationLevel');
-
-		// Route::get('data-district','BackEnd\DistrictControll@index');
-		// Route::post('district-get-city','BackEnd\DistrictControll@getCity');
-		// Route::post('district-show','BackEnd\DistrictControll@show');
-		// Route::post('district-insert','BackEnd\DistrictControll@store');
-		// Route::post('district-edit','BackEnd\DistrictControll@edit');
-		// Route::post('district-update','BackEnd\DistrictControll@update');
-		// Route::post('district-delete','BackEnd\DistrictControll@delete');
-		// Route::post('district-export-pdf','BackEnd\DistrictControll@exportPdf');
-
-		// Route::get('data-pos-code','BackEnd\PosCodeControll@index');
-		// Route::post('pos-code-get-district','BackEnd\PosCodeControll@getDistrict');
-		// Route::post('pos-code-show','BackEnd\PosCodeControll@show');
-		// Route::post('pos-code-insert','BackEnd\PosCodeControll@store');
-		// Route::post('pos-code-edit','BackEnd\PosCodeControll@edit');
-		// Route::post('pos-code-update','BackEnd\PosCodeControll@update');
-		// Route::post('pos-code-delete','BackEnd\PosCodeControll@delete');
-
-		// Route::get('data-city','BackEnd\CityControll@index');
-		// Route::post('city-get-province','BackEnd\CityControll@getProvince');
-		// Route::post('city-show','BackEnd\CityControll@show');
-		// Route::post('city-insert','BackEnd\CityControll@store');
-		// Route::post('city-edit','BackEnd\CityControll@edit');
-		// Route::post('city-update','BackEnd\CityControll@update');
-		// Route::post('city-delete','BackEnd\CityControll@delete');
-
-		// Route::get('data-province','BackEnd\ProvinceControll@index');
-		// Route::post('province-get-country','BackEnd\ProvinceControll@getCountry');
-		// Route::post('province-show','BackEnd\ProvinceControll@show');
-		// Route::post('province-insert','BackEnd\ProvinceControll@store');
-		// Route::post('province-edit','BackEnd\ProvinceControll@edit');
-		// Route::post('province-update','BackEnd\ProvinceControll@update');
-		// Route::post('province-delete','BackEnd\ProvinceControll@delete');
-
-		// Route::get('data-country','BackEnd\CountryControll@index');
-		// Route::post('country-show','BackEnd\CountryControll@show');
-		// Route::post('country-insert','BackEnd\CountryControll@store');
-		// Route::post('country-edit','BackEnd\CountryControll@edit');
-		// Route::post('country-update','BackEnd\CountryControll@update');
-		// Route::post('country-delete','BackEnd\CountryControll@delete');
+		Route::post('dashboard-get-data-report','BackEnd\DashboardControll@getDataReport');
+		Route::post('dashboard-get-data-noe-level','BackEnd\DashboardControll@getLevelNoe');		
 
 		Route::get('data-division','BackEnd\DivisionControll@index');
 		Route::post('division-show','BackEnd\DivisionControll@show');
