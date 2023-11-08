@@ -83,7 +83,8 @@ class VerifCAPAReportControll extends Controller
             }
             foreach($getDataNODAcc as $keyNod => $valNod) {
                 if (!in_array($valNod->Id, $nodGetCAPA)) {
-                    $result[$keyNod] = $valNod;
+                    array_push($result, $valNod);
+                    // $result[$keyNod] = $valNod;
                 }
             }
         } else {

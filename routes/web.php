@@ -62,7 +62,10 @@ Route::group(['middleware'=>['adminvue']], function () {
 		Route::post('dashboard-get-status-time','BackEnd\DashboardControll@getStatusTime');
 		Route::post('dashboard-get-deviation-level','BackEnd\DashboardControll@getDeviationLevel');
 		Route::post('dashboard-get-data-report','BackEnd\DashboardControll@getDataReport');
-		Route::post('dashboard-get-data-noe-level','BackEnd\DashboardControll@getLevelNoe');		
+		Route::post('dashboard-get-data-noe-level','BackEnd\DashboardControll@getLevelNoe');
+		Route::post('dashboard-get-data-bets-category','BackEnd\DashboardControll@betsCategory');
+		Route::post('dashboard-get-status-noe-nod','BackEnd\DashboardControll@getStatusNoeNod');
+		Route::post('dashboard-get-avarage-data','BackEnd\DashboardControll@avarageData');
 
 		Route::get('data-division','BackEnd\DivisionControll@index');
 		Route::post('division-show','BackEnd\DivisionControll@show');

@@ -1328,4 +1328,332 @@ class DashboardControll extends Controller
         ]);
 
     }
+
+    public function betsCategory() {
+        $getBetsCategory = DB::table('noe_verif_evaluation as nve')
+                        ->select('noe.NOENumberAcc', 'nve.IdDeviation')
+                        ->leftjoin('noe_report as noe', 'noe.Id', '=', 'nve.IdNOEReport')
+                        ->whereNotNull('nve.IdDeviation')
+                        ->where('noe.Status', 9)
+                        ->where('noe.Actived', 1)
+                        ->get();
+
+        $countDataBets = count($getBetsCategory);
+        $bets = [];
+        $nonBets = [];
+        $dataLabel = ['Bets', 'Non Bets'];
+        $betsColor = ['#6adffc', '#ffb554'];
+        $setDataValue = [];
+        foreach($getBetsCategory as $key => $value) {
+            if( $value->IdDeviation === 'Bets' ) {
+                array_push($bets, $value->IdDeviation);
+            } elseif ( $value->IdDeviation === 'Non Bets' ) {
+                array_push($nonBets, $value->IdDeviation);
+            }
+        }
+
+        $setDataValue = [
+            round(count($bets) / $countDataBets * 100, 2),
+            round(count($nonBets) / $countDataBets * 100, 2),
+        ];
+        
+        return response()->json([
+            'databets' => $dataLabel,
+            'betscolor' => $betsColor,
+            'setDataValue' => $setDataValue
+        ]);
+    }
+
+    public function getStatusNoeNod(Request $request) {
+        $dataOpen = [
+            'January'   => [],
+            'February'  => [],
+            'March'     => [],
+            'April'     => [],
+            'May'       => [],
+            'June'      => [],
+            'July'      => [],
+            'August'    => [],
+            'September' => [],
+            'October'   => [],
+            'November'  => [],
+            'December'  => [],
+        ];
+
+        $dataOngoing = [
+            'January'   => [],
+            'February'  => [],
+            'March'     => [],
+            'April'     => [],
+            'May'       => [],
+            'June'      => [],
+            'July'      => [],
+            'August'    => [],
+            'September' => [],
+            'October'   => [],
+            'November'  => [],
+            'December'  => [],
+        ];
+
+        $dataClosed = [
+            'January'   => [],
+            'February'  => [],
+            'March'     => [],
+            'April'     => [],
+            'May'       => [],
+            'June'      => [],
+            'July'      => [],
+            'August'    => [],
+            'September' => [],
+            'October'   => [],
+            'November'  => [],
+            'December'  => [],
+        ];
+
+        if($request->status === 'noe') {
+            $getTotalLaporanNoe = DB::table('noe_report as noe')
+                          ->select('*')
+                          ->get();
+    
+            $getIsOpenNoe = DB::table('noe_report as noe')
+                        ->select('noe.DatePublish', DB::raw('COUNT(noe.DatePublish) as total'))
+                        ->where('noe.Status', 7)
+                        ->whereBetween(DB::raw('MONTH(noe.DatePublish)'), [1, 12])
+                        ->groupBy('noe.DatePublish')
+                        ->orderBy('noe.DatePublish')
+                        ->get();
+    
+            $getOngoingNoe = DB::table('noe_report as noe')
+                        ->select('noe.DatePublish', DB::raw('COUNT(noe.DatePublish) as total'))
+                        ->where('noe.Status', 5)
+                        ->whereBetween(DB::raw('MONTH(noe.DatePublish)'), [1, 12])
+                        ->groupBy('noe.DatePublish')
+                        ->orderBy('noe.DatePublish')
+                        ->get();
+    
+            $getIsClosedNoe = DB::table('noe_report as noe')
+                        ->select('noe.DatePublish', DB::raw('COUNT(noe.DatePublish) as total'))
+                        ->where('noe.IsClosed', 1)
+                        ->whereBetween(DB::raw('MONTH(noe.DatePublish)'), [1, 12])
+                        ->groupBy('noe.DatePublish')
+                        ->orderBy('noe.DatePublish')
+                        ->get();
+
+                if(count($getIsOpenNoe) > 0) {
+                    foreach($getIsOpenNoe as $keyOpen => $valOpen) {
+                        $openConvertDigits = Carbon::parse($valOpen->DatePublish);
+                        $openData = $openConvertDigits->format('F');
+
+                        foreach($dataOpen as $keyOpenData => $valData) {
+                            if( $keyOpenData === $openData ) {
+                                $dataOpen[$keyOpenData] = $valOpen->total;
+                            }
+                        }
+                    }
+                }
+            
+            if(count($getOngoingNoe) > 0) {
+                foreach($getOngoingNoe as $keyOngoing => $valOngoing) {
+                    $ongoingConvertDigits = Carbon::parse($valOngoing->DatePublish);
+                    $ongoingData = $ongoingConvertDigits->format('F');
+
+                    foreach($dataOngoing as $keyDataOngoing => $valDataOngoing) {
+                        if( $keyDataOngoing === $ongoingData ) {
+                            $dataOngoing[$keyDataOngoing] = $valOngoing->total;
+                        }
+                    }
+                }
+            }
+
+            
+            if(count($getIsClosedNoe) > 0) {
+                foreach($getIsClosedNoe as $keyClosed => $valClosed) {
+                    $closedConvertDigits = Carbon::parse($valClosed->DatePublish);
+                    $closedData = $closedConvertDigits->format('F');
+        
+                    foreach($dataClosed as $keyDataClosed => $valDataClosed) {
+                        if( $keyDataClosed === $closedData ) {
+                            $dataClosed[$keyDataClosed] = $valClosed->total;
+                        }
+                    }
+                }
+            }
+        } else if ($request->status === 'nod') {
+            $getTotalLaporanNod = DB::table('nod_report as nod')
+                      ->select('*')
+                      ->get();
+
+            $getIsOpenNod = DB::table('nod_report as nod')
+                        ->select('nod.Date', DB::raw('COUNT(nod.Date) as total'))
+                        ->where('nod.Status', 11)
+                        ->whereBetween(DB::raw('MONTH(nod.Date)'), [1, 12])
+                        ->groupBy('nod.Date')
+                        ->orderBy('nod.Date')
+                        ->get();
+
+            $getOngoingNod = DB::table('nod_report as nod')
+                        ->select('nod.Date', DB::raw('COUNT(nod.Date) as total'))
+                        ->where('nod.Status', 4)
+                        ->whereBetween(DB::raw('MONTH(nod.Date)'), [1, 12])
+                        ->groupBy('nod.Date')
+                        ->orderBy('nod.Date')
+                        ->get();
+
+            $getIsClosedNod = DB::table('nod_report as nod')
+                        ->select('nod.Date', DB::raw('COUNT(nod.Date) as total'))
+                        ->where('nod.IsClosed', 1)
+                        ->whereBetween(DB::raw('MONTH(nod.Date)'), [1, 12])
+                        ->groupBy('nod.Date')
+                        ->orderBy('nod.Date')
+                        ->get();
+
+            if(count($getIsOpenNod) > 0) {
+                    foreach($getIsOpenNod as $keyOpen => $valOpen) {
+                        $openConvertDigits = Carbon::parse($valOpen->Date);
+                        $openData = $openConvertDigits->format('F');
+
+                        foreach($dataOpen as $keyOpenData => $valData) {
+                            if( $keyOpenData === $openData ) {
+                                $dataOpen[$keyOpenData] = $valOpen->total;
+                            }
+                        }
+                    }
+                }
+            
+            if(count($getOngoingNod) > 0) {
+                foreach($getOngoingNod as $keyOngoing => $valOngoing) {
+                    $ongoingConvertDigits = Carbon::parse($valOngoing->Date);
+                    $ongoingData = $ongoingConvertDigits->format('F');
+
+                    foreach($dataOngoing as $keyDataOngoing => $valDataOngoing) {
+                        if( $keyDataOngoing === $ongoingData ) {
+                            $dataOngoing[$keyDataOngoing] = $valOngoing->total;
+                        }
+                    }
+                }
+            }
+
+            if(count($getIsClosedNod) > 0) {
+                foreach($getIsClosedNod as $keyClosed => $valClosed) {
+                    $closedConvertDigits = Carbon::parse($valClosed->Date);
+                    $closedData = $closedConvertDigits->format('F');
+        
+                    foreach($dataClosed as $keyDataClosed => $valDataClosed) {
+                        if( $keyDataClosed === $closedData ) {
+                            $dataClosed[$keyDataClosed] = $valClosed->total;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return response()->json([
+            'dataOngoing'   => $dataOngoing,
+            'dataOpen'      => $dataOpen,
+            'dataClosed'    => $dataClosed
+        ]);
+    }
+
+    public function avarageData() {
+        $countDataVerifNoe = DB::table('noe_report as noe')
+                ->select('noe.NOENumber','noe.DatePublish', 'nve.DateDept as dateDeptPelapor')
+                ->leftjoin('noe_verif_evaluation as nve','nve.IdNOEReport','=','noe.Id')
+                ->where('nve.TypeData', 0)
+                ->get();
+        
+        $countDataEvaluationNoe = DB::table('noe_report as noe')
+                ->select('noe.NOENumber', 'nve.DateDept')
+                ->leftjoin('noe_verif_evaluation as nve','nve.IdNOEReport','=','noe.Id')
+                ->get();
+
+        $countDataNod = DB::table('nod_report as nod')
+                        ->select('nod.DateQA as dateQaDept','nod.dateQaSection as dateQaNod','nve.DateDept as dateQadhApproveNoe')
+                        ->leftjoin('nod_relevant as nr','nr.IdNODReport','=','nod.Id')
+                        ->leftjoin('noe_report as noe', 'noe.Id','=','nod.IdNOEReport')
+                        ->leftjoin('noe_verif_evaluation as nve','nve.IdNOEReport','=','noe.Id')
+                        ->where('nve.TypeData', 1)
+                        ->whereNotNull('nod.dateQaSection')
+                        ->where('nod.Actived', '>', 0)
+                        ->get();
+
+        $dataNOEtoQa = [];
+        foreach ($countDataVerifNoe as $keyVerif => $valVerif) {
+            $datePublish = Carbon::parse($valVerif->DatePublish);
+            $dateApprovedByDeptPelopor = Carbon::parse($valVerif->dateDeptPelapor);
+
+            $diffInDays = $datePublish->diffInDaysFiltered(function ($date) {
+                return $date->isWeekday();
+            }, $dateApprovedByDeptPelopor);
+
+            array_push($dataNOEtoQa, $diffInDays);        
+        }
+
+        $dataQashToQadh = [];
+        $groupedData = [];
+        foreach ($countDataEvaluationNoe as $keyEvaliation => $valEvaluation) {
+            if (!isset($groupedData[$valEvaluation->NOENumber])) {
+                $groupedData[$valEvaluation->NOENumber] = [
+                    'NOENumber' => $valEvaluation->NOENumber,
+                    'DateDept' => [],
+                ];
+            }
+            $groupedData[$valEvaluation->NOENumber]['DateDept'][] = $valEvaluation->DateDept;    
+        }
+        
+        foreach ($groupedData as $keyGrouped => $valGrouped) {
+            $dateDeptPelapor = Carbon::parse($valGrouped['DateDept'][0]); //dept pelapor approve
+            $dateQadhApprove = Carbon::parse($valGrouped['DateDept'][1]); //QA dept head approve
+           
+            $diffInDays = $dateDeptPelapor->diffInDaysFiltered(function ($date) {
+                return $date->isWeekday();
+            }, $dateQadhApprove);
+
+            array_push($dataQashToQadh, $diffInDays);    
+        }
+        
+        $dateQadhNoeToQashNod = [];
+        $dateQashNodToQadhNod = [];
+        $filteringDataIfNull = [];
+        foreach($countDataNod as $keyNod => $valNod) {
+            
+            $dateA = Carbon::parse($valNod->dateQadhApproveNoe);
+            $dateB = Carbon::parse($valNod->dateQaNod);
+            if(!empty($valNod->dateQaDept)){
+                $dateC = Carbon::parse($valNod->dateQaDept);
+            } else {
+                $dateC = Carbon::parse($valNod->dateQaNod);
+            }
+            
+                
+            $diffInDays = $dateA->diffInDaysFiltered(function ($date) {
+                return $date->isWeekday();
+            }, $dateB);
+            
+            $diffInDays2 = $dateB->diffInDaysFiltered(function ($date) {        
+                return $date->isWeekday();
+            }, $dateC);
+           
+            array_push($dateQashNodToQadhNod ,$diffInDays2);
+            array_push($dateQadhNoeToQashNod, $diffInDays); 
+
+        }
+        $countDataNoeToQa = 0;
+        $countDataQashToQadh = 0;
+        $countDataQadhNoeToQashNod = 0;
+        $countDataQashNodToQadhNod = 0;
+
+        $countDataNoeToQa = array_sum($dataNOEtoQa) / count($countDataVerifNoe);
+        $countDataQashToQadh = array_sum($dataQashToQadh) / count($groupedData);
+        if(count($countDataNod) > 1) {
+            $countDataQadhNoeToQashNod = array_sum($dateQadhNoeToQashNod) / count($countDataNod);
+            $countDataQashNodToQadhNod = array_sum($dateQashNodToQadhNod) / count($countDataNod);
+        }
+        return response()->json([
+            'noePublishToQash' => $countDataNoeToQa,
+            'noeQashToQadh' => $countDataQashToQadh,
+            'QadhNoeToQashNod' => $countDataQadhNoeToQashNod,
+            'QashNodToQadhNod' => $countDataQashNodToQadhNod
+        ]);
+    }
 }

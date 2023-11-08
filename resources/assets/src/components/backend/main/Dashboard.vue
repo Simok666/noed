@@ -69,12 +69,106 @@
       </div>
     </div>
 
+    <div class="row" v-if="accessTable[6]">
+      <div class="col-md-12">
+        <b-card no-body class="mb-4">
+          <b-card-header header-tag="h6" class="with-elements">
+            <div class="card-header-title">Pareto Chart by Unit</div>
+            <b-row class="card-header-elements ml-auto">
+              <b-col cols="auto">
+                <multiselect
+                v-model="ParetoChartYear"
+                :options="opsYear"
+                :allow-empty="true"
+                placeholder="Pilih Tahun"
+                label="text"
+                track-by="text"
+                @input="onChangeUnitPareto" />
+              </b-col>
+              <b-col cols="auto">
+                <b-btn @click="getLocation('pareto')" variant="outline-primary" class="btn-md icon-btn md-btn-flat"><i class="ion ion-md-sync"></i></b-btn>
+              </b-col>
+            </b-row>
+          </b-card-header>
+          <div class="py-4 px-3 mt-3" id="chart-container">
+            <fusioncharts
+              :type="type"
+              :width="width"
+              :height="height"
+              :dataformat="dataFormat"
+              :dataSource="dataSource"
+              >
+            </fusioncharts>
+          </div>
+        </b-card>
+      </div>
+    </div>
+
     <div class="row" v-if="idDepartment == 67 && accessTable[0]">
       <div class="col-4">
-        <doughnut-chart :chart-data="datacollection_level_noe"/>
+        <b-card no-body class="mb-4">
+          <b-card-header header-tag="h6" class="with-elements">
+            <div class="card-header-title">Level NOE</div>
+          </b-card-header>
+          <div class="mx-4 my-4">
+            <doughnut-chart :chart-data="datacollection_level_noe"/>
+          </div>
+        </b-card>
       </div>
       <div class="col-4">
-        <doughnut-chart :chart-data="datacollection_level_noe"/>
+        <b-card no-body class="mb-4">
+          <b-card-header header-tag="h6" class="with-elements">
+            <div class="card-header-title">Kategori NOE</div>
+          </b-card-header>
+          <div class="mx-4 my-4">
+            <doughnut-chart :chart-data="datacollection_bets_category"/>
+          </div>
+        </b-card>
+      </div>
+      <div class="col-4">
+        <b-card no-body class="mb-4">
+          <b-card-header header-tag="h6" class="with-elements">
+              <div class="card-header-title">Perhitungan Hari Approval (AVG)</div>
+          </b-card-header>
+          <div class="mx-4 my-4">
+              <bar-chart :chart-data="datacollection_perhitungan_hari"/>
+          </div>
+        </b-card>
+      </div>
+    </div>
+
+    <div class="row" v-if="idDepartment == 67 && accessTable[0]">
+      <div class="col-6">
+        <b-card no-body class="mb-4">
+          <b-card-header header-tag="h6" class="with-elements">
+            <div class="card-header-title">NOE Report Completeness</div>
+          </b-card-header>
+          <div class="mx-4 my-4">
+            <doughnut-chart :chart-data="datacollection_level_noe"/>
+          </div>
+        </b-card>
+      </div>
+      <div class="col-6">
+        <b-card no-body class="mb-4">
+          <b-card-header header-tag="h6" class="with-elements">
+            <div class="card-header-title">NOE NOD status</div>
+            <b-row class="card-header-elements ml-auto">
+              <b-col cols="auto">
+                <multiselect
+                v-model="noeNodStatus"
+                :options="opsStatus"
+                :allow-empty="true"
+                placeholder="Pilih NOE/NOD"
+                label="text"
+                track-by="text"
+                @input="onChangeStatus" />
+              </b-col>
+            </b-row>
+          </b-card-header>
+          <div class="mx-4 my-4">
+            <bar-chart :chart-data="datacollection_noenod_status"/>
+          </div>
+        </b-card>
       </div>
     </div>
 
@@ -526,41 +620,6 @@
       </div>
     </div>
 
-    <div class="row" v-if="accessTable[6]">
-      <div class="col-md-12">
-        <b-card no-body class="mb-4">
-          <b-card-header header-tag="h6" class="with-elements">
-            <div class="card-header-title">Pareto Chart by Unit</div>
-            <b-row class="card-header-elements ml-auto">
-              <b-col cols="auto">
-                <multiselect
-                v-model="ParetoChartYear"
-                :options="opsYear"
-                :allow-empty="true"
-                placeholder="Pilih Tahun"
-                label="text"
-                track-by="text"
-                @input="onChangeUnitPareto" />
-              </b-col>
-              <b-col cols="auto">
-                <b-btn @click="getLocation('pareto')" variant="outline-primary" class="btn-md icon-btn md-btn-flat"><i class="ion ion-md-sync"></i></b-btn>
-              </b-col>
-            </b-row>
-          </b-card-header>
-          <div class="py-4 px-3 mt-3" id="chart-container">
-            <fusioncharts
-              :type="type"
-              :width="width"
-              :height="height"
-              :dataformat="dataFormat"
-              :dataSource="dataSource"
-              >
-            </fusioncharts>
-          </div>
-        </b-card>
-      </div>
-    </div>
-
   </div>
 </template>
 
@@ -650,6 +709,41 @@ Vue.component('doughnut-chart', {
   }
 })
 
+Vue.component('bar-chart', {
+  extends: VueChartJs.Bar,
+  mixins: [VueChartJs.mixins.reactiveProp],
+  props: ['chartData'],
+  data: function () {
+    return {
+      options: {
+        plugins: {
+          datalabels: {
+            color: "white",
+            textAlign: "center",
+            font: {
+              weight: "bold",
+              size: 16
+            }
+          }
+        },
+
+        legend: {
+          display: true,
+          position: 'right',
+          labels: {
+            boxWidth: 12
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    }
+  },
+  mounted () {
+    this.renderChart(this.chartData, this.options)
+  }
+})
+
 export default {
   name: 'dashboard',
   metaInfo: {
@@ -663,11 +757,16 @@ export default {
     return {
       date: moment(new Date()).format('dddd, DD MMMM YYYY'),
       opsYear: [],
+      opsStatus: [
+        { value: 'noe', text: 'NOE' },
+        { value: 'nod', text: 'NOD' }
+      ],
       accessTable: [],
       allYear: null,
       unitYear: null,
       NOEYear: null,
       NODYear: null,
+      noeNodStatus: null,
       TimeNOEYear: null,
       TimeNODYear: null,
       DeviationYear: null,
@@ -691,6 +790,9 @@ export default {
       opsDepartment: [{Id:0, Department:'ALL'}],
       datacollection_pie: {},
       datacollection_level_noe: {},
+      datacollection_bets_category: {},
+      datacollection_noenod_status: {},
+      datacollection_perhitungan_hari: {},
       valHeaderUnit: [],
       valUnitColor: [],
       valUnitLocation: [],
@@ -732,6 +834,12 @@ export default {
       dataLevel: [],
       levelColor: [],
       setDataValue:[],
+      databets: [],
+      betscolor: [],
+      setDataBets: [],
+      dataOpen: [],
+      dataClosed: [],
+      dataOngoing: []
     }
   },
   methods: {
@@ -757,8 +865,119 @@ export default {
         }]
       }
     },
-    betCategory() {
-
+    statusNoeNod (dataOpen, dataOngoing, dataClosed) {
+      this.datacollection_noenod_status = {
+        labels : [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December'
+        ],
+        datasets : [{
+          type: 'bar',
+          borderWidth: 1,
+          label: 'Ongoing',
+          borderColor:  '#6ded8f',
+          backgroundColor: '#6ded8f',
+          data: [
+            dataOngoing.January, 
+            dataOngoing.February, 
+            dataOngoing.March, 
+            dataOngoing.April,
+            dataOngoing.May,
+            dataOngoing.June,
+            dataOngoing.July,
+            dataOngoing.August,
+            dataOngoing.September,
+            dataOngoing.October,
+            dataOngoing.November,
+            dataOngoing.December
+          ],
+          stack: 'bar'
+        },
+        {
+          type: 'bar',
+          borderWidth: 1,
+          label: 'Closed',
+          borderColor:  '#ffb554',
+          backgroundColor: '#ffb554',
+          data: [
+            dataClosed.January, 
+            dataClosed.February, 
+            dataClosed.March, 
+            dataClosed.April,
+            dataClosed.May,
+            dataClosed.June,
+            dataClosed.July,
+            dataClosed.August,
+            dataClosed.September,
+            dataClosed.October,
+            dataClosed.November,
+            dataClosed.December
+          ],
+          stack: 'bar'
+        },
+        {
+          type: 'bar',
+          borderWidth: 1,
+          label: 'Open',
+          borderColor:  '#3e95cd',
+          backgroundColor: '#3e95cd',
+          data: [
+            dataOpen.January, 
+            dataOpen.February, 
+            dataOpen.March, 
+            dataOpen.April,
+            dataOpen.May,
+            dataOpen.June,
+            dataOpen.July,
+            dataOpen.August,
+            dataOpen.September,
+            dataOpen.October,
+            dataOpen.November,
+            dataOpen.December
+          ],
+          stack: 'bar'
+        }]
+      }
+    },
+    countingDaysApproval (dataA, dataB, dataC, dataD) {
+      this.datacollection_perhitungan_hari = {
+        labels : [
+          'Tgl kejadian --> QA terima',
+          'QA terima --> QA approve (NOE)',
+          'QA Approve (NOE) --> QA terima (NOD)',
+          'QA terima --> QA approve (NOD)',
+        ],
+        datasets : [{
+          type: 'bar',
+          borderWidth: 1,
+          borderColor:  '#3e95cd',
+          label : 'avarage',
+          backgroundColor: '#3e95cd',
+          data: [dataA, dataB, dataC, dataD],
+          stack: 'bar',
+        }]
+      }
+    },
+    betCategory(databets, betscolor, setDataValue) {
+      this.datacollection_bets_category = {
+        labels: databets,
+        datasets : [{
+          borderWidth: 1,
+          borderColor:  betscolor,
+          backgroundColor: betscolor,
+          data: setDataValue
+        }]
+      }
     },
     getLocation (type=null, filter='') {
       if(type=='tabel') {
@@ -941,6 +1160,9 @@ export default {
     onChangeUnitPareto(option) {
       if(option) this.getLocation('pareto', option.value)
     },
+    onChangeStatus(option) {
+      if(option) this.getStatusNoeNod(option.value)
+    },
     generateYearDashboard() {
       axios.post('/AdminVue/dashboard-generate-year')
       .then( function (res) {
@@ -1042,9 +1264,52 @@ export default {
           console.log(e)
        }.bind(this))
       
-    }
-    
+    },
 
+    getCategoryBets () {
+      axios.post('/AdminVue/dashboard-get-data-bets-category')
+      .then( function (res) {
+        let response = res.data
+        this.databets = response.databets
+        this.betscolor = response.betscolor
+        this.setDataBets = response.setDataValue
+        this.betCategory(this.databets, this.betscolor, this.setDataBets)
+      }.bind(this))
+       .catch( function (e) {
+          console.log(e)
+       }.bind(this))
+    },
+
+    getStatusNoeNod (status = 'noe') {
+      axios.post('/AdminVue/dashboard-get-status-noe-nod', {
+        status : status
+      })
+      .then( function (res) {
+        
+        let response = res.data
+        this.dataOpen = response.dataOpen
+        this.dataOngoing = response.dataOngoing
+        this.dataClosed = response.dataClosed
+        
+        this.statusNoeNod(this.dataOpen, this.dataOngoing, this.dataClosed)
+      }.bind(this))
+       .catch( function (e) {
+          console.log(e)
+       }.bind(this))
+    },
+
+    getAvarageData () {
+      axios.post('/AdminVue/dashboard-get-avarage-data')
+      .then( function (res) {
+        let response = res.data
+        this.countingDaysApproval(response.noePublishToQash, response.noeQashToQadh, response.QadhNoeToQashNod, response.QashNodToQadhNod)
+      }.bind(this))
+      .catch( function (e) {
+        console.log(e) 
+      }.bind(this))
+    }
+
+    
   },
 
   mounted () {
@@ -1056,6 +1321,9 @@ export default {
     this.getStatusTimeNOD(this.allYear)
     this.getDeviationLevel(this.allYear)
     this.getLevelNoe()
+    this.getCategoryBets()
+    this.getStatusNoeNod()
+    this.getAvarageData()
     this.getReportData()
     this.hideLoading()
   }

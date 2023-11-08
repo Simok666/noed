@@ -1195,10 +1195,13 @@ class NODReportControll extends Controller
         }
         
         $dataDescAnotherEffect = [];
+        $dateTimeQash = Carbon::now()->toDateTimeString();
         if($request->has('DescAnotherEffect')) {
             $anotherEffectValidation = json_decode($request->input('DescAnotherEffect'));
             
             foreach($anotherEffectValidation as $key => $val) {
+                $dateQa = Carbon::now();
+                
                 if($val !== null) {
                    foreach(json_decode($anotherEffectFile) as $keyFile => $valFile) {
                     foreach($valFile as $subKey => $subVal) {
@@ -1213,6 +1216,7 @@ class NODReportControll extends Controller
                 if($val === false) {
                     $val = 'false';
                 }
+                $dateTimeQash =  $dateQa->toDateTimeString();
 
                 if(empty($val) && $val !== null) {
                     return response()->json([
@@ -1374,7 +1378,8 @@ class NODReportControll extends Controller
                     'Method'=>$request->input('Method'),
                     'Material'=>$request->input('Material'),
                     'Milieu'=>$request->input('Milieu'),
-                    'DescAnotherEffect'=>json_encode($dataDescAnotherEffect)
+                    'DescAnotherEffect'=>json_encode($dataDescAnotherEffect),
+                    'dateQaSection' => $dateTimeQash
                 ]);
     
                 $IdCAPIC = $request->input('IdCAPIC');
