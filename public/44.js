@@ -109,6 +109,39 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('doughnut-chart', {
     this.renderChart(this.chartData, this.options);
   }
 });
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
+  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_1__["default"].Bar,
+  mixins: [vue_chartjs__WEBPACK_IMPORTED_MODULE_1__["default"].mixins.reactiveProp],
+  props: ['chartData'],
+  data: function data() {
+    return {
+      options: {
+        plugins: {
+          datalabels: {
+            color: "white",
+            textAlign: "center",
+            font: {
+              weight: "bold",
+              size: 16
+            }
+          }
+        },
+        legend: {
+          display: true,
+          position: 'right',
+          labels: {
+            boxWidth: 12
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    };
+  },
+  mounted: function mounted() {
+    this.renderChart(this.chartData, this.options);
+  }
+});
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'dashboard',
   metaInfo: {
@@ -122,11 +155,19 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('doughnut-chart', {
     return {
       date: moment__WEBPACK_IMPORTED_MODULE_9___default()(new Date()).format('dddd, DD MMMM YYYY'),
       opsYear: [],
+      opsStatus: [{
+        value: 'noe',
+        text: 'NOE'
+      }, {
+        value: 'nod',
+        text: 'NOD'
+      }],
       accessTable: [],
       allYear: null,
       unitYear: null,
       NOEYear: null,
       NODYear: null,
+      noeNodStatus: null,
       TimeNOEYear: null,
       TimeNODYear: null,
       DeviationYear: null,
@@ -156,6 +197,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('doughnut-chart', {
       }],
       datacollection_pie: {},
       datacollection_level_noe: {},
+      datacollection_bets_category: {},
+      datacollection_noenod_status: {},
+      datacollection_perhitungan_hari: {},
       valHeaderUnit: [],
       valUnitColor: [],
       valUnitLocation: [],
@@ -193,7 +237,13 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('doughnut-chart', {
       },
       dataLevel: [],
       levelColor: [],
-      setDataValue: []
+      setDataValue: [],
+      databets: [],
+      betscolor: [],
+      setDataBets: [],
+      dataOpen: [],
+      dataClosed: [],
+      dataOngoing: []
     };
   },
   methods: {
@@ -219,7 +269,61 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('doughnut-chart', {
         }]
       };
     },
-    betCategory: function betCategory() {},
+    statusNoeNod: function statusNoeNod(dataOpen, dataOngoing, dataClosed) {
+      this.datacollection_noenod_status = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        datasets: [{
+          type: 'bar',
+          borderWidth: 1,
+          label: 'Ongoing',
+          borderColor: '#6ded8f',
+          backgroundColor: '#6ded8f',
+          data: [dataOngoing.January, dataOngoing.February, dataOngoing.March, dataOngoing.April, dataOngoing.May, dataOngoing.June, dataOngoing.July, dataOngoing.August, dataOngoing.September, dataOngoing.October, dataOngoing.November, dataOngoing.December],
+          stack: 'bar'
+        }, {
+          type: 'bar',
+          borderWidth: 1,
+          label: 'Closed',
+          borderColor: '#ffb554',
+          backgroundColor: '#ffb554',
+          data: [dataClosed.January, dataClosed.February, dataClosed.March, dataClosed.April, dataClosed.May, dataClosed.June, dataClosed.July, dataClosed.August, dataClosed.September, dataClosed.October, dataClosed.November, dataClosed.December],
+          stack: 'bar'
+        }, {
+          type: 'bar',
+          borderWidth: 1,
+          label: 'Open',
+          borderColor: '#3e95cd',
+          backgroundColor: '#3e95cd',
+          data: [dataOpen.January, dataOpen.February, dataOpen.March, dataOpen.April, dataOpen.May, dataOpen.June, dataOpen.July, dataOpen.August, dataOpen.September, dataOpen.October, dataOpen.November, dataOpen.December],
+          stack: 'bar'
+        }]
+      };
+    },
+    countingDaysApproval: function countingDaysApproval(dataA, dataB, dataC, dataD) {
+      this.datacollection_perhitungan_hari = {
+        labels: ['Tgl kejadian --> QA terima', 'QA terima --> QA approve (NOE)', 'QA Approve (NOE) --> QA terima (NOD)', 'QA terima --> QA approve (NOD)'],
+        datasets: [{
+          type: 'bar',
+          borderWidth: 1,
+          borderColor: '#3e95cd',
+          label: 'avarage',
+          backgroundColor: '#3e95cd',
+          data: [dataA, dataB, dataC, dataD],
+          stack: 'bar'
+        }]
+      };
+    },
+    betCategory: function betCategory(databets, betscolor, setDataValue) {
+      this.datacollection_bets_category = {
+        labels: databets,
+        datasets: [{
+          borderWidth: 1,
+          borderColor: betscolor,
+          backgroundColor: betscolor,
+          data: setDataValue
+        }]
+      };
+    },
     getLocation: function getLocation() {
       var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
@@ -391,6 +495,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('doughnut-chart', {
     onChangeUnitPareto: function onChangeUnitPareto(option) {
       if (option) this.getLocation('pareto', option.value);
     },
+    onChangeStatus: function onChangeStatus(option) {
+      if (option) this.getStatusNoeNod(option.value);
+    },
     generateYearDashboard: function generateYearDashboard() {
       axios.post('/AdminVue/dashboard-generate-year').then(function (res) {
         this.opsYear = JSON.parse(res.data.data);
@@ -532,6 +639,39 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('doughnut-chart', {
       }.bind(this))["catch"](function (e) {
         console.log(e);
       }.bind(this));
+    },
+    getCategoryBets: function getCategoryBets() {
+      axios.post('/AdminVue/dashboard-get-data-bets-category').then(function (res) {
+        var response = res.data;
+        this.databets = response.databets;
+        this.betscolor = response.betscolor;
+        this.setDataBets = response.setDataValue;
+        this.betCategory(this.databets, this.betscolor, this.setDataBets);
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+      }.bind(this));
+    },
+    getStatusNoeNod: function getStatusNoeNod() {
+      var status = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'noe';
+      axios.post('/AdminVue/dashboard-get-status-noe-nod', {
+        status: status
+      }).then(function (res) {
+        var response = res.data;
+        this.dataOpen = response.dataOpen;
+        this.dataOngoing = response.dataOngoing;
+        this.dataClosed = response.dataClosed;
+        this.statusNoeNod(this.dataOpen, this.dataOngoing, this.dataClosed);
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+      }.bind(this));
+    },
+    getAvarageData: function getAvarageData() {
+      axios.post('/AdminVue/dashboard-get-avarage-data').then(function (res) {
+        var response = res.data;
+        this.countingDaysApproval(response.noePublishToQash, response.noeQashToQadh, response.QadhNoeToQashNod, response.QashNodToQadhNod);
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+      }.bind(this));
     }
   },
   mounted: function mounted() {
@@ -543,6 +683,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('doughnut-chart', {
     this.getStatusTimeNOD(this.allYear);
     this.getDeviationLevel(this.allYear);
     this.getLevelNoe();
+    this.getCategoryBets();
+    this.getStatusNoeNod();
+    this.getAvarageData();
     this.getReportData();
     this.hideLoading();
   }
@@ -676,21 +819,204 @@ var render = function render() {
     staticClass: "card-header-title-report"
   }, [_vm._v("NOD Closed")]), _vm._v(" "), _c("div", {
     staticClass: "card-child-title"
-  }, [_vm._v("\n              " + _vm._s(_vm.dataNod.is_closed_laporan_nod) + "\n            ")])])])], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("div", {
+  }, [_vm._v("\n              " + _vm._s(_vm.dataNod.is_closed_laporan_nod) + "\n            ")])])])], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.accessTable[6] ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-12"
+  }, [_c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      "no-body": ""
+    }
+  }, [_c("b-card-header", {
+    staticClass: "with-elements",
+    attrs: {
+      "header-tag": "h6"
+    }
+  }, [_c("div", {
+    staticClass: "card-header-title"
+  }, [_vm._v("Pareto Chart by Unit")]), _vm._v(" "), _c("b-row", {
+    staticClass: "card-header-elements ml-auto"
+  }, [_c("b-col", {
+    attrs: {
+      cols: "auto"
+    }
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.opsYear,
+      "allow-empty": true,
+      placeholder: "Pilih Tahun",
+      label: "text",
+      "track-by": "text"
+    },
+    on: {
+      input: _vm.onChangeUnitPareto
+    },
+    model: {
+      value: _vm.ParetoChartYear,
+      callback: function callback($$v) {
+        _vm.ParetoChartYear = $$v;
+      },
+      expression: "ParetoChartYear"
+    }
+  })], 1), _vm._v(" "), _c("b-col", {
+    attrs: {
+      cols: "auto"
+    }
+  }, [_c("b-btn", {
+    staticClass: "btn-md icon-btn md-btn-flat",
+    attrs: {
+      variant: "outline-primary"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.getLocation("pareto");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "ion ion-md-sync"
+  })])], 1)], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "py-4 px-3 mt-3",
+    attrs: {
+      id: "chart-container"
+    }
+  }, [_c("fusioncharts", {
+    attrs: {
+      type: _vm.type,
+      width: _vm.width,
+      height: _vm.height,
+      dataformat: _vm.dataFormat,
+      dataSource: _vm.dataSource
+    }
+  })], 1)], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-4"
+  }, [_c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      "no-body": ""
+    }
+  }, [_c("b-card-header", {
+    staticClass: "with-elements",
+    attrs: {
+      "header-tag": "h6"
+    }
+  }, [_c("div", {
+    staticClass: "card-header-title"
+  }, [_vm._v("Level NOE")])]), _vm._v(" "), _c("div", {
+    staticClass: "mx-4 my-4"
   }, [_c("doughnut-chart", {
     attrs: {
       "chart-data": _vm.datacollection_level_noe
     }
-  })], 1), _vm._v(" "), _c("div", {
+  })], 1)], 1)], 1), _vm._v(" "), _c("div", {
     staticClass: "col-4"
+  }, [_c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      "no-body": ""
+    }
+  }, [_c("b-card-header", {
+    staticClass: "with-elements",
+    attrs: {
+      "header-tag": "h6"
+    }
+  }, [_c("div", {
+    staticClass: "card-header-title"
+  }, [_vm._v("Kategori NOE")])]), _vm._v(" "), _c("div", {
+    staticClass: "mx-4 my-4"
+  }, [_c("doughnut-chart", {
+    attrs: {
+      "chart-data": _vm.datacollection_bets_category
+    }
+  })], 1)], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-4"
+  }, [_c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      "no-body": ""
+    }
+  }, [_c("b-card-header", {
+    staticClass: "with-elements",
+    attrs: {
+      "header-tag": "h6"
+    }
+  }, [_c("div", {
+    staticClass: "card-header-title"
+  }, [_vm._v("Perhitungan Hari Approval (AVG)")])]), _vm._v(" "), _c("div", {
+    staticClass: "mx-4 my-4"
+  }, [_c("bar-chart", {
+    attrs: {
+      "chart-data": _vm.datacollection_perhitungan_hari
+    }
+  })], 1)], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-6"
+  }, [_c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      "no-body": ""
+    }
+  }, [_c("b-card-header", {
+    staticClass: "with-elements",
+    attrs: {
+      "header-tag": "h6"
+    }
+  }, [_c("div", {
+    staticClass: "card-header-title"
+  }, [_vm._v("NOE Report Completeness")])]), _vm._v(" "), _c("div", {
+    staticClass: "mx-4 my-4"
   }, [_c("doughnut-chart", {
     attrs: {
       "chart-data": _vm.datacollection_level_noe
     }
-  })], 1)]) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("b-form-row", [_c("b-form-group", {
+  })], 1)], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-6"
+  }, [_c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      "no-body": ""
+    }
+  }, [_c("b-card-header", {
+    staticClass: "with-elements",
+    attrs: {
+      "header-tag": "h6"
+    }
+  }, [_c("div", {
+    staticClass: "card-header-title"
+  }, [_vm._v("NOE NOD status")]), _vm._v(" "), _c("b-row", {
+    staticClass: "card-header-elements ml-auto"
+  }, [_c("b-col", {
+    attrs: {
+      cols: "auto"
+    }
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.opsStatus,
+      "allow-empty": true,
+      placeholder: "Pilih NOE/NOD",
+      label: "text",
+      "track-by": "text"
+    },
+    on: {
+      input: _vm.onChangeStatus
+    },
+    model: {
+      value: _vm.noeNodStatus,
+      callback: function callback($$v) {
+        _vm.noeNodStatus = $$v;
+      },
+      expression: "noeNodStatus"
+    }
+  })], 1)], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "mx-4 my-4"
+  }, [_c("bar-chart", {
+    attrs: {
+      "chart-data": _vm.datacollection_noenod_status
+    }
+  })], 1)], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-4 float-right"
   }, [_c("label", {
     staticClass: "form-label"
@@ -1333,76 +1659,7 @@ var render = function render() {
     }, _vm._l(item, function (value) {
       return _c("td", [_vm._v(_vm._s(value))]);
     }), 0);
-  }), 0)])])], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.accessTable[6] ? _c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-md-12"
-  }, [_c("b-card", {
-    staticClass: "mb-4",
-    attrs: {
-      "no-body": ""
-    }
-  }, [_c("b-card-header", {
-    staticClass: "with-elements",
-    attrs: {
-      "header-tag": "h6"
-    }
-  }, [_c("div", {
-    staticClass: "card-header-title"
-  }, [_vm._v("Pareto Chart by Unit")]), _vm._v(" "), _c("b-row", {
-    staticClass: "card-header-elements ml-auto"
-  }, [_c("b-col", {
-    attrs: {
-      cols: "auto"
-    }
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.opsYear,
-      "allow-empty": true,
-      placeholder: "Pilih Tahun",
-      label: "text",
-      "track-by": "text"
-    },
-    on: {
-      input: _vm.onChangeUnitPareto
-    },
-    model: {
-      value: _vm.ParetoChartYear,
-      callback: function callback($$v) {
-        _vm.ParetoChartYear = $$v;
-      },
-      expression: "ParetoChartYear"
-    }
-  })], 1), _vm._v(" "), _c("b-col", {
-    attrs: {
-      cols: "auto"
-    }
-  }, [_c("b-btn", {
-    staticClass: "btn-md icon-btn md-btn-flat",
-    attrs: {
-      variant: "outline-primary"
-    },
-    on: {
-      click: function click($event) {
-        return _vm.getLocation("pareto");
-      }
-    }
-  }, [_c("i", {
-    staticClass: "ion ion-md-sync"
-  })])], 1)], 1)], 1), _vm._v(" "), _c("div", {
-    staticClass: "py-4 px-3 mt-3",
-    attrs: {
-      id: "chart-container"
-    }
-  }, [_c("fusioncharts", {
-    attrs: {
-      type: _vm.type,
-      width: _vm.width,
-      height: _vm.height,
-      dataformat: _vm.dataFormat,
-      dataSource: _vm.dataSource
-    }
-  })], 1)], 1)], 1)]) : _vm._e()], 1);
+  }), 0)])])], 1)], 1)]) : _vm._e()], 1);
 };
 var staticRenderFns = [];
 render._withStripped = true;
