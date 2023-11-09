@@ -299,7 +299,6 @@
                           :files="anotherEffectFile[item.id_effect]"
                           accepted-file-types="application/*, image/*, video/*"
                           maxTotalFileSize="50MB"
-                          required
                           :disabled = "isShow"
                         />
                         </b-form-group>
@@ -503,16 +502,22 @@ export default {
           for (const idEffect in this.checkedEffect) {
             if(this.checkedEffect[idEffect]) {
                 
-                for( var i = 0; i < this.anotherEffectFile[idEffect].length; i++ ) {
-                  let file = this.anotherEffectFile[idEffect][i];
-                  
-                  formData.append('anotherEffectFile[' + idEffect + '][' + i + ']', file);
-                }
-                
-                for(var i = 0; i < this.oldFileAnotherEffect[idEffect].length; i++ ) {
-                  let oldfile = this.oldFileAnotherEffect[idEffect][i];
-                  
-                  formData.append('oldEffectFile[' + idEffect + '][' + i + ']', oldfile)
+                if(this.anotherEffectFile[idEffect] !== undefined) {
+
+                  for( var i = 0; i < this.anotherEffectFile[idEffect].length; i++ ) {
+                    let file = this.anotherEffectFile[idEffect][i];
+                    
+                    formData.append('anotherEffectFile[' + idEffect + '][' + i + ']', file);
+                  }
+                } 
+
+                if(this.oldFileAnotherEffect[idEffect] !== undefined) {
+            
+                  for(var i = 0; i < this.oldFileAnotherEffect[idEffect].length; i++ ) {
+                    let oldfile = this.oldFileAnotherEffect[idEffect][i];
+                    
+                    formData.append('oldEffectFile[' + idEffect + '][' + i + ']', oldfile)
+                  }
                 }
                 
                 

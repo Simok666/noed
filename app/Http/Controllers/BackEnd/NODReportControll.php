@@ -1074,10 +1074,19 @@ class NODReportControll extends Controller
                             $effect->namefile = $effect->namefile;
                             
                             foreach($effectFileName as $keyFile => $valFile) {
+                            
                                 if($valFile) {
                                     $resultFile = explode("/", $valFile);  
+                                } else {
+                                    $resultFile = [];
                                 }
-                                $anotherEffectFileDownload[] = [$resultFile[count($resultFile) - 1], $valFile];
+
+                                if(!empty($resultFile)){
+
+                                    $anotherEffectFileDownload[] = [$resultFile[count($resultFile) - 1], $valFile];
+                                } else {
+                                    $anotherEffectFileDownload[] = [];
+                                }
                             }
 
                             $effect->filedownload = $anotherEffectFileDownload;
@@ -1201,16 +1210,22 @@ class NODReportControll extends Controller
             
             foreach($anotherEffectValidation as $key => $val) {
                 $dateQa = Carbon::now();
-                
+
                 if($val !== null) {
-                   foreach(json_decode($anotherEffectFile) as $keyFile => $valFile) {
-                    foreach($valFile as $subKey => $subVal) {
-                        if($key == $keyFile) {
-                            $val->namefile[$subKey] = $subVal;
-                        }
+                    if(!empty(json_decode($anotherEffectFile))) {
+                        foreach(json_decode($anotherEffectFile) as $keyFile => $valFile) {
+                            foreach($valFile as $subKey => $subVal) {
+                                if($key == $keyFile) {
+                                    $val->namefile[$subKey] = $subVal;
+                                    
+                                }
+                            }
+                            
+                           }
+                    } else {
+                        $val->namefile[$key] = [];  
                     }
-                   }
-                   array_push($dataDescAnotherEffect, $val);
+                       array_push($dataDescAnotherEffect, $val);
                 }
 
                 if($val === false) {

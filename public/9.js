@@ -156,13 +156,17 @@ __webpack_require__.r(__webpack_exports__);
         if (this.selected == true) {
           for (var idEffect in this.checkedEffect) {
             if (this.checkedEffect[idEffect]) {
-              for (var i = 0; i < this.anotherEffectFile[idEffect].length; i++) {
-                var _file = this.anotherEffectFile[idEffect][i];
-                formData.append('anotherEffectFile[' + idEffect + '][' + i + ']', _file);
+              if (this.anotherEffectFile[idEffect] !== undefined) {
+                for (var i = 0; i < this.anotherEffectFile[idEffect].length; i++) {
+                  var _file = this.anotherEffectFile[idEffect][i];
+                  formData.append('anotherEffectFile[' + idEffect + '][' + i + ']', _file);
+                }
               }
-              for (var i = 0; i < this.oldFileAnotherEffect[idEffect].length; i++) {
-                var oldfile = this.oldFileAnotherEffect[idEffect][i];
-                formData.append('oldEffectFile[' + idEffect + '][' + i + ']', oldfile);
+              if (this.oldFileAnotherEffect[idEffect] !== undefined) {
+                for (var i = 0; i < this.oldFileAnotherEffect[idEffect].length; i++) {
+                  var oldfile = this.oldFileAnotherEffect[idEffect][i];
+                  formData.append('oldEffectFile[' + idEffect + '][' + i + ']', oldfile);
+                }
               }
               collected[idEffect] = {
                 id_effect: idEffect,
@@ -1229,7 +1233,6 @@ var render = function render() {
         files: _vm.anotherEffectFile[item.id_effect],
         "accepted-file-types": "application/*, image/*, video/*",
         maxTotalFileSize: "50MB",
-        required: "",
         disabled: _vm.isShow
       },
       on: {
