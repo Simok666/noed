@@ -1608,14 +1608,16 @@ class NODReportControll extends Controller
 
     public function approve(Request $request) {
         $item = DB::table('nod_report as nod')
-            ->select('nod.*','noe.DatePublish','pst.Id as deptHeadPelopor')
+            ->select('nod.*','noe.DatePublish','pst.Id as deptHeadPelopor','nr.CreateAt as RelevantDeptDate')
             ->leftjoin('users as usr','usr.Id','=','nod.UserDept')
             ->leftjoin('employee as emp','emp.Id','=','usr.IdEmployee')
             ->leftjoin('position as pst','pst.Id','=','emp.IdPosition')
             ->leftjoin('noe_report as noe','noe.Id','=','nod.IdNOEReport')
+            ->leftjoin('nod_relevant as nr', 'nr.IdNODReport','=','nod.Id')
+            ->orderBy('nr.CreateAt', 'DESC')
             ->where('nod.Id', $request->input('Id'))
             ->first();
-       
+        
         $itemNOEVerif = DB::table('noe_verif_evaluation')
             ->select('RelevantDept')
             ->where('IdNOEReport', $item->IdNOEReport)
@@ -1847,7 +1849,7 @@ class NODReportControll extends Controller
                             'IsCorrection'=>0
                         ]);
                     } else {
-        
+                        
                         DB::table('nod_report')
                         ->where('Id', $request->input('Id'))
                         ->update([
@@ -2086,9 +2088,9 @@ class NODReportControll extends Controller
                 // jika semua department head terkait sudah approve
                 if(count($resultDept) == $itemNODRelevant+1) {
                     if($countDept != 0) {
-                        $diffDay = $this->AppWeb->diffDateApprove($item->DatePublish);
+                        $diffDay = $this->AppWeb->diffDateApprove($item->Date); //before DatePublish
                         $StatusTimeDept = 1;
-                        if($diffDay>12) $StatusTimeDept = 2;
+                        if($diffDay>5) $StatusTimeDept = 2;
 
                         DB::table('nod_report')
                         ->where('Id', $request->input('Id'))
@@ -2172,25 +2174,23 @@ class NODReportControll extends Controller
                             'UserQA'=>session('adminvue')->Id
                         ]);
                     } else {
+
+                        $diffDayQa = $this->AppWeb->diffDateApprove($item->RelevantDeptDate); //before DatePublish
+                        $StatusTimeQA = 1;
+                        if($diffDayQa>3) $StatusTimeQA = 2;
+
                         DB::table('nod_report')
                         ->where('Id', $request->input('Id'))
                         ->update([
                             'Status'=>8,
                             // 'IsClosed'=>1, // Data NOD closed setelah NOD Review selesai
                             'DateQA'=>date('Y-m-d H:i:s'),
-                            'UserQA'=>session('adminvue')->Id
+                            'UserQA'=>session('adminvue')->Id,
+                            'StatusTimeQA' => $StatusTimeQA
                         ]);
                     }
                    
                     try{
-                        /*$itemPst = DB::table('position')
-                            ->select('Id')
-                            ->where('Code', 'like', '%'.'.sch')
-                            ->where('IdDepartment', 67) // 67: Dept. QA
-                            ->where('Actived', 1)
-                            ->first();
-                        if($itemPst!=null) $IdPosition = $itemPst->Id;
-                        else $IdPosition = 0;*/
 
                         $data['Subject'] = 'NOD Report - Approved';
                         $data['Title'] = 'Data NOD telah disetujui, Oleh :';
@@ -2402,12 +2402,12 @@ class NODReportControll extends Controller
         $valPosition = session('adminvue')->CodePosition;
         $exp = explode('.', $valPosition);
 
-        $diffDay = $this->AppWeb->diffDateApprove($item->DatePublish);
+        $diffDay = $this->AppWeb->diffDateApprove($item->Date);
         $StatusTimeDept = 1;
-        if($diffDay>12) $StatusTimeDept = 2;
+        if($diffDay>5) $StatusTimeDept = 2;
 
         $StatusTimeQA = 1;
-        if($diffDay>15) $StatusTimeQA = 2;
+        if($diffDay>8) $StatusTimeQA = 2;
 
         DB::begintransaction();
         try{

@@ -66,6 +66,8 @@ Route::group(['middleware'=>['adminvue']], function () {
 		Route::post('dashboard-get-data-bets-category','BackEnd\DashboardControll@betsCategory');
 		Route::post('dashboard-get-status-noe-nod','BackEnd\DashboardControll@getStatusNoeNod');
 		Route::post('dashboard-get-avarage-data','BackEnd\DashboardControll@avarageData');
+		Route::post('dashboard-get-delay-ontime-data','BackEnd\DashboardControll@getDataDelayOntime');
+
 
 		Route::get('data-division','BackEnd\DivisionControll@index');
 		Route::post('division-show','BackEnd\DivisionControll@show');

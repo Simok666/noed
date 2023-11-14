@@ -1239,19 +1239,22 @@ class DashboardControll extends Controller
         $getIsOpenNoe = DB::table('noe_report as noe')
                     ->select('*')
                     ->where('noe.Status', 7)
+                    ->where('noe.Actived', 1)
                     ->get();
 
         $getOngoingNoe = DB::table('noe_report as noe')
                     ->select('*')
-                    ->where('noe.Status', 5)
+                    ->whereBetween('noe.Status', [2, 6]) // saat dilaporkan unit head
+                    ->where('noe.Actived', 1)
                     ->get();
 
         $getIsClosedNoe = DB::table('noe_report as noe')
                     ->select('*')
                     ->where('noe.IsClosed', 1)
+                    ->where('noe.Actived', 1)
                     ->get();
         
-        $dataNoe['total_laporan'] = count($getTotalLaporanNoe);
+        $dataNoe['total_laporan'] = count($getIsOpenNoe) + count($getIsClosedNoe);
         $dataNoe['is_open_laporan'] = count($getIsOpenNoe);
         $dataNoe['is_ongoing_laporan'] = count($getOngoingNoe);
         $dataNoe['is_closed_laporan'] = count($getIsClosedNoe);
@@ -1260,24 +1263,29 @@ class DashboardControll extends Controller
 
         $getTotalLaporanNod = DB::table('nod_report as nod')
                       ->select('*')
+                      ->where('nod.Actived', 1)
                       ->get();
 
         $getIsOpenNod = DB::table('nod_report as nod')
                     ->select('*')
-                    ->where('nod.Status', 11)
-                    ->get();
-
-        $getOngoingNod = DB::table('nod_report as nod')
-                    ->select('*')
-                    ->where('nod.Status', 4)
-                    ->get();
-
-        $getIsClosedNod = DB::table('nod_report as nod')
-                    ->select('*')
-                    ->where('nod.IsClosed', 1)
+                    ->whereIn('nod.Status', [8, 11])
+                    ->where('nod.IsCapaVerified', 0)
+                    ->where('nod.Actived', 1)
                     ->get();
         
-        $dataNod['total_laporan_nod'] = count($getTotalLaporanNod);
+        $getOngoingNod = DB::table('nod_report as nod')
+                    ->select('*')
+                    ->whereBetween('nod.Status', [2, 6])
+                    ->where('nod.Actived', 1)
+                    ->get();
+
+        $getIsClosedNod = DB::table('verifikasi_capa_nod as vcn')
+                    ->select('*')
+                    ->where('vcn.is_approved', 1)
+                    ->where('vcn.actived', 1)
+                    ->get();
+        
+        $dataNod['total_laporan_nod'] = count($getIsOpenNod) + count($getIsClosedNod);
         $dataNod['is_open_laporan_nod'] = count($getIsOpenNod);
         $dataNod['is_ongoing_laporan_nod'] = count($getOngoingNod);
         $dataNod['is_closed_laporan_nod'] = count($getIsClosedNod);
@@ -1416,32 +1424,35 @@ class DashboardControll extends Controller
                           ->get();
     
             $getIsOpenNoe = DB::table('noe_report as noe')
-                        ->select('noe.DatePublish', DB::raw('COUNT(noe.DatePublish) as total'))
+                        ->select(DB::raw('COUNT(*) as total'), DB::raw('MONTH(noe.Date) as month'))
                         ->where('noe.Status', 7)
                         ->whereBetween(DB::raw('MONTH(noe.DatePublish)'), [1, 12])
-                        ->groupBy('noe.DatePublish')
-                        ->orderBy('noe.DatePublish')
+                        ->where('noe.Actived', 1)
+                        ->groupBy('month')
+                        ->orderBy('month')
                         ->get();
     
             $getOngoingNoe = DB::table('noe_report as noe')
-                        ->select('noe.DatePublish', DB::raw('COUNT(noe.DatePublish) as total'))
+                        ->select(DB::raw('COUNT(*) as total'), DB::raw('MONTH(noe.Date) as month'))
                         ->where('noe.Status', 5)
                         ->whereBetween(DB::raw('MONTH(noe.DatePublish)'), [1, 12])
-                        ->groupBy('noe.DatePublish')
-                        ->orderBy('noe.DatePublish')
+                        ->where('noe.Actived', 1)
+                        ->groupBy('month')
+                        ->orderBy('month')
                         ->get();
     
             $getIsClosedNoe = DB::table('noe_report as noe')
-                        ->select('noe.DatePublish', DB::raw('COUNT(noe.DatePublish) as total'))
-                        ->where('noe.IsClosed', 1)
-                        ->whereBetween(DB::raw('MONTH(noe.DatePublish)'), [1, 12])
-                        ->groupBy('noe.DatePublish')
-                        ->orderBy('noe.DatePublish')
+                        ->select(DB::raw('COUNT(*) as total'), DB::raw('MONTH(noe.Date) as month'))
+                        ->where('noe.Actived', 1)
+                        ->where('noe.Status', 9)
+                        ->whereBetween(DB::raw('MONTH(noe.Date)'), [1, 12])
+                        ->groupBy('month')
+                        ->orderBy('month')
                         ->get();
-
+                
                 if(count($getIsOpenNoe) > 0) {
                     foreach($getIsOpenNoe as $keyOpen => $valOpen) {
-                        $openConvertDigits = Carbon::parse($valOpen->DatePublish);
+                        $openConvertDigits = Carbon::createFromDate(null, $valOpen->month, null);
                         $openData = $openConvertDigits->format('F');
 
                         foreach($dataOpen as $keyOpenData => $valData) {
@@ -1454,7 +1465,7 @@ class DashboardControll extends Controller
             
             if(count($getOngoingNoe) > 0) {
                 foreach($getOngoingNoe as $keyOngoing => $valOngoing) {
-                    $ongoingConvertDigits = Carbon::parse($valOngoing->DatePublish);
+                    $ongoingConvertDigits = Carbon::createFromDate(null, $valOngoing->month, null);
                     $ongoingData = $ongoingConvertDigits->format('F');
 
                     foreach($dataOngoing as $keyDataOngoing => $valDataOngoing) {
@@ -1468,9 +1479,9 @@ class DashboardControll extends Controller
             
             if(count($getIsClosedNoe) > 0) {
                 foreach($getIsClosedNoe as $keyClosed => $valClosed) {
-                    $closedConvertDigits = Carbon::parse($valClosed->DatePublish);
+                    $closedConvertDigits = Carbon::createFromDate(null, $valClosed->month, null);
                     $closedData = $closedConvertDigits->format('F');
-        
+                    
                     foreach($dataClosed as $keyDataClosed => $valDataClosed) {
                         if( $keyDataClosed === $closedData ) {
                             $dataClosed[$keyDataClosed] = $valClosed->total;
@@ -1478,38 +1489,43 @@ class DashboardControll extends Controller
                     }
                 }
             }
+        
         } else if ($request->status === 'nod') {
             $getTotalLaporanNod = DB::table('nod_report as nod')
                       ->select('*')
                       ->get();
 
             $getIsOpenNod = DB::table('nod_report as nod')
-                        ->select('nod.Date', DB::raw('COUNT(nod.Date) as total'))
-                        ->where('nod.Status', 11)
+                        ->select(DB::raw('COUNT(*) as total'), DB::raw('MONTH(nod.Date) as month'))
+                        ->whereIn('nod.Status', [8, 11])
+                        ->where('nod.IsCapaVerified', 0)
                         ->whereBetween(DB::raw('MONTH(nod.Date)'), [1, 12])
-                        ->groupBy('nod.Date')
-                        ->orderBy('nod.Date')
+                        ->where('nod.Actived', 1)
+                        ->groupBy('month')
+                        ->orderBy('month')
                         ->get();
-
+            
             $getOngoingNod = DB::table('nod_report as nod')
-                        ->select('nod.Date', DB::raw('COUNT(nod.Date) as total'))
-                        ->where('nod.Status', 4)
+                        ->select(DB::raw('COUNT(*) as total'), DB::raw('MONTH(nod.Date) as month'))
+                        ->whereBetween('nod.Status', [2, 6])
                         ->whereBetween(DB::raw('MONTH(nod.Date)'), [1, 12])
-                        ->groupBy('nod.Date')
-                        ->orderBy('nod.Date')
+                        ->where('nod.Actived', 1)
+                        ->groupBy('month')
+                        ->orderBy('month')
                         ->get();
 
-            $getIsClosedNod = DB::table('nod_report as nod')
-                        ->select('nod.Date', DB::raw('COUNT(nod.Date) as total'))
-                        ->where('nod.IsClosed', 1)
-                        ->whereBetween(DB::raw('MONTH(nod.Date)'), [1, 12])
-                        ->groupBy('nod.Date')
-                        ->orderBy('nod.Date')
+            $getIsClosedNod = DB::table('verifikasi_capa_nod as vcn')
+                        ->select(DB::raw('COUNT(*) as total'), DB::raw('MONTH(vcn.created_at) as month'))
+                        ->where('vcn.is_approved', 1)
+                        ->where('vcn.actived', 1)
+                        ->whereBetween(DB::raw('MONTH(vcn.created_at)'), [1, 12])
+                        ->groupBy('month')
+                        ->orderBy('month')
                         ->get();
-
+            
             if(count($getIsOpenNod) > 0) {
                     foreach($getIsOpenNod as $keyOpen => $valOpen) {
-                        $openConvertDigits = Carbon::parse($valOpen->Date);
+                        $openConvertDigits = Carbon::createFromDate(null, $valOpen->month, null);
                         $openData = $openConvertDigits->format('F');
 
                         foreach($dataOpen as $keyOpenData => $valData) {
@@ -1522,7 +1538,7 @@ class DashboardControll extends Controller
             
             if(count($getOngoingNod) > 0) {
                 foreach($getOngoingNod as $keyOngoing => $valOngoing) {
-                    $ongoingConvertDigits = Carbon::parse($valOngoing->Date);
+                    $ongoingConvertDigits = Carbon::createFromDate(null, $valOngoing->month, null);
                     $ongoingData = $ongoingConvertDigits->format('F');
 
                     foreach($dataOngoing as $keyDataOngoing => $valDataOngoing) {
@@ -1535,7 +1551,7 @@ class DashboardControll extends Controller
 
             if(count($getIsClosedNod) > 0) {
                 foreach($getIsClosedNod as $keyClosed => $valClosed) {
-                    $closedConvertDigits = Carbon::parse($valClosed->Date);
+                    $closedConvertDigits = Carbon::parse(null, $valClosed->month, null);
                     $closedData = $closedConvertDigits->format('F');
         
                     foreach($dataClosed as $keyDataClosed => $valDataClosed) {
@@ -1547,7 +1563,6 @@ class DashboardControll extends Controller
             }
         }
 
-
         return response()->json([
             'dataOngoing'   => $dataOngoing,
             'dataOpen'      => $dataOpen,
@@ -1557,14 +1572,16 @@ class DashboardControll extends Controller
 
     public function avarageData() {
         $countDataVerifNoe = DB::table('noe_report as noe')
-                ->select('noe.NOENumber','noe.DatePublish', 'nve.DateDept as dateDeptPelapor')
+                ->select('noe.NOENumber','noe.Date','noe.DatePublish', 'nve.DateDept as dateDeptPelapor')
                 ->leftjoin('noe_verif_evaluation as nve','nve.IdNOEReport','=','noe.Id')
                 ->where('nve.TypeData', 0)
+                ->where('noe.Actived', 1)
                 ->get();
         
         $countDataEvaluationNoe = DB::table('noe_report as noe')
                 ->select('noe.NOENumber', 'nve.DateDept')
                 ->leftjoin('noe_verif_evaluation as nve','nve.IdNOEReport','=','noe.Id')
+                ->where('noe.Actived', 1)
                 ->get();
 
         $countDataNod = DB::table('nod_report as nod')
@@ -1579,9 +1596,8 @@ class DashboardControll extends Controller
 
         $dataNOEtoQa = [];
         foreach ($countDataVerifNoe as $keyVerif => $valVerif) {
-            $datePublish = Carbon::parse($valVerif->DatePublish);
+            $datePublish = Carbon::parse($valVerif->Date);
             $dateApprovedByDeptPelopor = Carbon::parse($valVerif->dateDeptPelapor);
-
             $diffInDays = $datePublish->diffInDaysFiltered(function ($date) {
                 return $date->isWeekday();
             }, $dateApprovedByDeptPelopor);
@@ -1602,9 +1618,14 @@ class DashboardControll extends Controller
         }
         
         foreach ($groupedData as $keyGrouped => $valGrouped) {
-            $dateDeptPelapor = Carbon::parse($valGrouped['DateDept'][0]); //dept pelapor approve
-            $dateQadhApprove = Carbon::parse($valGrouped['DateDept'][1]); //QA dept head approve
-           
+            
+            $dateDeptPelapor = Carbon::parse($valGrouped['DateDept'][0]); 
+            if(count($valGrouped['DateDept']) == 2) {
+                $dateQadhApprove = Carbon::parse($valGrouped['DateDept'][1]); 
+            } else {
+                $dateQadhApprove = $dateDeptPelapor;
+            }
+            
             $diffInDays = $dateDeptPelapor->diffInDaysFiltered(function ($date) {
                 return $date->isWeekday();
             }, $dateQadhApprove);
@@ -1645,15 +1666,149 @@ class DashboardControll extends Controller
 
         $countDataNoeToQa = array_sum($dataNOEtoQa) / count($countDataVerifNoe);
         $countDataQashToQadh = array_sum($dataQashToQadh) / count($groupedData);
-        if(count($countDataNod) > 1) {
+        
+        if(count($countDataNod) >= 1) {
             $countDataQadhNoeToQashNod = array_sum($dateQadhNoeToQashNod) / count($countDataNod);
             $countDataQashNodToQadhNod = array_sum($dateQashNodToQadhNod) / count($countDataNod);
         }
+       
         return response()->json([
-            'noePublishToQash' => $countDataNoeToQa,
-            'noeQashToQadh' => $countDataQashToQadh,
-            'QadhNoeToQashNod' => $countDataQadhNoeToQashNod,
-            'QashNodToQadhNod' => $countDataQashNodToQadhNod
+            'noePublishToQash' => round($countDataNoeToQa),
+            'noeQashToQadh' => round($countDataQashToQadh),
+            'QadhNoeToQashNod' => round($countDataQadhNoeToQashNod),
+            'QashNodToQadhNod' => round($countDataQashNodToQadhNod)
         ]);
+    }
+
+    public function getDataDelayOntime (Request $request) {
+        $setDataTimeDept = [];
+        $setDataTimeQa = [];
+        if($request->status === 'noe') {
+            $getTotalLaporanNoePelapor = DB::table('noe_report as noe')
+                                        ->select('*')
+                                        ->whereNotNull('noe.StatusTimeDept')
+                                        ->orWhereNotNull('noe.StatusTimeQA')
+                                        ->get();
+            
+            $countTotalStatusTimeQa = [];
+            $countTotalStatusTimeDept = [];
+            foreach ($getTotalLaporanNoePelapor as $key => $val) {
+                if($val->StatusTimeQA !== null) { 
+                    array_push($countTotalStatusTimeQa, count((array)$val->StatusTimeQA));
+                }
+                if($val->StatusTimeDept !== null) {
+                    array_push($countTotalStatusTimeDept, count((array)$val->StatusTimeDept));
+                } 
+            }
+            
+            $getStatusTimeDeptData  = DB::table('noe_report as noe') 
+                            ->select('noe.StatusTimeDept')
+                            ->whereIN('noe.StatusTimeDept', [1,2])
+                            ->where('noe.Actived', 1)
+                            ->get();
+    
+            $getStatusTimeQaData = DB::table('noe_report as noe') 
+                            ->select('noe.StatusTimeQA')
+                            ->whereIN('noe.StatusTimeQA', [1,2])
+                            ->where('noe.Actived', 1)
+                            ->get(); 
+            
+            $noeOntimeDept = [];
+            $noeDelayDept = [];
+            foreach($getStatusTimeDeptData as $keyTimeDept => $valTimeDept) {
+                if($valTimeDept->StatusTimeDept == 'On Time') {
+                    array_push($noeOntimeDept, count((array)$valTimeDept));
+                } else {
+                    array_push($noeDelayDept, count((array)$valTimeDept));
+                }
+            }
+            
+            $setDataTimeDept = [
+                round(count($noeOntimeDept) / count($countTotalStatusTimeDept) * 100, 2),
+                round(count($noeDelayDept) / count($countTotalStatusTimeDept) * 100, 2),
+            ];
+    
+            $noeOntimeQa = [];
+            $noeDelayQa = [];
+            foreach($getStatusTimeQaData as $keyTimeQa => $valTimeQa) {
+                if($valTimeQa->StatusTimeQA == 'On Time') {
+                    array_push($noeOntimeQa, count((array)$valTimeQa));
+                } else {
+                    array_push($noeDelayQa, count((array)$valTimeQa));
+                }
+            }
+    
+            $setDataTimeQa = [
+                round(count($noeOntimeQa) / count($countTotalStatusTimeQa) * 100, 2),
+                round(count($noeDelayQa) / count($countTotalStatusTimeQa) * 100, 2),
+            ];
+        } else if ($request->status === 'nod') {
+
+            $getTotalLaporanNodPelapor = DB::table('nod_report as nod')
+                                        ->select('nod.StatusTimeDept','nod.StatusTimeQA')
+                                        ->whereNotNull('nod.StatusTimeDept')
+                                        ->orWhereNotNull('nod.StatusTimeQA')
+                                        ->get();
+
+            $countTotalStatusTimeQa = [];
+            $countTotalStatusTimeDept = [];
+            foreach ($getTotalLaporanNodPelapor as $key => $val) {
+                if($val->StatusTimeQA !== null) { 
+                    array_push($countTotalStatusTimeQa, count((array)$val->StatusTimeQA));
+                }
+                if($val->StatusTimeDept !== null) {
+                    array_push($countTotalStatusTimeDept, count((array)$val->StatusTimeDept));
+                } 
+            }
+           
+            $getStatusTimeDeptData  = DB::table('nod_report as nod') 
+                            ->select('nod.StatusTimeDept')
+                            ->whereIN('nod.StatusTimeDept', [1,2])
+                            ->where('nod.Actived', 1)
+                            ->get();
+    
+            $getStatusTimeQaData = DB::table('nod_report as nod') 
+                            ->select('nod.StatusTimeQA')
+                            ->whereIN('nod.StatusTimeQA', [1,2])
+                            ->where('nod.Actived', 1)
+                            ->get();
+            
+            $nodOntimeDept = [];
+            $nodDelayDept = [];
+            foreach($getStatusTimeDeptData as $keyTimeDept => $valTimeDept) {
+                if($valTimeDept->StatusTimeDept == 'On Time') {
+                    array_push($nodOntimeDept, count((array)$valTimeDept));
+                } else {
+                    array_push($nodDelayDept, count((array)$valTimeDept));
+                }
+            }
+            
+            $nodOntimeQa = [];
+            $nodDelayQa = [];
+            foreach($getStatusTimeQaData as $keyTimeQa => $valTimeQa) {
+                if($valTimeQa->StatusTimeQA == 'On Time') {
+                    array_push($nodOntimeQa, count((array)$valTimeQa));
+                } else {
+                    array_push($nodDelayQa, count((array)$valTimeQa));
+                }
+            }
+
+            $setDataTimeDept = [
+                round(count($nodOntimeDept) / count($countTotalStatusTimeDept) * 100, 2),
+                round(count($nodDelayDept) / count($countTotalStatusTimeDept) * 100, 2),
+            ];
+    
+            $setDataTimeQa = [
+                round(count($nodOntimeQa) / count($countTotalStatusTimeQa) * 100, 2),
+                round(count($nodDelayQa) / count($countTotalStatusTimeQa) * 100, 2),
+            ]; 
+           
+        }
+      
+        return response()->json([
+            'setDataTimeDept' => $setDataTimeDept,
+            'setDataTimeQA' => $setDataTimeQa
+        ]);
+        
     }
 }
