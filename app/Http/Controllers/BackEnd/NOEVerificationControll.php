@@ -692,7 +692,8 @@ class NOEVerificationControll extends Controller
                 ];
             }
         } else {
-            $diffDay = $this->AppWeb->diffDateApprove($item->DatePublish);
+            $diffDay = $this->AppWeb->diffDateApprove($item->Date); // before DatePublish
+            
             ($isCaretaker) ? $statusNOE = 11 : $statusNOE = 6;
             $arrNOE = [
                 'Status'=>$statusNOE,
@@ -884,7 +885,7 @@ class NOEVerificationControll extends Controller
             }
         }
 
-        $diffDay = $this->AppWeb->diffDateApprove($item->DatePublish);
+        $diffDay = $this->AppWeb->diffDateApprove($item->Date); // before DatePublish
         $StatusTimeDept = 1;
         if($diffDay>5) $StatusTimeDept = 2;
 

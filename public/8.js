@@ -923,7 +923,8 @@ var render = function render() {
       placeholder: "Pilih Departemen Terkait",
       label: "RelevantDept",
       "track-by": "RelevantDept",
-      disabled: _vm.isShow
+      disabled: _vm.isShow,
+      required: ""
     },
     model: {
       value: _vm.field.RelevantDept,

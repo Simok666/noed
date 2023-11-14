@@ -561,12 +561,14 @@ class NOEEvaluationControll extends Controller
             'nve.OtherProductAffect',
             'nve.DescriptionOPA',
             'nve.RelevantDept',
+            'nve_eva.Date as QashPublishDate',
             'pst.Id as deptHeadPelopor',
             'nve.SectionPublish',
             'pdc.Name as Product',
             'loc.Name as Location'
         )
         ->leftjoin('noe_verif_evaluation as nve','nve.IdNOEReport','=','noe.Id')
+        ->leftjoin('noe_verif_evaluation as nve_eva','nve_eva.IdNOEReport','=','noe.Id')
         ->leftjoin('users as usr','usr.Id','=','nve.UserDept')
         ->leftjoin('employee as emp','emp.Id','=','usr.IdEmployee')
         ->leftjoin('position as pst','pst.Id','=','emp.IdPosition')
@@ -574,6 +576,7 @@ class NOEEvaluationControll extends Controller
         ->leftjoin('location as loc','loc.Id','=','noe.IdLocation')
         ->where('noe.Id', $request->input('Id'))
         ->where('nve.TypeData', 0)
+        ->Where('nve_eva.TypeData', 1)
         ->where('nve.Actived', 1)
         ->first();
 
@@ -581,16 +584,17 @@ class NOEEvaluationControll extends Controller
         $exp = explode('.', $valPosition);
         $itemCaretaker = $this->AppWeb->checkCaretaker(session('adminvue')->IdDepartment,session('adminvue')->IdEmployee,session('adminvue')->Id);
         $isCaretaker = false;
-        // if($itemCaretaker && $item->Status=='Disetujui oleh QA APJ') $isCaretaker = true;
+        
         if($itemCaretaker && $item->Status=='Disetujui oleh QA Sect.Head') $isCaretaker = true;
 
         $Status = 9;
         $IsClosed = 1;
-
-        $diffDay = $this->AppWeb->diffDateApprove($item->DatePublish);
+       
+        $diffDay = $this->AppWeb->diffDateApprove($item->QashPublishDate); // before DatePublish
+        
         $StatusTimeQA = 1;
-        if($diffDay>7) $StatusTimeQA = 2;
-
+        if($diffDay>2) $StatusTimeQA = 2;
+        
         if($isCaretaker) {
             $arr = [
                 'IsMandatory'=>1,
@@ -754,12 +758,14 @@ class NOEEvaluationControll extends Controller
             'nve.OtherProductAffect',
             'nve.DescriptionOPA',
             'nve.RelevantDept',
+            'nve_eva.Date as QashPublishDate',
             'pst.Id as deptHeadPelopor',
             'nve.SectionPublish',
             'pdc.Name as Product',
             'loc.Name as Location'
         )
         ->leftjoin('noe_verif_evaluation as nve','nve.IdNOEReport','=','noe.Id')
+        ->leftjoin('noe_verif_evaluation as nve_eva','nve_eva.IdNOEReport','=','noe.Id')
         ->leftjoin('users as usr','usr.Id','=','nve.UserDept')
         ->leftjoin('employee as emp','emp.Id','=','usr.IdEmployee')
         ->leftjoin('position as pst','pst.Id','=','emp.IdPosition')
@@ -767,6 +773,7 @@ class NOEEvaluationControll extends Controller
         ->leftjoin('location as loc','loc.Id','=','noe.IdLocation')
         ->where('noe.Id', $request->input('Id'))
         ->where('nve.TypeData', 0)
+        ->where('nve_eva.TypeData', 1)
         ->where('nve.Actived', 1)
         ->first();
 
@@ -802,9 +809,9 @@ class NOEEvaluationControll extends Controller
             }
         }   
         
-        $diffDay = $this->AppWeb->diffDateApprove($item->DatePublish);
+        $diffDay = $this->AppWeb->diffDateApprove($item->QashPublishDate); //before DatePublish
         $StatusTimeQA = 1;
-        if($diffDay>7) $StatusTimeQA = 2;
+        if($diffDay>2) $StatusTimeQA = 2;
         
         $NODTimeDept = 1;
         if($diffDay>12) $NODTimeDept = 2;

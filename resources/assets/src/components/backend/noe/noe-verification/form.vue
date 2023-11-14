@@ -150,7 +150,8 @@
               placeholder="Pilih Departemen Terkait"
               label="RelevantDept"
               track-by="RelevantDept" 
-              :disabled="isShow" />
+              :disabled="isShow"
+              required />
             <span class="text-danger" v-if="allErrors.RelevantDept">{{ allErrors.RelevantDept[0] }}</span>
           </b-form-group>
         </b-form-row>

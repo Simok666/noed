@@ -141,10 +141,35 @@
       <div class="col-6">
         <b-card no-body class="mb-4">
           <b-card-header header-tag="h6" class="with-elements">
-            <div class="card-header-title">NOE Report Completeness</div>
+            <div class="card-header-title">{{noeNodStatusReport}} Report Completeness</div>
+              <b-row class="card-header-elements ml-auto">
+                <b-col cols="auto">
+                  <multiselect
+                  v-model="noeNodStatusReport"
+                  :options="opsStatusReport"
+                  :allow-empty="true"
+                  placeholder="Pilih NOE/NOD"
+                  label="text"
+                  track-by="text"
+                  @input="onChangeStatusReport" />
+                </b-col>
+              </b-row>
           </b-card-header>
           <div class="mx-4 my-4">
-            <doughnut-chart :chart-data="datacollection_level_noe"/>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-center">
+                  <b>Status Time Dept</b>
+                </p>
+                <doughnut-chart :chart-data="datacollection_data_timeDept"/>
+              </div>
+              <div class="col-md-6">
+                <p class="text-center">
+                  <b>Status Time QA</b>
+                </p>
+                <doughnut-chart :chart-data="datacollection_data_timeQa"/>
+              </div>
+            </div>
           </div>
         </b-card>
       </div>
@@ -761,12 +786,17 @@ export default {
         { value: 'noe', text: 'NOE' },
         { value: 'nod', text: 'NOD' }
       ],
+      opsStatusReport : [
+        { value: 'noe', text: 'NOE' },
+        { value: 'nod', text: 'NOD' }
+      ],
       accessTable: [],
       allYear: null,
       unitYear: null,
       NOEYear: null,
       NODYear: null,
       noeNodStatus: null,
+      noeNodStatusReport: 'NOE',
       TimeNOEYear: null,
       TimeNODYear: null,
       DeviationYear: null,
@@ -793,6 +823,8 @@ export default {
       datacollection_bets_category: {},
       datacollection_noenod_status: {},
       datacollection_perhitungan_hari: {},
+      datacollection_data_timeDept: {},
+      datacollection_data_timeQa: {},
       valHeaderUnit: [],
       valUnitColor: [],
       valUnitLocation: [],
@@ -976,6 +1008,28 @@ export default {
           borderColor:  betscolor,
           backgroundColor: betscolor,
           data: setDataValue
+        }]
+      }
+    },
+    statusTimeDeptData(dataValue) {
+      this.datacollection_data_timeDept = {
+        labels: ['On Time','Delay'],
+        datasets : [{
+          borderWidth: 1,
+          borderColor:  ['#ffb554', '#3e95cd'],
+          backgroundColor: ['#ffb554', '#3e95cd'],
+          data: dataValue
+        }]
+      }
+    },  
+    statusTimeQAData(dataValue) {
+      this.datacollection_data_timeQa = {
+        labels: ['On Time','Delay'],
+        datasets : [{
+          borderWidth: 1,
+          borderColor:  ['#ffb554', '#3e95cd'],
+          backgroundColor: ['#ffb554', '#3e95cd'],
+          data: dataValue
         }]
       }
     },
@@ -1163,6 +1217,12 @@ export default {
     onChangeStatus(option) {
       if(option) this.getStatusNoeNod(option.value)
     },
+    onChangeStatusReport(option) {
+      if(option) {
+        this.noeNodStatusReport = option.text
+        this.getDelayOntimeData(option.value)
+      } 
+    }, 
     generateYearDashboard() {
       axios.post('/AdminVue/dashboard-generate-year')
       .then( function (res) {
@@ -1307,8 +1367,19 @@ export default {
       .catch( function (e) {
         console.log(e) 
       }.bind(this))
-    }
+    },
 
+    getDelayOntimeData (status = 'noe') {
+      axios.post('/AdminVue/dashboard-get-delay-ontime-data', {
+        status : status
+      })
+      .then ( function (res) {
+        let response = res.data
+        
+        this.statusTimeQAData(response.setDataTimeQA)
+        this.statusTimeDeptData(response.setDataTimeDept)
+      }.bind(this))
+    }
     
   },
 
@@ -1326,6 +1397,8 @@ export default {
     this.getAvarageData()
     this.getReportData()
     this.hideLoading()
+    this.getDelayOntimeData()
+    
   }
 }
 </script>

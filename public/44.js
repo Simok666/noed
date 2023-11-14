@@ -162,12 +162,20 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
         value: 'nod',
         text: 'NOD'
       }],
+      opsStatusReport: [{
+        value: 'noe',
+        text: 'NOE'
+      }, {
+        value: 'nod',
+        text: 'NOD'
+      }],
       accessTable: [],
       allYear: null,
       unitYear: null,
       NOEYear: null,
       NODYear: null,
       noeNodStatus: null,
+      noeNodStatusReport: 'NOE',
       TimeNOEYear: null,
       TimeNODYear: null,
       DeviationYear: null,
@@ -200,6 +208,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
       datacollection_bets_category: {},
       datacollection_noenod_status: {},
       datacollection_perhitungan_hari: {},
+      datacollection_data_timeDept: {},
+      datacollection_data_timeQa: {},
       valHeaderUnit: [],
       valUnitColor: [],
       valUnitLocation: [],
@@ -321,6 +331,28 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
           borderColor: betscolor,
           backgroundColor: betscolor,
           data: setDataValue
+        }]
+      };
+    },
+    statusTimeDeptData: function statusTimeDeptData(dataValue) {
+      this.datacollection_data_timeDept = {
+        labels: ['On Time', 'Delay'],
+        datasets: [{
+          borderWidth: 1,
+          borderColor: ['#ffb554', '#3e95cd'],
+          backgroundColor: ['#ffb554', '#3e95cd'],
+          data: dataValue
+        }]
+      };
+    },
+    statusTimeQAData: function statusTimeQAData(dataValue) {
+      this.datacollection_data_timeQa = {
+        labels: ['On Time', 'Delay'],
+        datasets: [{
+          borderWidth: 1,
+          borderColor: ['#ffb554', '#3e95cd'],
+          backgroundColor: ['#ffb554', '#3e95cd'],
+          data: dataValue
         }]
       };
     },
@@ -498,6 +530,12 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
     onChangeStatus: function onChangeStatus(option) {
       if (option) this.getStatusNoeNod(option.value);
     },
+    onChangeStatusReport: function onChangeStatusReport(option) {
+      if (option) {
+        this.noeNodStatusReport = option.text;
+        this.getDelayOntimeData(option.value);
+      }
+    },
     generateYearDashboard: function generateYearDashboard() {
       axios.post('/AdminVue/dashboard-generate-year').then(function (res) {
         this.opsYear = JSON.parse(res.data.data);
@@ -672,6 +710,16 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
       }.bind(this))["catch"](function (e) {
         console.log(e);
       }.bind(this));
+    },
+    getDelayOntimeData: function getDelayOntimeData() {
+      var status = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'noe';
+      axios.post('/AdminVue/dashboard-get-delay-ontime-data', {
+        status: status
+      }).then(function (res) {
+        var response = res.data;
+        this.statusTimeQAData(response.setDataTimeQA);
+        this.statusTimeDeptData(response.setDataTimeDept);
+      }.bind(this));
     }
   },
   mounted: function mounted() {
@@ -688,6 +736,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
     this.getAvarageData();
     this.getReportData();
     this.hideLoading();
+    this.getDelayOntimeData();
   }
 });
 
@@ -966,13 +1015,51 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "card-header-title"
-  }, [_vm._v("NOE Report Completeness")])]), _vm._v(" "), _c("div", {
-    staticClass: "mx-4 my-4"
-  }, [_c("doughnut-chart", {
+  }, [_vm._v(_vm._s(_vm.noeNodStatusReport) + " Report Completeness")]), _vm._v(" "), _c("b-row", {
+    staticClass: "card-header-elements ml-auto"
+  }, [_c("b-col", {
     attrs: {
-      "chart-data": _vm.datacollection_level_noe
+      cols: "auto"
+    }
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.opsStatusReport,
+      "allow-empty": true,
+      placeholder: "Pilih NOE/NOD",
+      label: "text",
+      "track-by": "text"
+    },
+    on: {
+      input: _vm.onChangeStatusReport
+    },
+    model: {
+      value: _vm.noeNodStatusReport,
+      callback: function callback($$v) {
+        _vm.noeNodStatusReport = $$v;
+      },
+      expression: "noeNodStatusReport"
     }
   })], 1)], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "mx-4 my-4"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-6"
+  }, [_c("p", {
+    staticClass: "text-center"
+  }, [_c("b", [_vm._v("Status Time Dept")])]), _vm._v(" "), _c("doughnut-chart", {
+    attrs: {
+      "chart-data": _vm.datacollection_data_timeDept
+    }
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6"
+  }, [_c("p", {
+    staticClass: "text-center"
+  }, [_c("b", [_vm._v("Status Time QA")])]), _vm._v(" "), _c("doughnut-chart", {
+    attrs: {
+      "chart-data": _vm.datacollection_data_timeQa
+    }
+  })], 1)])])], 1)], 1), _vm._v(" "), _c("div", {
     staticClass: "col-6"
   }, [_c("b-card", {
     staticClass: "mb-4",
