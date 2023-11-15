@@ -48,14 +48,17 @@ class NOEEvaluationControll extends Controller
                 'noe.Status',
                 'noe.IsPublish',
                 'noe.IsCorrection',
+                'nve.Remarks',
                 'usr.UserName as UserEntry'
             )
             ->leftjoin('product as pdc','pdc.Id','=','noe.IdProduct')
             ->leftjoin('location as loc','loc.Id','=','noe.IdLocation')
             ->leftjoin('users as usr','usr.Id','=','noe.UserEntry')
+            ->leftjoin('noe_verif_evaluation as nve','nve.IdNOEReport', '=', 'noe.Id')
             ->orderBy(DB::raw('ISNULL(noe.NOENumberAcc), NOENumberAcc'), 'ASC')
             ->orderBy('noe.NOENumber')
             ->orderBy($field, $dir)
+            ->where('nve.TypeData',1)
             ->where(function($query) {
                 if(session('adminvue')->TypeUser!=8 && session('adminvue')->TypeUser!=19) {
                     $valPosition = session('adminvue')->CodePosition;

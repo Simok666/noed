@@ -69,6 +69,12 @@ Route::group(['middleware'=>['adminvue']], function () {
 		Route::post('dashboard-get-delay-ontime-data','BackEnd\DashboardControll@getDataDelayOntime');
 
 
+		Route::get('data-different-days','BackEnd\DifferentDaysControll@index');
+		Route::post('different-days-insert','BackEnd\DifferentDaysControll@store');
+		Route::post('different-days-edit','BackEnd\DifferentDaysControll@edit');
+		Route::post('different-days-update','BackEnd\DifferentDaysControll@update');
+		Route::post('different-days-delete','BackEnd\DifferentDaysControll@delete');
+
 		Route::get('data-division','BackEnd\DivisionControll@index');
 		Route::post('division-show','BackEnd\DivisionControll@show');
 		Route::post('division-insert','BackEnd\DivisionControll@store');

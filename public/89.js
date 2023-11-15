@@ -1,50 +1,38 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[89],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/deviation-risk/form.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/master/deviation-risk/form.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/deviation-level/form.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/master/deviation-level/form.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'form-deviation-risk',
+  name: 'form-deviation-level',
   metaInfo: {
-    title: 'Form Deviation Penilaian Risiko Deviasi'
+    title: 'Form Level Deviasi'
   },
   components: {},
   data: function data() {
     return {
-      urlSubmit: '/AdminVue/deviation-risk-insert',
-      headerCard: 'Penilaian Risiko Deviasi',
+      urlSubmit: '/AdminVue/deviation-level-insert',
+      headerCard: 'Level Deviasi',
       textBtnSubmit: 'Simpan',
       field: {},
       allErrors: [],
       isNotif: false,
       alertNotif: '',
-      alertVariant: 'alert-dark-danger',
-      opsGroup: [{
-        'value': 'SEVERITY',
-        'text': 'SEVERITY'
-      }, {
-        'value': 'PROBABILITY',
-        'text': 'PROBABILITY'
-      }, {
-        'value': 'DETECTABILITY',
-        'text': 'DETECTABILITY'
-      }]
+      alertVariant: 'alert-dark-danger'
     };
   },
   methods: {
     submitForm: function submitForm() {
       var formData = new FormData();
       formData.append("Id", this.field.Id);
-      formData.append("Value", this.field.Value);
-      formData.append("Question", this.field.Question);
-      formData.append("RiskAssesment", this.field.RiskAssesment);
-      if (this.field.AssesmentGroup) formData.append("AssesmentGroup", this.field.AssesmentGroup.value);
+      formData.append("Level", this.field.Level);
+      formData.append("MaxValue", this.field.MaxValue);
       var config = {
         headers: {
           'content-type': 'multipart/form-data'
@@ -54,7 +42,7 @@ __webpack_require__.r(__webpack_exports__);
         var resp = res.data;
         if (resp.status) {
           this.$router.push({
-            name: 'master/data-deviation-risk',
+            name: 'master/data-deviation-level',
             params: {
               isNotif: true,
               gNotif: 'notifications-success',
@@ -77,7 +65,7 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
     getData: function getData(Id) {
-      axios.post('/AdminVue/deviation-risk-edit', {
+      axios.post('/AdminVue/deviation-level-edit', {
         Id: Id
       }).then(function (res) {
         var resp = res.data;
@@ -90,7 +78,7 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
     backIndex: function backIndex() {
-      this.$router.push('/RoleAdmin/master/data-deviation-risk');
+      this.$router.push('/RoleAdmin/master/data-deviation-level');
     }
   },
   mounted: function mounted() {
@@ -99,7 +87,7 @@ __webpack_require__.r(__webpack_exports__);
       if (Id) {
         this.getData(Id);
         this.field.Id = Id;
-        this.urlSubmit = '/AdminVue/deviation-risk-update';
+        this.urlSubmit = '/AdminVue/deviation-level-update';
         this.textBtnSubmit = 'Simpan';
       }
     }
@@ -108,10 +96,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/deviation-risk/form.vue?vue&type=template&id=7b28dc80&":
-/*!***************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/master/deviation-risk/form.vue?vue&type=template&id=7b28dc80& ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/deviation-level/form.vue?vue&type=template&id=408eb6e3&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/master/deviation-level/form.vue?vue&type=template&id=408eb6e3& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -156,97 +144,51 @@ var render = function render() {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Nilai")]), _vm._v(" "), _c("label", {
+  }, [_vm._v("Level")]), _vm._v(" "), _c("label", {
     staticClass: "form-label float-right text-danger"
   }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-input", {
     staticClass: "mb-1",
     attrs: {
-      name: "Value",
-      state: _vm.allErrors.Value ? false : null,
+      name: "Level",
+      state: _vm.allErrors.Level ? false : null,
+      placeholder: "Level ( eg. Major, Minor )",
+      required: ""
+    },
+    model: {
+      value: _vm.field.Level,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "Level", $$v);
+      },
+      expression: "field.Level"
+    }
+  }), _vm._v(" "), _vm.allErrors.Level ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.Level[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Nilai Maksimal")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-input", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "MaxValue",
+      state: _vm.allErrors.MaxValue ? false : null,
       type: "number",
       min: "1",
       max: "100",
       required: ""
     },
     model: {
-      value: _vm.field.Value,
+      value: _vm.field.MaxValue,
       callback: function callback($$v) {
-        _vm.$set(_vm.field, "Value", $$v);
+        _vm.$set(_vm.field, "MaxValue", $$v);
       },
-      expression: "field.Value"
+      expression: "field.MaxValue"
     }
-  }), _vm._v(" "), _vm.allErrors.Value ? _c("span", {
+  }), _vm._v(" "), _vm.allErrors.MaxValue ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Value[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Pertanyaan")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "Question",
-      state: _vm.allErrors.Question ? false : null,
-      required: ""
-    },
-    model: {
-      value: _vm.field.Question,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "Question", $$v);
-      },
-      expression: "field.Question"
-    }
-  }), _vm._v(" "), _vm.allErrors.Question ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Question[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Penilaian Risiko Deviasi")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "RiskAssesment",
-      state: _vm.allErrors.RiskAssesment ? false : null,
-      required: ""
-    },
-    model: {
-      value: _vm.field.RiskAssesment,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "RiskAssesment", $$v);
-      },
-      expression: "field.RiskAssesment"
-    }
-  }), _vm._v(" "), _vm.allErrors.RiskAssesment ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.RiskAssesment[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-6"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Item")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("multiselect", {
-    attrs: {
-      options: _vm.opsGroup,
-      "allow-empty": false,
-      placeholder: "Pilih Assesment Group",
-      selectLabel: "",
-      deselectLabel: "",
-      label: "text",
-      "track-by": "text"
-    },
-    model: {
-      value: _vm.field.AssesmentGroup,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "AssesmentGroup", $$v);
-      },
-      expression: "field.AssesmentGroup"
-    }
-  }), _vm._v(" "), _vm.allErrors.AssesmentGroup ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.AssesmentGroup[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+  }, [_vm._v(_vm._s(_vm.allErrors.MaxValue[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }), _vm._v(" "), _c("b-form-group", {
     staticClass: "col-md-6",
@@ -278,17 +220,17 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/master/deviation-risk/form.vue":
-/*!********************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/master/deviation-risk/form.vue ***!
-  \********************************************************************************/
+/***/ "./resources/assets/src/components/backend/master/deviation-level/form.vue":
+/*!*********************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/master/deviation-level/form.vue ***!
+  \*********************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _form_vue_vue_type_template_id_7b28dc80___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=7b28dc80& */ "./resources/assets/src/components/backend/master/deviation-risk/form.vue?vue&type=template&id=7b28dc80&");
-/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/master/deviation-risk/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _form_vue_vue_type_template_id_408eb6e3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=408eb6e3& */ "./resources/assets/src/components/backend/master/deviation-level/form.vue?vue&type=template&id=408eb6e3&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/master/deviation-level/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -299,8 +241,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _form_vue_vue_type_template_id_7b28dc80___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _form_vue_vue_type_template_id_7b28dc80___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _form_vue_vue_type_template_id_408eb6e3___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _form_vue_vue_type_template_id_408eb6e3___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -310,38 +252,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/assets/src/components/backend/master/deviation-risk/form.vue"
+component.options.__file = "resources/assets/src/components/backend/master/deviation-level/form.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/master/deviation-risk/form.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/master/deviation-risk/form.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/master/deviation-level/form.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/master/deviation-level/form.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/deviation-risk/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/deviation-level/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/master/deviation-risk/form.vue?vue&type=template&id=7b28dc80&":
-/*!***************************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/master/deviation-risk/form.vue?vue&type=template&id=7b28dc80& ***!
-  \***************************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/master/deviation-level/form.vue?vue&type=template&id=408eb6e3&":
+/*!****************************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/master/deviation-level/form.vue?vue&type=template&id=408eb6e3& ***!
+  \****************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7b28dc80___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=7b28dc80& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/deviation-risk/form.vue?vue&type=template&id=7b28dc80&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7b28dc80___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_408eb6e3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=408eb6e3& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/deviation-level/form.vue?vue&type=template&id=408eb6e3&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_408eb6e3___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7b28dc80___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_408eb6e3___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

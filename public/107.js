@@ -1,29 +1,27 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[107],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'form-correction-noe-verification',
+  name: 'form-correction-nod-report',
   metaInfo: {
-    title: 'Form Correction NOE'
+    title: 'Form Correction Verifikasi CAPA'
   },
   components: {},
   data: function data() {
     return {
-      urlSubmit: '/AdminVue/correction-noe-verification-insert',
-      headerCard: 'Perbaikan Laporan NOE',
+      urlSubmit: '/AdminVue/nod-verifikasi-capa-correction-data',
+      headerCard: 'Perbaikan Correction Verifikasi CAPA',
       textBtnSubmit: 'Simpan',
       field: {
         Number: '',
-        IdPublish: '',
-        SectionPublish: '',
         Description: '',
         EventFile: [],
         DescriptionCaretaker: ''
@@ -32,8 +30,7 @@ __webpack_require__.r(__webpack_exports__);
       isNotif: false,
       isEdit: false,
       alertNotif: '',
-      alertVariant: 'alert-dark-danger',
-      isCaretaker: false
+      alertVariant: 'alert-dark-danger'
     };
   },
   methods: {
@@ -42,16 +39,7 @@ __webpack_require__.r(__webpack_exports__);
       var formData = new FormData();
       formData.append("Id", this.field.Id);
       formData.append("Number", this.field.Number);
-      formData.append("IdPublish", this.field.IdPublish);
-      formData.append("SectionPublish", this.field.SectionPublish);
       formData.append("Description", this.field.Description);
-      if (this.field.Attachment) {
-        for (var i = 0; i < this.field.Attachment.length; i++) {
-          var file = this.field.Attachment[i];
-          formData.append('Attachment[' + i + ']', file);
-        }
-      }
-      if (this.isCaretaker) formData.append("DescriptionCaretaker", this.field.DescriptionCaretaker);
       var config = {
         headers: {
           'content-type': 'multipart/form-data'
@@ -61,7 +49,7 @@ __webpack_require__.r(__webpack_exports__);
         var resp = res.data;
         if (resp.status) {
           this.$router.push({
-            name: 'noe/data-noe-verification',
+            name: 'nod/master-verifikasi-capa',
             params: {
               isNotif: true,
               gNotif: 'notifications-success',
@@ -87,13 +75,11 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
     getData: function getData(Id) {
-      axios.post('/AdminVue/correction-noe-verification-create', {
+      axios.post('/AdminVue/correction-nod-report-create', {
         Id: Id
       }).then(function (res) {
         var resp = res.data;
-        this.field.Number = resp.data.NoeNumber;
-        this.field.IdPublish = resp.data.IdPublish;
-        this.field.SectionPublish = resp.data.SectionPublish;
+        this.field.Number = resp.data.NODNumber;
       }.bind(this))["catch"](function (e) {
         console.log(e);
         this.isNotif = true;
@@ -101,16 +87,8 @@ __webpack_require__.r(__webpack_exports__);
         this.alertVariant = 'alert-dark-danger';
       }.bind(this));
     },
-    handleFile: function handleFile(files) {
-      // console.log('FilePond Updated')
-      // example of instance method call on pond reference
-      this.field.Attachment = files.map(function (files) {
-        return files.file;
-      });
-      // console.log( this.field.myFile )
-    },
     backIndex: function backIndex() {
-      this.$router.push('/RoleAdmin/noe/data-noe-verification');
+      this.$router.push('/RoleAdmin/nod/master-verifikasi-capa');
     }
   },
   mounted: function mounted() {
@@ -125,10 +103,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=template&id=7f455120&":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=template&id=7f455120& ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue?vue&type=template&id=3770ec16&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue?vue&type=template&id=3770ec16& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -170,10 +148,10 @@ var render = function render() {
       }
     }
   }, [_c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-4"
+    staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("No. NOE")]), _vm._v(" "), _c("b-input", {
+  }, [_vm._v("No. NOD")]), _vm._v(" "), _c("b-input", {
     staticClass: "mb-1",
     attrs: {
       name: "Number",
@@ -188,58 +166,10 @@ var render = function render() {
       },
       expression: "field.Number"
     }
-  }), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.field.IdPublish,
-      expression: "field.IdPublish"
-    }],
-    staticClass: "mb-1",
-    attrs: {
-      type: "hidden",
-      name: "IdPublish",
-      state: _vm.allErrors.IdPublish ? false : null,
-      readonly: "",
-      required: ""
-    },
-    domProps: {
-      value: _vm.field.IdPublish
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.field, "IdPublish", $event.target.value);
-      }
-    }
-  }), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.field.SectionPublish,
-      expression: "field.SectionPublish"
-    }],
-    staticClass: "mb-1",
-    attrs: {
-      type: "hidden",
-      name: "SectionPublish",
-      state: _vm.allErrors.SectionPublish ? false : null,
-      readonly: "",
-      required: ""
-    },
-    domProps: {
-      value: _vm.field.SectionPublish
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.field, "SectionPublish", $event.target.value);
-      }
-    }
   }), _vm._v(" "), _vm.allErrors.Number ? _c("span", {
     staticClass: "text-danger"
   }, [_vm._v(_vm._s(_vm.allErrors.Number[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-4"
+    staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
   }, [_vm._v("Koreksi")]), _vm._v(" "), _c("label", {
@@ -260,46 +190,7 @@ var render = function render() {
     }
   }), _vm._v(" "), _vm.allErrors.Description ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Description[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-4"
-  }, [_c("label", [_vm._v("Lampiran")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("(Max. 50 MB)")]), _vm._v(" "), _c("file-pond", {
-    ref: "pondMyFile",
-    attrs: {
-      name: "Attachment",
-      "label-idle": "Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;",
-      "allow-multiple": true,
-      files: _vm.field.Attachment,
-      maxTotalFileSize: "50MB",
-      "accepted-file-types": "application/*, image/*, video/*"
-    },
-    on: {
-      updatefiles: _vm.handleFile
-    }
-  })], 1)], 1), _vm._v(" "), _vm.isCaretaker == true ? _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-4"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Deskripsi Mandatory")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "DescriptionCaretaker",
-      state: _vm.allErrors.DescriptionCaretaker ? false : null,
-      required: _vm.isCaretaker
-    },
-    model: {
-      value: _vm.field.DescriptionCaretaker,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "DescriptionCaretaker", $$v);
-      },
-      expression: "field.DescriptionCaretaker"
-    }
-  }), _vm._v(" "), _vm.allErrors.DescriptionCaretaker ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.DescriptionCaretaker[0]))]) : _vm._e()], 1)], 1) : _vm._e(), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+  }, [_vm._v(_vm._s(_vm.allErrors.Description[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }), _vm._v(" "), _c("b-form-group", {
     staticClass: "col-md-6"
@@ -328,17 +219,17 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue":
-/*!******************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue ***!
-  \******************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue":
+/*!********************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue ***!
+  \********************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _form_vue_vue_type_template_id_7f455120___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=7f455120& */ "./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=template&id=7f455120&");
-/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _correctionform_vue_vue_type_template_id_3770ec16___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./correctionform.vue?vue&type=template&id=3770ec16& */ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue?vue&type=template&id=3770ec16&");
+/* harmony import */ var _correctionform_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./correctionform.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -348,9 +239,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _form_vue_vue_type_template_id_7f455120___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _form_vue_vue_type_template_id_7f455120___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _correctionform_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _correctionform_vue_vue_type_template_id_3770ec16___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _correctionform_vue_vue_type_template_id_3770ec16___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -360,38 +251,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/assets/src/components/backend/noe/correction-noe-verification/form.vue"
+component.options.__file = "resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_correctionform_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./correctionform.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_correctionform_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=template&id=7f455120&":
-/*!*************************************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=template&id=7f455120& ***!
-  \*************************************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue?vue&type=template&id=3770ec16&":
+/*!***************************************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue?vue&type=template&id=3770ec16& ***!
+  \***************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7f455120___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=7f455120& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/noe/correction-noe-verification/form.vue?vue&type=template&id=7f455120&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7f455120___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_correctionform_vue_vue_type_template_id_3770ec16___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./correctionform.vue?vue&type=template&id=3770ec16& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/nod/verifikasi-capa-nod/correctionform.vue?vue&type=template&id=3770ec16&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_correctionform_vue_vue_type_template_id_3770ec16___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_7f455120___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_correctionform_vue_vue_type_template_id_3770ec16___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

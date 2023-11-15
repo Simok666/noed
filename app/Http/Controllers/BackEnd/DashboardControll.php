@@ -1724,8 +1724,8 @@ class DashboardControll extends Controller
             }
             
             $setDataTimeDept = [
-                round(count($noeOntimeDept) / count($countTotalStatusTimeDept) * 100, 2),
-                round(count($noeDelayDept) / count($countTotalStatusTimeDept) * 100, 2),
+                round(count($noeOntimeDept) / (count($countTotalStatusTimeDept) ?: 1) * 100, 2),
+                round(count($noeDelayDept) / (count($countTotalStatusTimeDept) ?: 1) * 100, 2),
             ];
     
             $noeOntimeQa = [];
@@ -1739,8 +1739,8 @@ class DashboardControll extends Controller
             }
     
             $setDataTimeQa = [
-                round(count($noeOntimeQa) / count($countTotalStatusTimeQa) * 100, 2),
-                round(count($noeDelayQa) / count($countTotalStatusTimeQa) * 100, 2),
+                round(count($noeOntimeQa) / (count($countTotalStatusTimeQa) ?: 1) * 100, 2),
+                round(count($noeDelayQa) / (count($countTotalStatusTimeQa) ?: 1) * 100, 2),
             ];
         } else if ($request->status === 'nod') {
 
@@ -1753,6 +1753,7 @@ class DashboardControll extends Controller
             $countTotalStatusTimeQa = [];
             $countTotalStatusTimeDept = [];
             foreach ($getTotalLaporanNodPelapor as $key => $val) {
+                $this->logger->info($val->StatusTimeQA);
                 if($val->StatusTimeQA !== null) { 
                     array_push($countTotalStatusTimeQa, count((array)$val->StatusTimeQA));
                 }
@@ -1760,7 +1761,7 @@ class DashboardControll extends Controller
                     array_push($countTotalStatusTimeDept, count((array)$val->StatusTimeDept));
                 } 
             }
-           
+            
             $getStatusTimeDeptData  = DB::table('nod_report as nod') 
                             ->select('nod.StatusTimeDept')
                             ->whereIN('nod.StatusTimeDept', [1,2])
@@ -1792,19 +1793,19 @@ class DashboardControll extends Controller
                     array_push($nodDelayQa, count((array)$valTimeQa));
                 }
             }
-
+           
             $setDataTimeDept = [
-                round(count($nodOntimeDept) / count($countTotalStatusTimeDept) * 100, 2),
-                round(count($nodDelayDept) / count($countTotalStatusTimeDept) * 100, 2),
+                round(count($nodOntimeDept) / (count($countTotalStatusTimeDept) ?: 1) * 100, 2),
+                round(count($nodDelayDept) / (count($countTotalStatusTimeDept) ?: 1) * 100, 2),
             ];
     
             $setDataTimeQa = [
-                round(count($nodOntimeQa) / count($countTotalStatusTimeQa) * 100, 2),
-                round(count($nodDelayQa) / count($countTotalStatusTimeQa) * 100, 2),
+                round(count($nodOntimeQa) / (count($countTotalStatusTimeQa) ?: 1 ) * 100, 2),
+                round(count($nodDelayQa) / (count($countTotalStatusTimeQa) ?: 1 ) * 100, 2),
             ]; 
            
         }
-      
+        
         return response()->json([
             'setDataTimeDept' => $setDataTimeDept,
             'setDataTimeQA' => $setDataTimeQa
