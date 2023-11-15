@@ -101,6 +101,12 @@
     "value":"/RoleAdmin/master/data-chat-status",
     "icon":"ion ion-md-bookmark",
     "children":[]
+  },{
+    "id":54,
+    "text":"Master Diff Days",
+    "value":"/RoleAdmin/master/data-different-days",
+    "icon":"ion ion-md-bookmark",
+    "children":[]
   }]
 
 },{

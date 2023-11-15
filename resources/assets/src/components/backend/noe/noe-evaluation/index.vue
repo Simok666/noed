@@ -62,6 +62,9 @@
             <b-form-select v-model="paramData.search.noe__Status" :options="optionStatus" v-on:change="getFilters()" value="paramData.search.noe__Status"></b-form-select>
           </th>
           <th></th>
+          <th>
+            <b-input v-model="paramData.search.noe__Remarks" placeholder="Remarks" v-on:keyup.enter="getFilters()" />
+          </th>
         </tr>
         <vuetable-row-header></vuetable-row-header>
       </template>
@@ -239,13 +242,6 @@ export default {
           titleClass: 'text-center',
           dataClass: 'text-center'
         },
-        // {
-        //   name: 'Event',
-        //   sortField: 'noe.Event',
-        //   title: 'Uraian Kejadian',
-        //   titleClass: 'text-center',
-        //   dataClass: 'text-center'
-        // },
         {
           name: 'Status',
           sortField: 'noe.Status',
@@ -258,13 +254,14 @@ export default {
           title: 'Tindakan',
           titleClass: 'text-center',
           dataClass: 'text-center',
-        }
-        /*{
-          name: 'more',
-          title: 'More',
+        },
+        {
+          name: 'Remarks',
+          sortField: 'noe.Remarks',
+          title: 'Remarks',
           titleClass: 'text-center',
           dataClass: 'text-center',
-        }*/
+        }
   		],
 
   		sortOrder: [

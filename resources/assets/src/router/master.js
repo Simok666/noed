@@ -248,5 +248,17 @@ export default [{
     path: 'form-chat-status',
     name: 'master/form-chat-status',
     component: () => import('@/components/backend/master/chat-status/form')
+  },{
+    path: 'data-different-days',
+    name: 'master/data-different-days',
+    component: () => import('@/components/backend/master/different-days/index')
+  },{
+    path: 'form-different-days',
+    name: 'master/form-different-days',
+    component: () => import('@/components/backend/master/different-days/form')
+  },{
+    path: 'show-different-days',
+    name: 'master/show-different-days',
+    component: () => import('@/components/backend/master/different-days/show')
   }]
 }]

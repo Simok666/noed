@@ -1,61 +1,86 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[81],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/chat-status/form.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/master/chat-status/form.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/caretaker/form.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/master/caretaker/form.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vue_text_mask__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-text-mask */ "./node_modules/vue-text-mask/dist/vueTextMask.js");
-/* harmony import */ var vue_text_mask__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_text_mask__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue_text_mask__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-text-mask */ "./node_modules/vue-text-mask/dist/vueTextMask.js");
+/* harmony import */ var vue_text_mask__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_text_mask__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _mathieustan_vue_datepicker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mathieustan/vue-datepicker */ "./node_modules/@mathieustan/vue-datepicker/dist/vue-datepicker.esm.js");
+/* harmony import */ var _mathieustan_vue_datepicker_dist_vue_datepicker_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mathieustan/vue-datepicker/dist/vue-datepicker.min.css */ "./node_modules/@mathieustan/vue-datepicker/dist/vue-datepicker.min.css");
+/* harmony import */ var _mathieustan_vue_datepicker_dist_vue_datepicker_min_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_mathieustan_vue_datepicker_dist_vue_datepicker_min_css__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'form-noe-report',
+  name: 'form-caretaker',
   metaInfo: {
-    title: 'Form NOE Report'
+    title: 'Form Caretaker'
   },
-  components: {},
+  components: {
+    MaskedInput: vue_text_mask__WEBPACK_IMPORTED_MODULE_0___default.a,
+    VueDatePicker: _mathieustan_vue_datepicker__WEBPACK_IMPORTED_MODULE_1__["VueDatePicker"]
+  },
   data: function data() {
     return {
-      urlSubmit: '/AdminVue/master-chat-status-insert',
-      headerCard: 'Form Chat Status',
+      urlSubmit: '/AdminVue/caretaker-insert',
+      headerCard: 'Data Caretaker',
       textBtnSubmit: 'Simpan',
-      field: {},
+      field: {
+        // myFile : ''
+      },
       allErrors: [],
       isNotif: false,
-      isEdit: false,
       alertNotif: '',
       alertVariant: 'alert-dark-danger',
-      valStatus: 0,
-      isShow: false,
-      isButton: false,
-      show: true
+      opsEmp: [],
+      opsEmailDepart: [],
+      departemen: '',
+      dateFormat: 'DD.MM.YYYY',
+      locale: {
+        lang: 'en'
+      }
     };
   },
   methods: {
     submitForm: function submitForm() {
-      this.showLoading();
       var formData = new FormData();
       formData.append("Id", this.field.Id);
-      formData.append("Status", this.field.Status);
-      formData.append("Descriptions", this.field.Descriptions);
+      if (this.field.IdEmployee) {
+        formData.append("IdEmployee", this.field.IdEmployee.Id);
+        formData.append("IdUser", this.field.IdEmployee.IdUser);
+      }
+      if (this.field.DateStart) formData.append("DateStart", this.field.DateStart);
+      if (this.field.DateEnd) formData.append("DateEnd", this.field.DateEnd);
+      if (this.field.TO) formData.append("TO", this.field.TO);
+      if (this.field.Email) formData.append("Email", JSON.stringify(this.field.Email));
+      if (this.field.Subject) formData.append("Subject", this.field.Subject);
+      if (this.field.Content) formData.append("Content", this.field.Content);
+      if (this.field.Tag) formData.append("Tag", this.field.Tag);
       var config = {
         headers: {
           'content-type': 'multipart/form-data'
         }
       };
       axios.post(this.urlSubmit, formData, config).then(function (res) {
-        this.hideLoading();
         var resp = res.data;
         if (resp.status) {
           this.$router.push({
-            name: 'master/data-chat-status',
+            name: 'master/data-caretaker',
             params: {
               isNotif: true,
               gNotif: 'notifications-success',
@@ -75,19 +100,15 @@ __webpack_require__.r(__webpack_exports__);
         this.isNotif = true;
         this.alertNotif = 'Invalid Server Side!';
         this.alertVariant = 'alert-dark-danger';
-        this.scrollTop(0, 1000);
-        this.hideLoading();
       }.bind(this));
     },
     getData: function getData(Id) {
-      axios.post('/AdminVue/master-chat-status-edit', {
+      axios.post('/AdminVue/caretaker-edit', {
         Id: Id
       }).then(function (res) {
         var resp = res.data;
+        console.log(resp.data);
         this.field = resp.data;
-        this.field.Id = resp.data.id;
-        this.field.Status = resp.data.status;
-        this.field.Descriptions = resp.data.descriptions;
       }.bind(this))["catch"](function (e) {
         console.log(e);
         this.isNotif = true;
@@ -95,27 +116,64 @@ __webpack_require__.r(__webpack_exports__);
         this.alertVariant = 'alert-dark-danger';
       }.bind(this));
     },
+    getEmp: function getEmp() {
+      axios.post('/AdminVue/caretaker-get-emp').then(function (res) {
+        this.opsEmp = res.data.data;
+        this.opsEmailDepart = res.data.data;
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+        this.opsEmp = [];
+      }.bind(this));
+    },
+    getDept: function getDept() {
+      axios.post('/AdminVue/caretaker-get-dept').then(function (res) {
+        var _this = this;
+        var response = res.data.data;
+        Object.values(response).forEach(function (val) {
+          _this.field.Subject = 'Caretaker Head Departemen ' + val.Department;
+          _this.departemen = val.Department;
+        });
+      }.bind(this))["catch"](function (e) {
+        console.log(e);
+      }.bind(this));
+    },
+    onChangeContent: function onChangeContent() {
+      if (this.field.IdEmployee !== null) {
+        this.field.TO = this.field.IdEmployee.Email;
+      } else {
+        this.field.TO = '';
+      }
+      this.field.Content = "Yth Saudara " + this.field.IdEmployee.Employee + "\n\n" + "Sehubungan dengan Cuti saya pada " + moment__WEBPACK_IMPORTED_MODULE_3___default()(this.field.DateStart).format('DD.MM.YY') + " sampai " + moment__WEBPACK_IMPORTED_MODULE_3___default()(this.field.DateEnd).format('DD.MM.YY') + " maka saya menunjuk caretaker departemen saudara " + this.field.IdEmployee.Employee + " untuk menjadi pejabat sementara Departemen " + this.departemen + ".\n\n" + "Terimakasih\n" + "Head Dept " + this.departemen + "\n\n";
+    },
+    onClickEmail: function onClickEmail() {
+      if (this.field.IdEmployee !== null) {
+        var removeName = this.field.IdEmployee.Employee;
+        this.opsEmailDepart = this.opsEmp.filter(function (obj) {
+          return obj.Employee !== removeName;
+        });
+      } else {
+        this.opsEmailDepart = _toConsumableArray(this.opsEmp);
+      }
+    },
     backIndex: function backIndex() {
-      this.$router.push('/RoleAdmin/master/data-chat-status');
+      this.$router.push('/RoleAdmin/master/data-caretaker');
+    },
+    labelEmp: function labelEmp(_ref) {
+      var Employee = _ref.Employee,
+        Position = _ref.Position;
+      return "".concat(Employee, " \u2014 ").concat(Position);
     }
   },
   mounted: function mounted() {
+    this.getEmp();
+    this.getDept();
     if (this.$route.params.isFormEdit) {
       var Id = this.$route.params.Id;
-      this.isEdit = true;
       if (Id) {
         this.getData(Id);
         this.field.Id = Id;
-        this.urlSubmit = '/AdminVue/master-chat-status-update';
+        this.urlSubmit = '/AdminVue/caretaker-update';
         this.textBtnSubmit = 'Simpan';
-      }
-    }
-    if (this.$route.params.isShow) {
-      this.isShow = this.$route.params.isShow;
-      var Id = this.$route.params.Id;
-      if (Id) {
-        this.getData(Id);
-        this.field.Id = Id;
       }
     }
   }
@@ -123,10 +181,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/chat-status/form.vue?vue&type=template&id=093ec2f4&":
-/*!************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/master/chat-status/form.vue?vue&type=template&id=093ec2f4& ***!
-  \************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/caretaker/form.vue?vue&type=template&id=756437fe&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/master/caretaker/form.vue?vue&type=template&id=756437fe& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -171,62 +229,185 @@ var render = function render() {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Status")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+  }, [_vm._v("Nama Karyawan")]), _vm._v(" "), _c("label", {
     staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-textarea", {
-    staticClass: "mb-1",
+  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("multiselect", {
     attrs: {
-      name: "status",
-      state: _vm.allErrors.Status ? false : null,
-      required: "",
-      readonly: _vm.isShow
+      options: _vm.opsEmp,
+      "allow-empty": false,
+      placeholder: "Pilih Karyawan",
+      label: "Employee",
+      "custom-label": _vm.labelEmp,
+      "track-by": "Employee"
+    },
+    on: {
+      input: _vm.onChangeContent
     },
     model: {
-      value: _vm.field.Status,
+      value: _vm.field.IdEmployee,
       callback: function callback($$v) {
-        _vm.$set(_vm.field, "Status", $$v);
+        _vm.$set(_vm.field, "IdEmployee", $$v);
       },
-      expression: "field.Status"
+      expression: "field.IdEmployee"
     }
-  }), _vm._v(" "), _vm.allErrors.Status ? _c("span", {
+  }), _vm._v(" "), _vm.allErrors.IdEmployee ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Status[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+  }, [_vm._v(_vm._s(_vm.allErrors.IdEmployee[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-3"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Tanggal Mulai")]), _vm._v(" "), _c("VueDatePicker", {
+    staticClass: "mb-1",
+    attrs: {
+      required: "",
+      format: _vm.dateFormat,
+      locale: _vm.locale
+    },
+    on: {
+      input: _vm.onChangeContent
+    },
+    model: {
+      value: _vm.field.DateStart,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "DateStart", $$v);
+      },
+      expression: "field.DateStart"
+    }
+  }), _vm._v(" "), _vm.allErrors.DateStart ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.DateStart[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-3"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Tanggal Selesai")]), _vm._v(" "), _c("VueDatePicker", {
+    staticClass: "mb-1",
+    attrs: {
+      required: "",
+      format: _vm.dateFormat,
+      locale: _vm.locale
+    },
+    on: {
+      input: _vm.onChangeContent
+    },
+    model: {
+      value: _vm.field.DateEnd,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "DateEnd", $$v);
+      },
+      expression: "field.DateEnd"
+    }
+  }), _vm._v(" "), _vm.allErrors.DateEnd ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.DateEnd[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+    staticClass: "col-md-3"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("TO")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-input", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "TO",
+      state: _vm.allErrors.TO ? false : null,
+      readonly: "",
+      required: ""
+    },
+    model: {
+      value: _vm.field.TO,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "TO", $$v);
+      },
+      expression: "field.TO"
+    }
+  }), _vm._v(" "), _vm.allErrors.TO ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.TO[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-3"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("CC")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Dipilih")]), _vm._v(" "), _c("multiselect", {
+    attrs: {
+      options: _vm.opsEmailDepart,
+      "show-labels": false,
+      multiple: true,
+      placeholder: "Pilih Email Karyawan",
+      label: "Email",
+      "track-by": "Email",
+      required: ""
+    },
+    on: {
+      open: _vm.onClickEmail
+    },
+    model: {
+      value: _vm.field.Email,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "Email", $$v);
+      },
+      expression: "field.Email"
+    }
+  }), _vm._v(" "), _vm.allErrors.Email ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.Email[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
     staticClass: "col-md-6"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Deskripsi")]), _vm._v(" "), _vm.isShow == false ? _c("label", {
+  }, [_vm._v("Subject")]), _vm._v(" "), _c("label", {
     staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]) : _vm._e(), _vm._v(" "), _c("b-textarea", {
+  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-input", {
     staticClass: "mb-1",
     attrs: {
-      name: "Incident",
-      state: _vm.allErrors.Descriptions ? false : null,
-      required: "",
-      readonly: _vm.isShow
+      name: "Subject",
+      state: _vm.allErrors.Subject ? false : null,
+      required: ""
     },
     model: {
-      value: _vm.field.Descriptions,
+      value: _vm.field.Subject,
       callback: function callback($$v) {
-        _vm.$set(_vm.field, "Descriptions", $$v);
+        _vm.$set(_vm.field, "Subject", $$v);
       },
-      expression: "field.Descriptions"
+      expression: "field.Subject"
     }
-  }), _vm._v(" "), _vm.allErrors.Descriptions ? _c("span", {
+  }), _vm._v(" "), _vm.allErrors.Subject ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Descriptions[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+  }, [_vm._v(_vm._s(_vm.allErrors.Subject[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+    staticClass: "col-md-6"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Content")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-textarea", {
+    staticClass: "mb-1",
+    attrs: {
+      rows: "10",
+      name: "Content",
+      state: _vm.allErrors.Content ? false : null,
+      required: ""
+    },
+    model: {
+      value: _vm.field.Content,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "Content", $$v);
+      },
+      expression: "field.Content"
+    }
+  }), _vm._v(" "), _vm.allErrors.Content ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.Content[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }), _vm._v(" "), _c("b-form-group", {
     staticClass: "col-md-6",
     attrs: {
       label: ""
     }
-  }, [_vm.isShow == false ? _c("b-btn", {
+  }, [_c("b-btn", {
     staticClass: "float-right ml-2",
     attrs: {
       type: "submit",
       variant: "primary"
     }
-  }, [_vm._v("Simpan")]) : _vm._e(), _vm._v(" "), _c("b-btn", {
+  }, [_vm._v("Simpan")]), _vm._v(" "), _c("b-btn", {
     staticClass: "float-right",
     attrs: {
       type: "button",
@@ -256,17 +437,17 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/master/chat-status/form.vue":
-/*!*****************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/master/chat-status/form.vue ***!
-  \*****************************************************************************/
+/***/ "./resources/assets/src/components/backend/master/caretaker/form.vue":
+/*!***************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/master/caretaker/form.vue ***!
+  \***************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _form_vue_vue_type_template_id_093ec2f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=093ec2f4& */ "./resources/assets/src/components/backend/master/chat-status/form.vue?vue&type=template&id=093ec2f4&");
-/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/master/chat-status/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _form_vue_vue_type_template_id_756437fe___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=756437fe& */ "./resources/assets/src/components/backend/master/caretaker/form.vue?vue&type=template&id=756437fe&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/master/caretaker/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -277,8 +458,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _form_vue_vue_type_template_id_093ec2f4___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _form_vue_vue_type_template_id_093ec2f4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _form_vue_vue_type_template_id_756437fe___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _form_vue_vue_type_template_id_756437fe___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -288,38 +469,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/assets/src/components/backend/master/chat-status/form.vue"
+component.options.__file = "resources/assets/src/components/backend/master/caretaker/form.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/master/chat-status/form.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/master/chat-status/form.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/master/caretaker/form.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/master/caretaker/form.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/chat-status/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/caretaker/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/master/chat-status/form.vue?vue&type=template&id=093ec2f4&":
-/*!************************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/master/chat-status/form.vue?vue&type=template&id=093ec2f4& ***!
-  \************************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/master/caretaker/form.vue?vue&type=template&id=756437fe&":
+/*!**********************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/master/caretaker/form.vue?vue&type=template&id=756437fe& ***!
+  \**********************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_093ec2f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=093ec2f4& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/chat-status/form.vue?vue&type=template&id=093ec2f4&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_093ec2f4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_756437fe___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=756437fe& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/caretaker/form.vue?vue&type=template&id=756437fe&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_756437fe___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_093ec2f4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_756437fe___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

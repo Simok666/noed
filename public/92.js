@@ -1,41 +1,38 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[92],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/division/form.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/master/division/form.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/different-days/form.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/master/different-days/form.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'form-division',
+  name: 'form-unit-location',
   metaInfo: {
-    title: 'Form Division'
+    title: 'Form Lokasi Kejadian'
   },
   components: {},
   data: function data() {
     return {
-      urlSubmit: '/AdminVue/division-insert',
-      headerCard: 'Divisi',
+      urlSubmit: '/AdminVue/different-days-insert',
+      headerCard: 'Diff Days',
       textBtnSubmit: 'Simpan',
-      field: {
-        //   myFile : ''
-      },
+      field: {},
       allErrors: [],
       isNotif: false,
       alertNotif: '',
-      alertVariant: 'alert-dark-danger',
-      opsDivision: []
+      alertVariant: 'alert-dark-danger'
     };
   },
   methods: {
     submitForm: function submitForm() {
       var formData = new FormData();
-      formData.append("Id", this.field.Id);
-      formData.append("Code", this.field.Code);
-      formData.append("Division", this.field.Division);
+      formData.append("id", this.field.Id);
+      formData.append("name", this.field.name);
+      formData.append("different", this.field.different);
       var config = {
         headers: {
           'content-type': 'multipart/form-data'
@@ -45,7 +42,7 @@ __webpack_require__.r(__webpack_exports__);
         var resp = res.data;
         if (resp.status) {
           this.$router.push({
-            name: 'master/data-division',
+            name: 'master/data-different-days',
             params: {
               isNotif: true,
               gNotif: 'notifications-success',
@@ -68,11 +65,13 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
     getData: function getData(Id) {
-      axios.post('/AdminVue/division-edit', {
+      axios.post('/AdminVue/different-days-edit', {
         Id: Id
       }).then(function (res) {
         var resp = res.data;
         this.field = resp.data;
+        this.field.Id = resp.data.id;
+        this.field.different = resp.data.different_days;
       }.bind(this))["catch"](function (e) {
         console.log(e);
         this.isNotif = true;
@@ -81,7 +80,7 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
     backIndex: function backIndex() {
-      this.$router.push('/RoleAdmin/master/data-division');
+      this.$router.push('/RoleAdmin/master/data-different-days');
     }
   },
   mounted: function mounted() {
@@ -90,7 +89,7 @@ __webpack_require__.r(__webpack_exports__);
       if (Id) {
         this.getData(Id);
         this.field.Id = Id;
-        this.urlSubmit = '/AdminVue/division-update';
+        this.urlSubmit = '/AdminVue/different-days-update';
         this.textBtnSubmit = 'Simpan';
       }
     }
@@ -99,10 +98,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/division/form.vue?vue&type=template&id=41162c24&":
-/*!*********************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/master/division/form.vue?vue&type=template&id=41162c24& ***!
-  \*********************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/different-days/form.vue?vue&type=template&id=51228220&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/src/components/backend/master/different-days/form.vue?vue&type=template&id=51228220& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -144,50 +143,52 @@ var render = function render() {
       }
     }
   }, [_c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-2"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Kode")]), _vm._v(" "), _c("label", {
-    staticClass: "form-label float-right text-danger"
-  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-input", {
-    staticClass: "mb-1",
-    attrs: {
-      name: "Code",
-      state: _vm.allErrors.Code ? false : null,
-      required: ""
-    },
-    model: {
-      value: _vm.field.Code,
-      callback: function callback($$v) {
-        _vm.$set(_vm.field, "Code", $$v);
-      },
-      expression: "field.Code"
-    }
-  }), _vm._v(" "), _vm.allErrors.Code ? _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Code[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
     staticClass: "col-md-4"
   }, [_c("label", {
     staticClass: "form-label"
-  }, [_vm._v("Divisi")]), _vm._v(" "), _c("label", {
+  }, [_vm._v("Name")]), _vm._v(" "), _c("label", {
     staticClass: "form-label float-right text-danger"
   }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-input", {
     staticClass: "mb-1",
     attrs: {
-      name: "Division",
-      state: _vm.allErrors.Division ? false : null,
+      name: "name",
+      state: _vm.allErrors.name ? false : null,
       required: ""
     },
     model: {
-      value: _vm.field.Division,
+      value: _vm.field.name,
       callback: function callback($$v) {
-        _vm.$set(_vm.field, "Division", $$v);
+        _vm.$set(_vm.field, "name", $$v);
       },
-      expression: "field.Division"
+      expression: "field.name"
     }
-  }), _vm._v(" "), _vm.allErrors.Division ? _c("span", {
+  }), _vm._v(" "), _vm.allErrors.name ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Division[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+  }, [_vm._v(_vm._s(_vm.allErrors.name[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-4"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("number differents day")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-input", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "different_days",
+      state: _vm.allErrors.different ? false : null,
+      required: ""
+    },
+    model: {
+      value: _vm.field.different,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "different", $$v);
+      },
+      expression: "field.different"
+    }
+  }), _vm._v(" "), _vm.allErrors.different ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.different[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+    staticClass: "col-md-6"
+  }), _vm._v(" "), _c("b-form-group", {
     staticClass: "col-md-6",
     attrs: {
       label: ""
@@ -217,17 +218,17 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/master/division/form.vue":
-/*!**************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/master/division/form.vue ***!
-  \**************************************************************************/
+/***/ "./resources/assets/src/components/backend/master/different-days/form.vue":
+/*!********************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/master/different-days/form.vue ***!
+  \********************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _form_vue_vue_type_template_id_41162c24___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=41162c24& */ "./resources/assets/src/components/backend/master/division/form.vue?vue&type=template&id=41162c24&");
-/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/master/division/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _form_vue_vue_type_template_id_51228220___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form.vue?vue&type=template&id=51228220& */ "./resources/assets/src/components/backend/master/different-days/form.vue?vue&type=template&id=51228220&");
+/* harmony import */ var _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form.vue?vue&type=script&lang=js& */ "./resources/assets/src/components/backend/master/different-days/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -238,8 +239,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _form_vue_vue_type_template_id_41162c24___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _form_vue_vue_type_template_id_41162c24___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _form_vue_vue_type_template_id_51228220___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _form_vue_vue_type_template_id_51228220___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -249,38 +250,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/assets/src/components/backend/master/division/form.vue"
+component.options.__file = "resources/assets/src/components/backend/master/different-days/form.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/master/division/form.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/master/division/form.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/master/different-days/form.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/master/different-days/form.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/division/form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/different-days/form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/assets/src/components/backend/master/division/form.vue?vue&type=template&id=41162c24&":
-/*!*********************************************************************************************************!*\
-  !*** ./resources/assets/src/components/backend/master/division/form.vue?vue&type=template&id=41162c24& ***!
-  \*********************************************************************************************************/
+/***/ "./resources/assets/src/components/backend/master/different-days/form.vue?vue&type=template&id=51228220&":
+/*!***************************************************************************************************************!*\
+  !*** ./resources/assets/src/components/backend/master/different-days/form.vue?vue&type=template&id=51228220& ***!
+  \***************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_41162c24___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=41162c24& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/division/form.vue?vue&type=template&id=41162c24&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_41162c24___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_51228220___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./form.vue?vue&type=template&id=51228220& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/src/components/backend/master/different-days/form.vue?vue&type=template&id=51228220&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_51228220___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_41162c24___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_form_vue_vue_type_template_id_51228220___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
