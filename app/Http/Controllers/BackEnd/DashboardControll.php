@@ -1296,17 +1296,35 @@ class DashboardControll extends Controller
          ]);
     }
 
-    public function getLevelNoe() {
-
+    public function getLevelNoe(Request $request) {
+        
+        $year = $request->input('year');
+        $dept = $request->input('department');
+        $getCurrentYear = 0;
+        
+        if($year === null) {
+            $getCurrentYear = Carbon::now()->format('Y');
+        } else {
+            $getCurrentYear = $year['text'];
+        }
+        
         $getLevelNoe = DB::table('noe_verif_evaluation as nve')
                     ->select('noe.NOENumberAcc','nve.DeviationLevelQA')
                     ->leftjoin('noe_report as noe', 'noe.Id', '=', 'nve.IdNOEReport')
                     ->whereNotNull('nve.DeviationLevelQA')
                     ->where('noe.Status', 9)
                     ->where('noe.Actived', 1)
+                    ->whereYear('noe.Date', $getCurrentYear)
+                    ->where(function($getLevelNoe) use ($dept) {
+                        if($dept == 0) {
+                            $getLevelNoe->where('noe.IdDepartment','>', 0);
+                        } else {
+                            $getLevelNoe->where('noe.IdDepartment', $dept);
+                        }
+                    })
                     ->get();
-
-        $countDataNoe = count($getLevelNoe);
+        
+        $countDataNoe = (count($getLevelNoe) ? : 1);
         $minor = [];
         $major = [];
         $critical = [];
@@ -1322,31 +1340,56 @@ class DashboardControll extends Controller
                 array_push($major, $value->DeviationLevelQA);
             }
         }
-
+        
         $setDataValue = [
-            round(count($minor) / $countDataNoe * 100, 2),
-            round(count($major) / $countDataNoe * 100, 2),
+            round(count($minor) / $countDataNoe * 100 , 2),
+            round(count($major) / $countDataNoe * 100 , 2),
             round(count($critical) / $countDataNoe * 100, 2)
+        ];
+       
+        $setRawData = [
+            'minor' => count($minor),
+            'major' => count($major),
+            'critical' => count($critical)
         ];
         
         return response()->json([
             'dataLavel' => $dataLabel,
             'levelColor' => $levelColor,
-            'setDataValue' => $setDataValue
+            'setDataValue' => $setDataValue,
+            'rawData' => $setRawData
         ]);
 
     }
 
-    public function betsCategory() {
+    public function betsCategory(Request $request) {
+        $year = $request->input('year');
+        $dept = $request->input('department');
+        $getCurrentYear = 0;
+        
+        if($year === null) {
+            $getCurrentYear = Carbon::now()->format('Y');
+        } else {
+            $getCurrentYear = $year['text'];
+        }
+        
         $getBetsCategory = DB::table('noe_verif_evaluation as nve')
                         ->select('noe.NOENumberAcc', 'nve.IdDeviation')
                         ->leftjoin('noe_report as noe', 'noe.Id', '=', 'nve.IdNOEReport')
                         ->whereNotNull('nve.IdDeviation')
                         ->where('noe.Status', 9)
                         ->where('noe.Actived', 1)
+                        ->whereYear('noe.Date', $getCurrentYear)
+                        ->where(function($getBetsCategory) use ($dept) {
+                            if($dept == 0) {
+                                $getBetsCategory->where('noe.IdDepartment','>', 0);
+                            } else {
+                                $getBetsCategory->where('noe.IdDepartment', $dept);
+                            }
+                        })
                         ->get();
 
-        $countDataBets = count($getBetsCategory);
+        $countDataBets = (count($getBetsCategory) ? : 1);
         $bets = [];
         $nonBets = [];
         $dataLabel = ['Bets', 'Non Bets'];
@@ -1364,11 +1407,17 @@ class DashboardControll extends Controller
             round(count($bets) / $countDataBets * 100, 2),
             round(count($nonBets) / $countDataBets * 100, 2),
         ];
-        
+
+        $setRawData = [
+            'bets' => count($bets),
+            'nonBets' => count($nonBets)
+        ];
+
         return response()->json([
             'databets' => $dataLabel,
             'betscolor' => $betsColor,
-            'setDataValue' => $setDataValue
+            'setDataValue' => $setDataValue,
+            'rawData' => $setRawData 
         ]);
     }
 
@@ -1419,6 +1468,16 @@ class DashboardControll extends Controller
         ];
 
         if($request->status === 'noe') {
+            $year = $request->input('year');
+            $dept = $request->input('department');
+            $getCurrentYear = 0;
+            
+            if($year === null) {
+                $getCurrentYear = Carbon::now()->format('Y');
+            } else {
+                $getCurrentYear = $year['text'];
+            }
+
             $getTotalLaporanNoe = DB::table('noe_report as noe')
                           ->select('*')
                           ->get();
@@ -1426,8 +1485,16 @@ class DashboardControll extends Controller
             $getIsOpenNoe = DB::table('noe_report as noe')
                         ->select(DB::raw('COUNT(*) as total'), DB::raw('MONTH(noe.Date) as month'))
                         ->where('noe.Status', 7)
-                        ->whereBetween(DB::raw('MONTH(noe.DatePublish)'), [1, 12])
+                        ->whereBetween(DB::raw('MONTH(noe.Date)'), [1, 12])
                         ->where('noe.Actived', 1)
+                        ->whereYear('noe.Date', $getCurrentYear)
+                        ->where(function($getIsOpenNoe) use ($dept) {
+                            if($dept == 0) {
+                                $getIsOpenNoe->where('noe.IdDepartment','>', 0);
+                            } else {
+                                $getIsOpenNoe->where('noe.IdDepartment', $dept);
+                            }
+                        })
                         ->groupBy('month')
                         ->orderBy('month')
                         ->get();
@@ -1435,8 +1502,16 @@ class DashboardControll extends Controller
             $getOngoingNoe = DB::table('noe_report as noe')
                         ->select(DB::raw('COUNT(*) as total'), DB::raw('MONTH(noe.Date) as month'))
                         ->where('noe.Status', 5)
-                        ->whereBetween(DB::raw('MONTH(noe.DatePublish)'), [1, 12])
+                        ->whereBetween(DB::raw('MONTH(noe.Date)'), [1, 12])
                         ->where('noe.Actived', 1)
+                        ->whereYear('noe.Date', $getCurrentYear)
+                        ->where(function($getOngoingNoe) use ($dept) {
+                            if($dept == 0) {
+                                $getOngoingNoe->where('noe.IdDepartment','>', 0);
+                            } else {
+                                $getOngoingNoe->where('noe.IdDepartment', $dept);
+                            }
+                        })
                         ->groupBy('month')
                         ->orderBy('month')
                         ->get();
@@ -1446,6 +1521,14 @@ class DashboardControll extends Controller
                         ->where('noe.Actived', 1)
                         ->where('noe.Status', 9)
                         ->whereBetween(DB::raw('MONTH(noe.Date)'), [1, 12])
+                        ->whereYear('noe.Date', $getCurrentYear)
+                        ->where(function($getIsClosedNoe) use ($dept) {
+                            if($dept == 0) {
+                                $getIsClosedNoe->where('noe.IdDepartment','>', 0);
+                            } else {
+                                $getIsClosedNoe->where('noe.IdDepartment', $dept);
+                            }
+                        })
                         ->groupBy('month')
                         ->orderBy('month')
                         ->get();
@@ -1491,6 +1574,16 @@ class DashboardControll extends Controller
             }
         
         } else if ($request->status === 'nod') {
+            $year = $request->input('year');
+            $dept = $request->input('department');
+            $getCurrentYear = 0;
+            
+            if($year === null) {
+                $getCurrentYear = Carbon::now()->format('Y');
+            } else {
+                $getCurrentYear = $year['text'];
+            }
+
             $getTotalLaporanNod = DB::table('nod_report as nod')
                       ->select('*')
                       ->get();
@@ -1501,6 +1594,14 @@ class DashboardControll extends Controller
                         ->where('nod.IsCapaVerified', 0)
                         ->whereBetween(DB::raw('MONTH(nod.Date)'), [1, 12])
                         ->where('nod.Actived', 1)
+                        ->whereYear('nod.Date', $getCurrentYear)
+                        ->where(function($getIsOpenNod) use ($dept) {
+                            if($dept == 0) {
+                                $getIsOpenNod->where('nod.IdDepartment','>', 0);
+                            } else {
+                                $getIsOpenNod->where('nod.IdDepartment', $dept);
+                            }
+                        })
                         ->groupBy('month')
                         ->orderBy('month')
                         ->get();
@@ -1510,15 +1611,32 @@ class DashboardControll extends Controller
                         ->whereBetween('nod.Status', [2, 6])
                         ->whereBetween(DB::raw('MONTH(nod.Date)'), [1, 12])
                         ->where('nod.Actived', 1)
+                        ->whereYear('nod.Date', $getCurrentYear)
+                        ->where(function($getOngoingNod) use ($dept) {
+                            if($dept == 0) {
+                                $getOngoingNod->where('nod.IdDepartment','>', 0);
+                            } else {
+                                $getOngoingNod->where('nod.IdDepartment', $dept);
+                            }
+                        })
                         ->groupBy('month')
                         ->orderBy('month')
                         ->get();
 
             $getIsClosedNod = DB::table('verifikasi_capa_nod as vcn')
                         ->select(DB::raw('COUNT(*) as total'), DB::raw('MONTH(vcn.created_at) as month'))
+                        ->join('nod_report as nod', 'nod.Id', '=', 'vcn.id_approved_nod')
                         ->where('vcn.is_approved', 1)
                         ->where('vcn.actived', 1)
                         ->whereBetween(DB::raw('MONTH(vcn.created_at)'), [1, 12])
+                        ->whereYear('nod.Date', $getCurrentYear)
+                        ->where(function($getIsClosedNod) use ($dept) {
+                            if($dept == 0) {
+                                $getIsClosedNod->where('nod.IdDepartment','>', 0);
+                            } else {
+                                $getIsClosedNod->where('nod.IdDepartment', $dept);
+                            }
+                        })
                         ->groupBy('month')
                         ->orderBy('month')
                         ->get();
@@ -1570,18 +1688,44 @@ class DashboardControll extends Controller
         ]);
     }
 
-    public function avarageData() {
+    public function avarageData(Request $request) {
+        $year = $request->input('year');
+        $dept = $request->input('department');
+        $getCurrentYear = 0;
+            
+        if($year === null) {
+            $getCurrentYear = Carbon::now()->format('Y');
+        } else {
+            $getCurrentYear = $year['text'];
+        }
+
         $countDataVerifNoe = DB::table('noe_report as noe')
                 ->select('noe.NOENumber','noe.Date','noe.DatePublish', 'nve.DateDept as dateDeptPelapor')
                 ->leftjoin('noe_verif_evaluation as nve','nve.IdNOEReport','=','noe.Id')
                 ->where('nve.TypeData', 0)
                 ->where('noe.Actived', 1)
+                ->whereYear('noe.Date', $getCurrentYear)
+                ->where(function($countDataVerifNoe) use ($dept) {
+                    if($dept == 0) {
+                        $countDataVerifNoe->where('noe.IdDepartment','>', 0);
+                    } else {
+                        $countDataVerifNoe->where('noe.IdDepartment', $dept);
+                    }
+                })
                 ->get();
         
         $countDataEvaluationNoe = DB::table('noe_report as noe')
                 ->select('noe.NOENumber', 'nve.DateDept')
                 ->leftjoin('noe_verif_evaluation as nve','nve.IdNOEReport','=','noe.Id')
                 ->where('noe.Actived', 1)
+                ->whereYear('noe.Date', $getCurrentYear)
+                ->where(function($countDataEvaluationNoe) use ($dept) {
+                    if($dept == 0) {
+                        $countDataEvaluationNoe->where('noe.IdDepartment','>', 0);
+                    } else {
+                        $countDataEvaluationNoe->where('noe.IdDepartment', $dept);
+                    }
+                })
                 ->get();
 
         $countDataNod = DB::table('nod_report as nod')
@@ -1592,6 +1736,14 @@ class DashboardControll extends Controller
                         ->where('nve.TypeData', 1)
                         ->whereNotNull('nod.dateQaSection')
                         ->where('nod.Actived', '>', 0)
+                        ->whereYear('nod.Date', $getCurrentYear)
+                        ->where(function($countDataNod) use ($dept) {
+                            if($dept == 0) {
+                                $countDataNod->where('nod.IdDepartment','>', 0);
+                            } else {
+                                $countDataNod->where('nod.IdDepartment', $dept);
+                            }
+                        })
                         ->get();
 
         $dataNOEtoQa = [];
@@ -1664,12 +1816,12 @@ class DashboardControll extends Controller
         $countDataQadhNoeToQashNod = 0;
         $countDataQashNodToQadhNod = 0;
 
-        $countDataNoeToQa = array_sum($dataNOEtoQa) / count($countDataVerifNoe);
-        $countDataQashToQadh = array_sum($dataQashToQadh) / count($groupedData);
+        $countDataNoeToQa = array_sum($dataNOEtoQa) / (count($countDataVerifNoe) ? : 1);
+        $countDataQashToQadh = array_sum($dataQashToQadh) / (count($groupedData) ? : 1);
         
         if(count($countDataNod) >= 1) {
-            $countDataQadhNoeToQashNod = array_sum($dateQadhNoeToQashNod) / count($countDataNod);
-            $countDataQashNodToQadhNod = array_sum($dateQashNodToQadhNod) / count($countDataNod);
+            $countDataQadhNoeToQashNod = array_sum($dateQadhNoeToQashNod) / (count($countDataNod) ? : 1);
+            $countDataQashNodToQadhNod = array_sum($dateQashNodToQadhNod) / (count($countDataNod) ? : 1);
         }
        
         return response()->json([
@@ -1681,13 +1833,33 @@ class DashboardControll extends Controller
     }
 
     public function getDataDelayOntime (Request $request) {
+        $year = $request->input('year');
+        $dept = $request->input('department');
+        $getCurrentYear = 0;
+            
+        if($year === null) {
+            $getCurrentYear = Carbon::now()->format('Y');
+        } else {
+            $getCurrentYear = $year['text'];
+        }
+
         $setDataTimeDept = [];
         $setDataTimeQa = [];
+        $setRawDataTimeDept = [];
+        $setRawDataTimeQa = [];
         if($request->status === 'noe') {
             $getTotalLaporanNoePelapor = DB::table('noe_report as noe')
                                         ->select('*')
                                         ->whereNotNull('noe.StatusTimeDept')
                                         ->orWhereNotNull('noe.StatusTimeQA')
+                                        ->whereYear('noe.Date', $getCurrentYear)
+                                        ->where(function($getTotalLaporanNoePelapor) use ($dept) {
+                                            if($dept == 0) {
+                                                $getTotalLaporanNoePelapor->where('noe.IdDepartment','>', 0);
+                                            } else {
+                                                $getTotalLaporanNoePelapor->where('noe.IdDepartment', $dept);
+                                            }
+                                        })
                                         ->get();
             
             $countTotalStatusTimeQa = [];
@@ -1705,12 +1877,28 @@ class DashboardControll extends Controller
                             ->select('noe.StatusTimeDept')
                             ->whereIN('noe.StatusTimeDept', [1,2])
                             ->where('noe.Actived', 1)
+                            ->whereYear('noe.Date', $getCurrentYear)
+                            ->where(function($getStatusTimeDeptData) use ($dept) {
+                                if($dept == 0) {
+                                    $getStatusTimeDeptData->where('noe.IdDepartment','>', 0);
+                                } else {
+                                    $getStatusTimeDeptData->where('noe.IdDepartment', $dept);
+                                }
+                            })
                             ->get();
     
             $getStatusTimeQaData = DB::table('noe_report as noe') 
                             ->select('noe.StatusTimeQA')
                             ->whereIN('noe.StatusTimeQA', [1,2])
                             ->where('noe.Actived', 1)
+                            ->whereYear('noe.Date', $getCurrentYear)
+                            ->where(function($getStatusTimeQaData) use ($dept) {
+                                if($dept == 0) {
+                                    $getStatusTimeQaData->where('noe.IdDepartment','>', 0);
+                                } else {
+                                    $getStatusTimeQaData->where('noe.IdDepartment', $dept);
+                                }
+                            })
                             ->get(); 
             
             $noeOntimeDept = [];
@@ -1727,7 +1915,12 @@ class DashboardControll extends Controller
                 round(count($noeOntimeDept) / (count($countTotalStatusTimeDept) ?: 1) * 100, 2),
                 round(count($noeDelayDept) / (count($countTotalStatusTimeDept) ?: 1) * 100, 2),
             ];
-    
+            
+            $setRawDataTimeDept = [
+                'onTime' => count($noeOntimeDept),
+                'delay'  => count($noeDelayDept)
+            ];
+        
             $noeOntimeQa = [];
             $noeDelayQa = [];
             foreach($getStatusTimeQaData as $keyTimeQa => $valTimeQa) {
@@ -1742,18 +1935,32 @@ class DashboardControll extends Controller
                 round(count($noeOntimeQa) / (count($countTotalStatusTimeQa) ?: 1) * 100, 2),
                 round(count($noeDelayQa) / (count($countTotalStatusTimeQa) ?: 1) * 100, 2),
             ];
+
+            $setRawDataTimeQa = [
+                'onTime' => count($noeOntimeQa),
+                'delay'  => count($noeDelayQa)
+            ];
+
         } else if ($request->status === 'nod') {
 
             $getTotalLaporanNodPelapor = DB::table('nod_report as nod')
                                         ->select('nod.StatusTimeDept','nod.StatusTimeQA')
                                         ->whereNotNull('nod.StatusTimeDept')
                                         ->orWhereNotNull('nod.StatusTimeQA')
+                                        ->whereYear('nod.Date', $getCurrentYear)
+                                        ->where(function($getTotalLaporanNodPelapor) use ($dept) {
+                                            if($dept == 0) {
+                                                $getTotalLaporanNodPelapor->where('nod.IdDepartment','>', 0);
+                                            } else {
+                                                $getTotalLaporanNodPelapor->where('nod.IdDepartment', $dept);
+                                            }
+                                        })
                                         ->get();
 
             $countTotalStatusTimeQa = [];
             $countTotalStatusTimeDept = [];
             foreach ($getTotalLaporanNodPelapor as $key => $val) {
-                $this->logger->info($val->StatusTimeQA);
+                
                 if($val->StatusTimeQA !== null) { 
                     array_push($countTotalStatusTimeQa, count((array)$val->StatusTimeQA));
                 }
@@ -1766,12 +1973,28 @@ class DashboardControll extends Controller
                             ->select('nod.StatusTimeDept')
                             ->whereIN('nod.StatusTimeDept', [1,2])
                             ->where('nod.Actived', 1)
+                            ->whereYear('nod.Date', $getCurrentYear)
+                            ->where(function($getStatusTimeDeptData) use ($dept) {
+                                if($dept == 0) {
+                                    $getStatusTimeDeptData->where('nod.IdDepartment','>', 0);
+                                } else {
+                                    $getStatusTimeDeptData->where('nod.IdDepartment', $dept);
+                                }
+                            })
                             ->get();
     
             $getStatusTimeQaData = DB::table('nod_report as nod') 
                             ->select('nod.StatusTimeQA')
                             ->whereIN('nod.StatusTimeQA', [1,2])
                             ->where('nod.Actived', 1)
+                            ->whereYear('nod.Date', $getCurrentYear)
+                            ->where(function($getStatusTimeQaData) use ($dept) {
+                                if($dept == 0) {
+                                    $getStatusTimeQaData->where('nod.IdDepartment','>', 0);
+                                } else {
+                                    $getStatusTimeQaData->where('nod.IdDepartment', $dept);
+                                }
+                            })
                             ->get();
             
             $nodOntimeDept = [];
@@ -1803,12 +2026,24 @@ class DashboardControll extends Controller
                 round(count($nodOntimeQa) / (count($countTotalStatusTimeQa) ?: 1 ) * 100, 2),
                 round(count($nodDelayQa) / (count($countTotalStatusTimeQa) ?: 1 ) * 100, 2),
             ]; 
+
+            $setRawDataTimeDept = [
+                'onTime' => count($nodOntimeDept),
+                'delay'  => count($nodDelayDept)
+            ];
+
+            $setRawDataTimeQa = [
+                'onTime' => count($nodOntimeQa),
+                'delay'  => count($nodDelayQa)
+            ];
            
         }
         
         return response()->json([
             'setDataTimeDept' => $setDataTimeDept,
-            'setDataTimeQA' => $setDataTimeQa
+            'setDataTimeQA' => $setDataTimeQa,
+            'setRawDataTimeDept' => $setRawDataTimeDept,
+            'setRawDataTimeQa' => $setRawDataTimeQa
         ]);
         
     }

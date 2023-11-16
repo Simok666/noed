@@ -7,61 +7,67 @@
       </h4>
     </div>
     <div class="row" v-if="idDepartment == 67 && accessTable[0]">
-      <div class="col-6">
+      <div class="col-4">
         <b-card no-body class="mb-4">
           <b-card-header header-tag="h6" class="with-elements">
-            <div class="col-md-3">
-              <div class="card-header-title-report">Total Laporan NOE</div>
+            <div class="col-md-4">
+              <div class="card-header-title-report">Total NOE</div>
               <div class="card-child-title">
                 {{dataNoe.total_laporan}}
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="card-header-title-report">NOE Open</div>
-              <div class="card-child-title">
+            <div class="col-md-4">
+              <div class="card-header-title-report text-danger">NOE Open</div>
+              <div class="card-child-title text-danger">
                 {{dataNoe.is_open_laporan}}
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="card-header-title-report">NOE Ongoing</div>
-              <div class="card-child-title">
-                {{dataNoe.is_ongoing_laporan}}
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card-header-title-report">NOE Closed</div>
-              <div class="card-child-title">
+            <div class="col-md-4">
+              <div class="card-header-title-report text-success">NOE Closed</div>
+              <div class="card-child-title text-success">
                 {{dataNoe.is_closed_laporan}}
               </div>
             </div>
           </b-card-header>
         </b-card>
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <b-card no-body class="mb-4">
           <b-card-header header-tag="h6" class="with-elements">
-            <div class="col-md-3">
-              <div class="card-header-title-report">Total Laporan NOD</div>
+            <div class="col-md-4">
+              <div class="card-header-title-report">Total NOD</div>
               <div class="card-child-title">
                 {{dataNod.total_laporan_nod}}
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="card-header-title-report">NOD Open</div>
-              <div class="card-child-title">
+            <div class="col-md-4">
+              <div class="card-header-title-report text-danger">NOD Open</div>
+              <div class="card-child-title text-danger">
                 {{dataNod.is_open_laporan_nod}}
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="card-header-title-report">NOD Ongoing</div>
-              <div class="card-child-title">
-                {{dataNod.is_ongoing_laporan_nod}}
+            <div class="col-md-4">
+              <div class="card-header-title-report text-success">NOD Closed</div>
+              <div class="card-child-title text-success">
+                {{dataNod.is_closed_laporan_nod}}
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="card-header-title-report">NOD Closed</div>
+          </b-card-header>
+        </b-card>
+      </div>
+      <div class="col-4">
+        <b-card no-body class="mb-4">
+          <b-card-header header-tag="h6" class="with-elements">
+            <div class="col-md-6">
+              <div class="card-header-title-report">NOE Drafting</div>
               <div class="card-child-title">
-                {{dataNod.is_closed_laporan_nod}}
+                {{dataNoe.is_ongoing_laporan}}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card-header-title-report">NOD Drafting</div>
+              <div class="card-child-title">
+                {{dataNod.is_ongoing_laporan_nod}}
               </div>
             </div>
           </b-card-header>
@@ -104,6 +110,34 @@
       </div>
     </div>
 
+    <b-form-row v-if="idDepartment == 67 && accessTable[0]">
+      <b-form-group class="col-md-4 float-right">
+        <label class="form-label">Departemen</label>
+        <multiselect
+          v-model="Department"
+          :options="opsDepartment"
+          :allow-empty="false"
+          placeholder="Pilih Department"
+          label="Department"
+          track-by="Department"
+          @input="onChangeDept" />
+      </b-form-group>
+
+      <b-form-group class="col-md-2 float-right">
+        <label class="form-label">Tahun</label>
+        <multiselect
+          v-model="allYear"
+          :options="opsYear"
+          :allow-empty="false"
+          placeholder="Pilih Tahun"
+          selectLabel=""
+          deselectLabel=""
+          label="text"
+          track-by="text"
+          @input="onChangeAllYear" />
+      </b-form-group>
+    </b-form-row>
+
     <div class="row" v-if="idDepartment == 67 && accessTable[0]">
       <div class="col-4">
         <b-card no-body class="mb-4">
@@ -112,6 +146,17 @@
           </b-card-header>
           <div class="mx-4 my-4">
             <doughnut-chart :chart-data="datacollection_level_noe"/>
+            <b-form-row>
+              <div class="col-xs-4">
+                <label style="color: #6adffc ;">Minor : {{ rawDataLevel.minor }}</label>
+              </div>
+              <div class="col-xs-4">
+                <label style="color: #ffb554 ;">Major : {{ rawDataLevel.major }}</label>
+              </div>
+              <div class="col-xs-4">
+                <label style="color: #bdbbb9 ;">Critical : {{ rawDataLevel.critical }}</label>
+              </div>
+            </b-form-row>
           </div>
         </b-card>
       </div>
@@ -122,6 +167,14 @@
           </b-card-header>
           <div class="mx-4 my-4">
             <doughnut-chart :chart-data="datacollection_bets_category"/>
+            <b-form-row>
+              <div class="col-xs-6">
+                <label style="color: #6adffc ;">Bets : {{ rawDataBets.bets }}</label>
+              </div>
+              <div class="col-xs-6">
+                <label style="color: #ffb554 ;">NonBets : {{ rawDataBets.nonBets }}</label>
+              </div>
+            </b-form-row>
           </div>
         </b-card>
       </div>
@@ -141,7 +194,7 @@
       <div class="col-6">
         <b-card no-body class="mb-4">
           <b-card-header header-tag="h6" class="with-elements">
-            <div class="card-header-title">{{noeNodStatusReport}} Report Completeness</div>
+            <div class="card-header-title">{{noeNodStatusReport.text}} Report Completeness</div>
               <b-row class="card-header-elements ml-auto">
                 <b-col cols="auto">
                   <multiselect
@@ -162,12 +215,26 @@
                   <b>Status Time Dept</b>
                 </p>
                 <doughnut-chart :chart-data="datacollection_data_timeDept"/>
+                <div class="row" style="justify-content: center;">
+                  <div class="col-xs-12">
+                    <label>Status Time Dept :</label> <br/>
+                    <label style="color: #ffb554;">Ontime : {{rawDataTimeDept.onTime}}</label><br/>
+                    <label style="color: #3e95cd;">Delay  : {{rawDataTimeDept.delay}}</label>
+                  </div>
+                </div>
               </div>
               <div class="col-md-6">
                 <p class="text-center">
                   <b>Status Time QA</b>
                 </p>
                 <doughnut-chart :chart-data="datacollection_data_timeQa"/>
+                <div class="row" style="justify-content: center;">
+                  <div class="col-xs-12">
+                    <label>Status Time QA :</label> <br/>
+                    <label style="color: #ffb554;">Ontime : {{rawDataTimeQa.onTime}}</label> <br/>
+                    <label style="color: #3e95cd;">Delay  : {{rawDataTimeQa.delay}}</label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -196,34 +263,6 @@
         </b-card>
       </div>
     </div>
-
-    <b-form-row v-if="idDepartment == 67 && accessTable[0]">
-      <b-form-group class="col-md-4 float-right">
-        <label class="form-label">Departemen</label>
-        <multiselect
-          v-model="Department"
-          :options="opsDepartment"
-          :allow-empty="false"
-          placeholder="Pilih Department"
-          label="Department"
-          track-by="Department"
-          @input="onChangeDept" />
-      </b-form-group>
-
-      <b-form-group class="col-md-2 float-right">
-        <label class="form-label">Tahun</label>
-        <multiselect
-          v-model="allYear"
-          :options="opsYear"
-          :allow-empty="false"
-          placeholder="Pilih Tahun"
-          selectLabel=""
-          deselectLabel=""
-          label="text"
-          track-by="text"
-          @input="onChangeAllYear" />
-      </b-form-group>
-    </b-form-row>
 
     <div class="row" v-if="accessTable[0]">
       <div class="col-12">
@@ -871,7 +910,13 @@ export default {
       setDataBets: [],
       dataOpen: [],
       dataClosed: [],
-      dataOngoing: []
+      dataOngoing: [],
+      rawDataLevel : [],
+      rawDataBets : [],
+      rawDataTimeDept: [],
+      rawDataTimeQa: [],
+      getDeptFilter: null,
+      getYearFilter: null
     }
   },
   methods: {
@@ -916,7 +961,7 @@ export default {
         datasets : [{
           type: 'bar',
           borderWidth: 1,
-          label: 'Ongoing',
+          label: 'Drafting',
           borderColor:  '#6ded8f',
           backgroundColor: '#6ded8f',
           data: [
@@ -1219,7 +1264,7 @@ export default {
     },
     onChangeStatusReport(option) {
       if(option) {
-        this.noeNodStatusReport = option.text
+        // this.noeNodStatusReport = option.text
         this.getDelayOntimeData(option.value)
       } 
     }, 
@@ -1249,7 +1294,7 @@ export default {
       }.bind(this))
     },
 
-    onChangeDept () {
+    onChangeDept (option) {
       var yearNow = moment(new Date()).format('YYYY')
       this.allYear = this.opsYear.find(val => val.value == yearNow )
       this.unitYear = this.opsYear.find(val => val.value == yearNow )
@@ -1261,13 +1306,21 @@ export default {
       this.UnitChartYear = this.opsYear.find(val => val.value == yearNow )
       this.UnitSortYear = this.opsYear.find(val => val.value == yearNow )
       this.ParetoChartYear = this.opsYear.find(val => val.value == yearNow )
+      this.getDeptFilter = option.Id
 
       this.getLocation(null, this.allYear.value)
       this.getStatusNOE(this.allYear.value)
       this.getStatusNOD(this.allYear.value)
       this.getStatusTimeNOE()
+      this.getLevelNoe()
+      this.getCategoryBets()
+      this.getStatusNoeNod()
+      this.getAvarageData()
+      this.getDelayOntimeData()
       this.getStatusTimeNOD(this.allYear.value)
       this.getDeviationLevel(this.allYear.value)
+     
+      
     },
 
     onChangeAllYear (option) {
@@ -1281,11 +1334,17 @@ export default {
       this.UnitChartYear = this.opsYear.find(val => val.value == yearNow )
       this.UnitSortYear = this.opsYear.find(val => val.value == yearNow )
       this.ParetoChartYear = this.opsYear.find(val => val.value == yearNow )
-
+      this.getYearFilter = option.value
+      
       this.getLocation(null, this.allYear.value)
       this.getStatusNOE(this.allYear.value)
       this.getStatusNOD(this.allYear.value)
       this.getStatusTimeNOE()
+      this.getLevelNoe()
+      this.getCategoryBets()
+      this.getStatusNoeNod()
+      this.getAvarageData()
+      this.getDelayOntimeData()
       this.getStatusTimeNOD(this.allYear.value)
       this.getDeviationLevel(this.allYear.value)
     },
@@ -1312,12 +1371,18 @@ export default {
     },
 
     getLevelNoe () {
-      axios.post('/AdminVue/dashboard-get-data-noe-level')
+      axios.post('/AdminVue/dashboard-get-data-noe-level',{
+        year : this.allYear,
+        department : this.Department.Id
+      })
       .then( function (res) {
         let response = res.data
+        
         this.dataLavel = response.dataLavel
         this.levelColor = response.levelColor
         this.setDataValue = response.setDataValue
+        this.rawDataLevel = response.rawData
+        
         this.levelNoe(this.dataLavel, this.levelColor, this.setDataValue)
       }.bind(this))
        .catch( function (e) {
@@ -1327,12 +1392,16 @@ export default {
     },
 
     getCategoryBets () {
-      axios.post('/AdminVue/dashboard-get-data-bets-category')
+      axios.post('/AdminVue/dashboard-get-data-bets-category', {
+        year : this.allYear,
+        department : this.Department.Id
+      })
       .then( function (res) {
         let response = res.data
         this.databets = response.databets
         this.betscolor = response.betscolor
         this.setDataBets = response.setDataValue
+        this.rawDataBets = response.rawData
         this.betCategory(this.databets, this.betscolor, this.setDataBets)
       }.bind(this))
        .catch( function (e) {
@@ -1342,7 +1411,9 @@ export default {
 
     getStatusNoeNod (status = 'noe') {
       axios.post('/AdminVue/dashboard-get-status-noe-nod', {
-        status : status
+        status : status,
+        year : this.allYear,
+        department : this.Department.Id
       })
       .then( function (res) {
         
@@ -1359,7 +1430,10 @@ export default {
     },
 
     getAvarageData () {
-      axios.post('/AdminVue/dashboard-get-avarage-data')
+      axios.post('/AdminVue/dashboard-get-avarage-data', {
+        year : this.allYear,
+        department : this.Department.Id
+      })
       .then( function (res) {
         let response = res.data
         this.countingDaysApproval(response.noePublishToQash, response.noeQashToQadh, response.QadhNoeToQashNod, response.QashNodToQadhNod)
@@ -1371,11 +1445,14 @@ export default {
 
     getDelayOntimeData (status = 'noe') {
       axios.post('/AdminVue/dashboard-get-delay-ontime-data', {
-        status : status
+        status : status,
+        year : this.allYear,
+        department : this.Department.Id
       })
       .then ( function (res) {
         let response = res.data
-        
+        this.rawDataTimeDept = response.setRawDataTimeDept
+        this.rawDataTimeQa = response.setRawDataTimeQa
         this.statusTimeQAData(response.setDataTimeQA)
         this.statusTimeDeptData(response.setDataTimeDept)
       }.bind(this))

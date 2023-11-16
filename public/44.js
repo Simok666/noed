@@ -253,7 +253,13 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
       setDataBets: [],
       dataOpen: [],
       dataClosed: [],
-      dataOngoing: []
+      dataOngoing: [],
+      rawDataLevel: [],
+      rawDataBets: [],
+      rawDataTimeDept: [],
+      rawDataTimeQa: [],
+      getDeptFilter: null,
+      getYearFilter: null
     };
   },
   methods: {
@@ -285,7 +291,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
         datasets: [{
           type: 'bar',
           borderWidth: 1,
-          label: 'Ongoing',
+          label: 'Drafting',
           borderColor: '#6ded8f',
           backgroundColor: '#6ded8f',
           data: [dataOngoing.January, dataOngoing.February, dataOngoing.March, dataOngoing.April, dataOngoing.May, dataOngoing.June, dataOngoing.July, dataOngoing.August, dataOngoing.September, dataOngoing.October, dataOngoing.November, dataOngoing.December],
@@ -532,7 +538,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
     },
     onChangeStatusReport: function onChangeStatusReport(option) {
       if (option) {
-        this.noeNodStatusReport = option.text;
+        // this.noeNodStatusReport = option.text
         this.getDelayOntimeData(option.value);
       }
     },
@@ -577,7 +583,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
         console.log(e);
       }.bind(this));
     },
-    onChangeDept: function onChangeDept() {
+    onChangeDept: function onChangeDept(option) {
       var yearNow = moment__WEBPACK_IMPORTED_MODULE_9___default()(new Date()).format('YYYY');
       this.allYear = this.opsYear.find(function (val) {
         return val.value == yearNow;
@@ -609,10 +615,16 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
       this.ParetoChartYear = this.opsYear.find(function (val) {
         return val.value == yearNow;
       });
+      this.getDeptFilter = option.Id;
       this.getLocation(null, this.allYear.value);
       this.getStatusNOE(this.allYear.value);
       this.getStatusNOD(this.allYear.value);
       this.getStatusTimeNOE();
+      this.getLevelNoe();
+      this.getCategoryBets();
+      this.getStatusNoeNod();
+      this.getAvarageData();
+      this.getDelayOntimeData();
       this.getStatusTimeNOD(this.allYear.value);
       this.getDeviationLevel(this.allYear.value);
     },
@@ -645,10 +657,16 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
       this.ParetoChartYear = this.opsYear.find(function (val) {
         return val.value == yearNow;
       });
+      this.getYearFilter = option.value;
       this.getLocation(null, this.allYear.value);
       this.getStatusNOE(this.allYear.value);
       this.getStatusNOD(this.allYear.value);
       this.getStatusTimeNOE();
+      this.getLevelNoe();
+      this.getCategoryBets();
+      this.getStatusNoeNod();
+      this.getAvarageData();
+      this.getDelayOntimeData();
       this.getStatusTimeNOD(this.allYear.value);
       this.getDeviationLevel(this.allYear.value);
     },
@@ -668,22 +686,30 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
       }.bind(this));
     },
     getLevelNoe: function getLevelNoe() {
-      axios.post('/AdminVue/dashboard-get-data-noe-level').then(function (res) {
+      axios.post('/AdminVue/dashboard-get-data-noe-level', {
+        year: this.allYear,
+        department: this.Department.Id
+      }).then(function (res) {
         var response = res.data;
         this.dataLavel = response.dataLavel;
         this.levelColor = response.levelColor;
         this.setDataValue = response.setDataValue;
+        this.rawDataLevel = response.rawData;
         this.levelNoe(this.dataLavel, this.levelColor, this.setDataValue);
       }.bind(this))["catch"](function (e) {
         console.log(e);
       }.bind(this));
     },
     getCategoryBets: function getCategoryBets() {
-      axios.post('/AdminVue/dashboard-get-data-bets-category').then(function (res) {
+      axios.post('/AdminVue/dashboard-get-data-bets-category', {
+        year: this.allYear,
+        department: this.Department.Id
+      }).then(function (res) {
         var response = res.data;
         this.databets = response.databets;
         this.betscolor = response.betscolor;
         this.setDataBets = response.setDataValue;
+        this.rawDataBets = response.rawData;
         this.betCategory(this.databets, this.betscolor, this.setDataBets);
       }.bind(this))["catch"](function (e) {
         console.log(e);
@@ -692,7 +718,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
     getStatusNoeNod: function getStatusNoeNod() {
       var status = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'noe';
       axios.post('/AdminVue/dashboard-get-status-noe-nod', {
-        status: status
+        status: status,
+        year: this.allYear,
+        department: this.Department.Id
       }).then(function (res) {
         var response = res.data;
         this.dataOpen = response.dataOpen;
@@ -704,7 +732,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
       }.bind(this));
     },
     getAvarageData: function getAvarageData() {
-      axios.post('/AdminVue/dashboard-get-avarage-data').then(function (res) {
+      axios.post('/AdminVue/dashboard-get-avarage-data', {
+        year: this.allYear,
+        department: this.Department.Id
+      }).then(function (res) {
         var response = res.data;
         this.countingDaysApproval(response.noePublishToQash, response.noeQashToQadh, response.QadhNoeToQashNod, response.QashNodToQadhNod);
       }.bind(this))["catch"](function (e) {
@@ -714,9 +745,13 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
     getDelayOntimeData: function getDelayOntimeData() {
       var status = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'noe';
       axios.post('/AdminVue/dashboard-get-delay-ontime-data', {
-        status: status
+        status: status,
+        year: this.allYear,
+        department: this.Department.Id
       }).then(function (res) {
         var response = res.data;
+        this.rawDataTimeDept = response.setRawDataTimeDept;
+        this.rawDataTimeQa = response.setRawDataTimeQa;
         this.statusTimeQAData(response.setDataTimeQA);
         this.statusTimeDeptData(response.setDataTimeDept);
       }.bind(this));
@@ -797,7 +832,7 @@ var render = function render() {
   }, [_vm._v(_vm._s(_vm.date))])])])]), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
-    staticClass: "col-6"
+    staticClass: "col-4"
   }, [_c("b-card", {
     staticClass: "mb-4",
     attrs: {
@@ -809,31 +844,25 @@ var render = function render() {
       "header-tag": "h6"
     }
   }, [_c("div", {
-    staticClass: "col-md-3"
+    staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "card-header-title-report"
-  }, [_vm._v("Total Laporan NOE")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Total NOE")]), _vm._v(" "), _c("div", {
     staticClass: "card-child-title"
   }, [_vm._v("\n              " + _vm._s(_vm.dataNoe.total_laporan) + "\n            ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-3"
+    staticClass: "col-md-4"
   }, [_c("div", {
-    staticClass: "card-header-title-report"
+    staticClass: "card-header-title-report text-danger"
   }, [_vm._v("NOE Open")]), _vm._v(" "), _c("div", {
-    staticClass: "card-child-title"
+    staticClass: "card-child-title text-danger"
   }, [_vm._v("\n              " + _vm._s(_vm.dataNoe.is_open_laporan) + "\n            ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-3"
+    staticClass: "col-md-4"
   }, [_c("div", {
-    staticClass: "card-header-title-report"
-  }, [_vm._v("NOE Ongoing")]), _vm._v(" "), _c("div", {
-    staticClass: "card-child-title"
-  }, [_vm._v("\n              " + _vm._s(_vm.dataNoe.is_ongoing_laporan) + "\n            ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-3"
-  }, [_c("div", {
-    staticClass: "card-header-title-report"
+    staticClass: "card-header-title-report text-success"
   }, [_vm._v("NOE Closed")]), _vm._v(" "), _c("div", {
-    staticClass: "card-child-title"
+    staticClass: "card-child-title text-success"
   }, [_vm._v("\n              " + _vm._s(_vm.dataNoe.is_closed_laporan) + "\n            ")])])])], 1)], 1), _vm._v(" "), _c("div", {
-    staticClass: "col-6"
+    staticClass: "col-4"
   }, [_c("b-card", {
     staticClass: "mb-4",
     attrs: {
@@ -845,30 +874,48 @@ var render = function render() {
       "header-tag": "h6"
     }
   }, [_c("div", {
-    staticClass: "col-md-3"
+    staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "card-header-title-report"
-  }, [_vm._v("Total Laporan NOD")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Total NOD")]), _vm._v(" "), _c("div", {
     staticClass: "card-child-title"
   }, [_vm._v("\n              " + _vm._s(_vm.dataNod.total_laporan_nod) + "\n            ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-3"
+    staticClass: "col-md-4"
   }, [_c("div", {
-    staticClass: "card-header-title-report"
+    staticClass: "card-header-title-report text-danger"
   }, [_vm._v("NOD Open")]), _vm._v(" "), _c("div", {
-    staticClass: "card-child-title"
+    staticClass: "card-child-title text-danger"
   }, [_vm._v("\n              " + _vm._s(_vm.dataNod.is_open_laporan_nod) + "\n            ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-3"
+    staticClass: "col-md-4"
   }, [_c("div", {
-    staticClass: "card-header-title-report"
-  }, [_vm._v("NOD Ongoing")]), _vm._v(" "), _c("div", {
-    staticClass: "card-child-title"
-  }, [_vm._v("\n              " + _vm._s(_vm.dataNod.is_ongoing_laporan_nod) + "\n            ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-3"
-  }, [_c("div", {
-    staticClass: "card-header-title-report"
+    staticClass: "card-header-title-report text-success"
   }, [_vm._v("NOD Closed")]), _vm._v(" "), _c("div", {
+    staticClass: "card-child-title text-success"
+  }, [_vm._v("\n              " + _vm._s(_vm.dataNod.is_closed_laporan_nod) + "\n            ")])])])], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-4"
+  }, [_c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      "no-body": ""
+    }
+  }, [_c("b-card-header", {
+    staticClass: "with-elements",
+    attrs: {
+      "header-tag": "h6"
+    }
+  }, [_c("div", {
+    staticClass: "col-md-6"
+  }, [_c("div", {
+    staticClass: "card-header-title-report"
+  }, [_vm._v("NOE Drafting")]), _vm._v(" "), _c("div", {
     staticClass: "card-child-title"
-  }, [_vm._v("\n              " + _vm._s(_vm.dataNod.is_closed_laporan_nod) + "\n            ")])])])], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.accessTable[6] ? _c("div", {
+  }, [_vm._v("\n              " + _vm._s(_vm.dataNoe.is_ongoing_laporan) + "\n            ")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6"
+  }, [_c("div", {
+    staticClass: "card-header-title-report"
+  }, [_vm._v("NOD Drafting")]), _vm._v(" "), _c("div", {
+    staticClass: "card-child-title"
+  }, [_vm._v("\n              " + _vm._s(_vm.dataNod.is_ongoing_laporan_nod) + "\n            ")])])])], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.accessTable[6] ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -937,172 +984,6 @@ var render = function render() {
       dataformat: _vm.dataFormat,
       dataSource: _vm.dataSource
     }
-  })], 1)], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-4"
-  }, [_c("b-card", {
-    staticClass: "mb-4",
-    attrs: {
-      "no-body": ""
-    }
-  }, [_c("b-card-header", {
-    staticClass: "with-elements",
-    attrs: {
-      "header-tag": "h6"
-    }
-  }, [_c("div", {
-    staticClass: "card-header-title"
-  }, [_vm._v("Level NOE")])]), _vm._v(" "), _c("div", {
-    staticClass: "mx-4 my-4"
-  }, [_c("doughnut-chart", {
-    attrs: {
-      "chart-data": _vm.datacollection_level_noe
-    }
-  })], 1)], 1)], 1), _vm._v(" "), _c("div", {
-    staticClass: "col-4"
-  }, [_c("b-card", {
-    staticClass: "mb-4",
-    attrs: {
-      "no-body": ""
-    }
-  }, [_c("b-card-header", {
-    staticClass: "with-elements",
-    attrs: {
-      "header-tag": "h6"
-    }
-  }, [_c("div", {
-    staticClass: "card-header-title"
-  }, [_vm._v("Kategori NOE")])]), _vm._v(" "), _c("div", {
-    staticClass: "mx-4 my-4"
-  }, [_c("doughnut-chart", {
-    attrs: {
-      "chart-data": _vm.datacollection_bets_category
-    }
-  })], 1)], 1)], 1), _vm._v(" "), _c("div", {
-    staticClass: "col-4"
-  }, [_c("b-card", {
-    staticClass: "mb-4",
-    attrs: {
-      "no-body": ""
-    }
-  }, [_c("b-card-header", {
-    staticClass: "with-elements",
-    attrs: {
-      "header-tag": "h6"
-    }
-  }, [_c("div", {
-    staticClass: "card-header-title"
-  }, [_vm._v("Perhitungan Hari Approval (AVG)")])]), _vm._v(" "), _c("div", {
-    staticClass: "mx-4 my-4"
-  }, [_c("bar-chart", {
-    attrs: {
-      "chart-data": _vm.datacollection_perhitungan_hari
-    }
-  })], 1)], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-6"
-  }, [_c("b-card", {
-    staticClass: "mb-4",
-    attrs: {
-      "no-body": ""
-    }
-  }, [_c("b-card-header", {
-    staticClass: "with-elements",
-    attrs: {
-      "header-tag": "h6"
-    }
-  }, [_c("div", {
-    staticClass: "card-header-title"
-  }, [_vm._v(_vm._s(_vm.noeNodStatusReport) + " Report Completeness")]), _vm._v(" "), _c("b-row", {
-    staticClass: "card-header-elements ml-auto"
-  }, [_c("b-col", {
-    attrs: {
-      cols: "auto"
-    }
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.opsStatusReport,
-      "allow-empty": true,
-      placeholder: "Pilih NOE/NOD",
-      label: "text",
-      "track-by": "text"
-    },
-    on: {
-      input: _vm.onChangeStatusReport
-    },
-    model: {
-      value: _vm.noeNodStatusReport,
-      callback: function callback($$v) {
-        _vm.noeNodStatusReport = $$v;
-      },
-      expression: "noeNodStatusReport"
-    }
-  })], 1)], 1)], 1), _vm._v(" "), _c("div", {
-    staticClass: "mx-4 my-4"
-  }, [_c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-md-6"
-  }, [_c("p", {
-    staticClass: "text-center"
-  }, [_c("b", [_vm._v("Status Time Dept")])]), _vm._v(" "), _c("doughnut-chart", {
-    attrs: {
-      "chart-data": _vm.datacollection_data_timeDept
-    }
-  })], 1), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6"
-  }, [_c("p", {
-    staticClass: "text-center"
-  }, [_c("b", [_vm._v("Status Time QA")])]), _vm._v(" "), _c("doughnut-chart", {
-    attrs: {
-      "chart-data": _vm.datacollection_data_timeQa
-    }
-  })], 1)])])], 1)], 1), _vm._v(" "), _c("div", {
-    staticClass: "col-6"
-  }, [_c("b-card", {
-    staticClass: "mb-4",
-    attrs: {
-      "no-body": ""
-    }
-  }, [_c("b-card-header", {
-    staticClass: "with-elements",
-    attrs: {
-      "header-tag": "h6"
-    }
-  }, [_c("div", {
-    staticClass: "card-header-title"
-  }, [_vm._v("NOE NOD status")]), _vm._v(" "), _c("b-row", {
-    staticClass: "card-header-elements ml-auto"
-  }, [_c("b-col", {
-    attrs: {
-      cols: "auto"
-    }
-  }, [_c("multiselect", {
-    attrs: {
-      options: _vm.opsStatus,
-      "allow-empty": true,
-      placeholder: "Pilih NOE/NOD",
-      label: "text",
-      "track-by": "text"
-    },
-    on: {
-      input: _vm.onChangeStatus
-    },
-    model: {
-      value: _vm.noeNodStatus,
-      callback: function callback($$v) {
-        _vm.noeNodStatus = $$v;
-      },
-      expression: "noeNodStatus"
-    }
-  })], 1)], 1)], 1), _vm._v(" "), _c("div", {
-    staticClass: "mx-4 my-4"
-  }, [_c("bar-chart", {
-    attrs: {
-      "chart-data": _vm.datacollection_noenod_status
-    }
   })], 1)], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-4 float-right"
   }, [_c("label", {
@@ -1149,7 +1030,233 @@ var render = function render() {
       },
       expression: "allYear"
     }
-  })], 1)], 1) : _vm._e(), _vm._v(" "), _vm.accessTable[0] ? _c("div", {
+  })], 1)], 1) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-4"
+  }, [_c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      "no-body": ""
+    }
+  }, [_c("b-card-header", {
+    staticClass: "with-elements",
+    attrs: {
+      "header-tag": "h6"
+    }
+  }, [_c("div", {
+    staticClass: "card-header-title"
+  }, [_vm._v("Level NOE")])]), _vm._v(" "), _c("div", {
+    staticClass: "mx-4 my-4"
+  }, [_c("doughnut-chart", {
+    attrs: {
+      "chart-data": _vm.datacollection_level_noe
+    }
+  }), _vm._v(" "), _c("b-form-row", [_c("div", {
+    staticClass: "col-xs-4"
+  }, [_c("label", {
+    staticStyle: {
+      color: "#6adffc"
+    }
+  }, [_vm._v("Minor : " + _vm._s(_vm.rawDataLevel.minor))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-4"
+  }, [_c("label", {
+    staticStyle: {
+      color: "#ffb554"
+    }
+  }, [_vm._v("Major : " + _vm._s(_vm.rawDataLevel.major))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-4"
+  }, [_c("label", {
+    staticStyle: {
+      color: "#bdbbb9"
+    }
+  }, [_vm._v("Critical : " + _vm._s(_vm.rawDataLevel.critical))])])])], 1)], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-4"
+  }, [_c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      "no-body": ""
+    }
+  }, [_c("b-card-header", {
+    staticClass: "with-elements",
+    attrs: {
+      "header-tag": "h6"
+    }
+  }, [_c("div", {
+    staticClass: "card-header-title"
+  }, [_vm._v("Kategori NOE")])]), _vm._v(" "), _c("div", {
+    staticClass: "mx-4 my-4"
+  }, [_c("doughnut-chart", {
+    attrs: {
+      "chart-data": _vm.datacollection_bets_category
+    }
+  }), _vm._v(" "), _c("b-form-row", [_c("div", {
+    staticClass: "col-xs-6"
+  }, [_c("label", {
+    staticStyle: {
+      color: "#6adffc"
+    }
+  }, [_vm._v("Bets : " + _vm._s(_vm.rawDataBets.bets))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-6"
+  }, [_c("label", {
+    staticStyle: {
+      color: "#ffb554"
+    }
+  }, [_vm._v("NonBets : " + _vm._s(_vm.rawDataBets.nonBets))])])])], 1)], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-4"
+  }, [_c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      "no-body": ""
+    }
+  }, [_c("b-card-header", {
+    staticClass: "with-elements",
+    attrs: {
+      "header-tag": "h6"
+    }
+  }, [_c("div", {
+    staticClass: "card-header-title"
+  }, [_vm._v("Perhitungan Hari Approval (AVG)")])]), _vm._v(" "), _c("div", {
+    staticClass: "mx-4 my-4"
+  }, [_c("bar-chart", {
+    attrs: {
+      "chart-data": _vm.datacollection_perhitungan_hari
+    }
+  })], 1)], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-6"
+  }, [_c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      "no-body": ""
+    }
+  }, [_c("b-card-header", {
+    staticClass: "with-elements",
+    attrs: {
+      "header-tag": "h6"
+    }
+  }, [_c("div", {
+    staticClass: "card-header-title"
+  }, [_vm._v(_vm._s(_vm.noeNodStatusReport.text) + " Report Completeness")]), _vm._v(" "), _c("b-row", {
+    staticClass: "card-header-elements ml-auto"
+  }, [_c("b-col", {
+    attrs: {
+      cols: "auto"
+    }
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.opsStatusReport,
+      "allow-empty": true,
+      placeholder: "Pilih NOE/NOD",
+      label: "text",
+      "track-by": "text"
+    },
+    on: {
+      input: _vm.onChangeStatusReport
+    },
+    model: {
+      value: _vm.noeNodStatusReport,
+      callback: function callback($$v) {
+        _vm.noeNodStatusReport = $$v;
+      },
+      expression: "noeNodStatusReport"
+    }
+  })], 1)], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "mx-4 my-4"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-6"
+  }, [_c("p", {
+    staticClass: "text-center"
+  }, [_c("b", [_vm._v("Status Time Dept")])]), _vm._v(" "), _c("doughnut-chart", {
+    attrs: {
+      "chart-data": _vm.datacollection_data_timeDept
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "row",
+    staticStyle: {
+      "justify-content": "center"
+    }
+  }, [_c("div", {
+    staticClass: "col-xs-12"
+  }, [_c("label", [_vm._v("Status Time Dept :")]), _vm._v(" "), _c("br"), _vm._v(" "), _c("label", {
+    staticStyle: {
+      color: "#ffb554"
+    }
+  }, [_vm._v("Ontime : " + _vm._s(_vm.rawDataTimeDept.onTime))]), _c("br"), _vm._v(" "), _c("label", {
+    staticStyle: {
+      color: "#3e95cd"
+    }
+  }, [_vm._v("Delay  : " + _vm._s(_vm.rawDataTimeDept.delay))])])])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6"
+  }, [_c("p", {
+    staticClass: "text-center"
+  }, [_c("b", [_vm._v("Status Time QA")])]), _vm._v(" "), _c("doughnut-chart", {
+    attrs: {
+      "chart-data": _vm.datacollection_data_timeQa
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "row",
+    staticStyle: {
+      "justify-content": "center"
+    }
+  }, [_c("div", {
+    staticClass: "col-xs-12"
+  }, [_c("label", [_vm._v("Status Time QA :")]), _vm._v(" "), _c("br"), _vm._v(" "), _c("label", {
+    staticStyle: {
+      color: "#ffb554"
+    }
+  }, [_vm._v("Ontime : " + _vm._s(_vm.rawDataTimeQa.onTime))]), _vm._v(" "), _c("br"), _vm._v(" "), _c("label", {
+    staticStyle: {
+      color: "#3e95cd"
+    }
+  }, [_vm._v("Delay  : " + _vm._s(_vm.rawDataTimeQa.delay))])])])], 1)])])], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-6"
+  }, [_c("b-card", {
+    staticClass: "mb-4",
+    attrs: {
+      "no-body": ""
+    }
+  }, [_c("b-card-header", {
+    staticClass: "with-elements",
+    attrs: {
+      "header-tag": "h6"
+    }
+  }, [_c("div", {
+    staticClass: "card-header-title"
+  }, [_vm._v("NOE NOD status")]), _vm._v(" "), _c("b-row", {
+    staticClass: "card-header-elements ml-auto"
+  }, [_c("b-col", {
+    attrs: {
+      cols: "auto"
+    }
+  }, [_c("multiselect", {
+    attrs: {
+      options: _vm.opsStatus,
+      "allow-empty": true,
+      placeholder: "Pilih NOE/NOD",
+      label: "text",
+      "track-by": "text"
+    },
+    on: {
+      input: _vm.onChangeStatus
+    },
+    model: {
+      value: _vm.noeNodStatus,
+      callback: function callback($$v) {
+        _vm.noeNodStatus = $$v;
+      },
+      expression: "noeNodStatus"
+    }
+  })], 1)], 1)], 1), _vm._v(" "), _c("div", {
+    staticClass: "mx-4 my-4"
+  }, [_c("bar-chart", {
+    attrs: {
+      "chart-data": _vm.datacollection_noenod_status
+    }
+  })], 1)], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.accessTable[0] ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-12"
