@@ -66,6 +66,12 @@ __webpack_require__.r(__webpack_exports__);
         titleClass: 'text-center',
         dataClass: 'text-center'
       }, {
+        name: 'LocationColor',
+        sortField: 'lct.LocationColor',
+        title: 'Warna Lokasi',
+        titleClass: 'text-center',
+        dataClass: 'text-center'
+      }, {
         name: 'Prefix',
         sortField: 'lct.Prefix',
         title: 'Unit',

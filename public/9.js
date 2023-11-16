@@ -348,7 +348,7 @@ __webpack_require__.r(__webpack_exports__);
           selectedAnotherEffect.forEach(function (item, index) {
             _this3.anotherEffectFile[item.id_effect] = [];
             _this3.oldFileAnotherEffect[item.id_effect] = [];
-            if (item !== false) {
+            if (item !== 'false') {
               _this3.selected = item.selected;
               _this3.checkedEffect[item.id_effect] = item.id_effect;
               _this3.text[item.id_effect] = item.text;

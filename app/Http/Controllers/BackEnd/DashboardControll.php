@@ -57,7 +57,7 @@ class DashboardControll extends Controller
         if($request->filter == "" || $request->filter == null) $request->filter = Carbon::now()->format('Y');
 
         $headerUnit = $this->MainDB->table('location as loc')
-            ->select('loc.Id','loc.Name')
+            ->select('loc.Id','loc.Name','loc.LocationColor')
             ->join('noe_report as noe','noe.IdLocation','=','loc.Id')
             ->where('noe.Actived',1)
             ->where('loc.Actived',1)
@@ -73,6 +73,7 @@ class DashboardControll extends Controller
             ->groupBy('noe.IdLocation')
             ->groupBy('loc.Id')
             ->groupBy('loc.Name')
+            ->groupBy('loc.LocationColor')
             ->get();
 
         // pie chart unit
@@ -274,6 +275,7 @@ class DashboardControll extends Controller
             $arrPareto = [];
             $arrPareto['label'] = $val->Name;
             $arrPareto['value'] = strval($item);
+            $arrPareto['color'] = $val->LocationColor;
             array_push($valPareto, $arrPareto);
             // end pareto chart unit
         }

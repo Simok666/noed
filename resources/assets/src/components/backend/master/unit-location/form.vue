@@ -38,6 +38,12 @@
               />
             <span class="text-danger" v-if="allErrors.Prefix">{{ allErrors.Prefix[0] }}</span>
           </b-form-group>
+          <b-form-group class="col-md-4">
+            <label class="form-label">Warna Lokasi</label>
+            <label class="form-label float-right text-danger">*Wajib Diisi</label>
+            <b-input name="LocationColor" :state="allErrors.LocationColor?false:null" v-model="field.LocationColor" class="mb-1" required/>
+            <span class="text-danger" v-if="allErrors.LocationColor">{{ allErrors.LocationColor[0] }}</span>
+          </b-form-group>
         </b-form-row>
 
         <b-form-row>
@@ -89,6 +95,7 @@ export default {
       formData.append("Id", this.field.Id)
       formData.append("Code", this.field.Code)
       formData.append("Name", this.field.Name)
+      formData.append("LocationColor", this.field.LocationColor)
       if(this.field.Prefix) formData.append("Prefix", JSON.stringify(this.field.Prefix)) 
 
       const config = {
