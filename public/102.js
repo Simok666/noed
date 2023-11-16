@@ -49,6 +49,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("Id", this.field.Id);
       formData.append("Code", this.field.Code);
       formData.append("Name", this.field.Name);
+      formData.append("LocationColor", this.field.LocationColor);
       if (this.field.Prefix) formData.append("Prefix", JSON.stringify(this.field.Prefix));
       var config = {
         headers: {
@@ -225,7 +226,29 @@ var render = function render() {
     }
   }), _vm._v(" "), _vm.allErrors.Prefix ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.Prefix[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+  }, [_vm._v(_vm._s(_vm.allErrors.Prefix[0]))]) : _vm._e()], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-4"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Warna Lokasi")]), _vm._v(" "), _c("label", {
+    staticClass: "form-label float-right text-danger"
+  }, [_vm._v("*Wajib Diisi")]), _vm._v(" "), _c("b-input", {
+    staticClass: "mb-1",
+    attrs: {
+      name: "LocationColor",
+      state: _vm.allErrors.LocationColor ? false : null,
+      required: ""
+    },
+    model: {
+      value: _vm.field.LocationColor,
+      callback: function callback($$v) {
+        _vm.$set(_vm.field, "LocationColor", $$v);
+      },
+      expression: "field.LocationColor"
+    }
+  }), _vm._v(" "), _vm.allErrors.LocationColor ? _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v(_vm._s(_vm.allErrors.LocationColor[0]))]) : _vm._e()], 1)], 1), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-6"
   }), _vm._v(" "), _c("b-form-group", {
     staticClass: "col-md-6",

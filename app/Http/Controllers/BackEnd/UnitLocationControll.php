@@ -34,6 +34,7 @@ class UnitLocationControll extends Controller
                 'lct.Id as id',
                 'lct.Code',
                 'lct.Name',
+                'lct.LocationColor',
                 'lct.Prefix',
                 'usr.UserName as UserEntry',
                 'lct.CreateAt',
@@ -154,6 +155,7 @@ class UnitLocationControll extends Controller
                 ->insert([
                     'Code'=>$request->input('Code'),
                     'Name'=>$request->input('Name'),
+                    'LocationColor' => $request->input('LocationColor'),
                     'Prefix'=>$request->input('Prefix'),
                     'UserEntry'=>session('adminvue')->Id,
                 ]);
@@ -240,6 +242,7 @@ class UnitLocationControll extends Controller
             ->update([
                 'Code'=>$request->input('Code'),
                 'Name'=>$request->input('Name'),
+                'LocationColor' => $request->input('LocationColor'),
                 'Prefix'=>$request->input('Prefix')
             ]);
 
@@ -307,6 +310,7 @@ class UnitLocationControll extends Controller
         return [
             'Code'=>'required',
             'Name'=>'required',
+            'LocationColor' => 'required',
             'Prefix'=>'required',
         ];
     }
