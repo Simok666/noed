@@ -712,10 +712,11 @@ export default {
   
         if(selectedAnotherEffect) {
           selectedAnotherEffect.forEach((item, index) => {
+            
             this.anotherEffectFile[item.id_effect] = []
             this.oldFileAnotherEffect[item.id_effect] = []
 
-            if(item !== false) {
+            if(item !== 'false') {
               this.selected = item.selected
               this.checkedEffect[item.id_effect] = item.id_effect
               this.text[item.id_effect] = item.text

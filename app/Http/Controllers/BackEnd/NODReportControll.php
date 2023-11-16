@@ -1061,13 +1061,13 @@ class NODReportControll extends Controller
             
             if($item->DescAnotherEffect !== null) {
                 $anotherEffect = json_decode($item->DescAnotherEffect);
-               
-                if($anotherEffect[0] === false) {
+                
+                if($anotherEffect[0] == 'false') {
                     array_push($dataAnotherEffect, $anotherEffect[0]);
                 } else {
                     foreach($anotherEffect as $key => $effect) {
                         $anotherEffectFileDownload = [];
-
+                        
                         if($effect !== null) {
                             $effectFileName = $effect->namefile;
 
@@ -1211,17 +1211,22 @@ class NODReportControll extends Controller
             foreach($anotherEffectValidation as $key => $val) {
                 $dateQa = Carbon::now();
 
-                if($val !== null) {
+                if($val !== null && $val !== false) {
                     if(!empty(json_decode($anotherEffectFile))) {
+                        $foundMatchingFile = false;
                         foreach(json_decode($anotherEffectFile) as $keyFile => $valFile) {
-                            foreach($valFile as $subKey => $subVal) {
-                                if($key == $keyFile) {
-                                    $val->namefile[$subKey] = $subVal;
-                                    
+                            if($key == $keyFile) {
+                                $foundMatchingFile = true;
+                                foreach($valFile as $subKey => $subVal) {
+                                    $val->namefile[$subKey] = $subVal; 
                                 }
                             }
-                            
-                           }
+                        }
+
+                        if (!$foundMatchingFile) {
+                            $val->namefile = [];
+                        }
+                        
                     } else {
                         $val->namefile[$key] = [];  
                     }
@@ -1230,6 +1235,7 @@ class NODReportControll extends Controller
 
                 if($val === false) {
                     $val = 'false';
+                    array_push($dataDescAnotherEffect, $val);
                 }
                 $dateTimeQash =  $dateQa->toDateTimeString();
 
@@ -1241,7 +1247,7 @@ class NODReportControll extends Controller
                     ]);
                 }
             }
-
+            
         }
         
         $CAFile = [];
