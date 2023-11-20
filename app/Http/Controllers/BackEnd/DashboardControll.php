@@ -1231,7 +1231,17 @@ class DashboardControll extends Controller
         }
     }
 
-    public function getDataReport() {
+    public function getDataReport(Request $request) {
+        $year = $request->input('year');
+        $dept = $request->input('department');
+        $getCurrentYear = 0;
+        
+        if($year === null) {
+            $getCurrentYear = Carbon::now()->format('Y');
+        } else {
+            $getCurrentYear = $year['text'];
+        }
+
         $dataNoe = [];
 
         $getTotalLaporanNoe = DB::table('noe_report as noe')
@@ -1242,18 +1252,42 @@ class DashboardControll extends Controller
                     ->select('*')
                     ->where('noe.Status', 7)
                     ->where('noe.Actived', 1)
+                    ->whereYear('noe.Date', $getCurrentYear)
+                    ->where(function($getIsOpenNoe) use ($dept) {
+                        if($dept == 0) {
+                            $getIsOpenNoe->where('noe.IdDepartment','>', 0);
+                        } else {
+                            $getIsOpenNoe->where('noe.IdDepartment', $dept);
+                        }
+                    })
                     ->get();
 
         $getOngoingNoe = DB::table('noe_report as noe')
                     ->select('*')
                     ->whereBetween('noe.Status', [2, 6]) // saat dilaporkan unit head
                     ->where('noe.Actived', 1)
+                    ->whereYear('noe.Date', $getCurrentYear)
+                    ->where(function($getOngoingNoe) use ($dept) {
+                        if($dept == 0) {
+                            $getOngoingNoe->where('noe.IdDepartment','>', 0);
+                        } else {
+                            $getOngoingNoe->where('noe.IdDepartment', $dept);
+                        }
+                    })
                     ->get();
 
         $getIsClosedNoe = DB::table('noe_report as noe')
                     ->select('*')
                     ->where('noe.IsClosed', 1)
                     ->where('noe.Actived', 1)
+                    ->whereYear('noe.Date', $getCurrentYear)
+                    ->where(function($getIsClosedNoe) use ($dept) {
+                        if($dept == 0) {
+                            $getIsClosedNoe->where('noe.IdDepartment','>', 0);
+                        } else {
+                            $getIsClosedNoe->where('noe.IdDepartment', $dept);
+                        }
+                    })
                     ->get();
         
         $dataNoe['total_laporan'] = count($getIsOpenNoe) + count($getIsClosedNoe);
@@ -1273,18 +1307,43 @@ class DashboardControll extends Controller
                     ->whereIn('nod.Status', [8, 11])
                     ->where('nod.IsCapaVerified', 0)
                     ->where('nod.Actived', 1)
+                    ->whereYear('nod.Date', $getCurrentYear)
+                    ->where(function($getIsOpenNod) use ($dept) {
+                        if($dept == 0) {
+                            $getIsOpenNod->where('nod.IdDepartment','>', 0);
+                        } else {
+                            $getIsOpenNod->where('nod.IdDepartment', $dept);
+                        }
+                    })
                     ->get();
         
         $getOngoingNod = DB::table('nod_report as nod')
                     ->select('*')
                     ->whereBetween('nod.Status', [2, 6])
                     ->where('nod.Actived', 1)
+                    ->whereYear('nod.Date', $getCurrentYear)
+                    ->where(function($getOngoingNod) use ($dept) {
+                        if($dept == 0) {
+                            $getOngoingNod->where('nod.IdDepartment','>', 0);
+                        } else {
+                            $getOngoingNod->where('nod.IdDepartment', $dept);
+                        }
+                    })
                     ->get();
 
         $getIsClosedNod = DB::table('verifikasi_capa_nod as vcn')
                     ->select('*')
+                    ->join('nod_report as nod', 'nod.Id', '=', 'vcn.id_approved_nod')
                     ->where('vcn.is_approved', 1)
                     ->where('vcn.actived', 1)
+                    ->whereYear('nod.Date', $getCurrentYear)
+                    ->where(function($getIsClosedNod) use ($dept) {
+                        if($dept == 0) {
+                            $getIsClosedNod->where('nod.IdDepartment','>', 0);
+                        } else {
+                            $getIsClosedNod->where('nod.IdDepartment', $dept);
+                        }
+                    })
                     ->get();
         
         $dataNod['total_laporan_nod'] = count($getIsOpenNod) + count($getIsClosedNod);
