@@ -6,6 +6,33 @@
         <div class="text-muted text-tiny mt-1"><small class="font-weight-normal">{{date}}</small></div>
       </h4>
     </div>
+    <b-form-row v-if="idDepartment == 67 && accessTable[0]">
+      <b-form-group class="col-md-4 float-right">
+        <label class="form-label">Departemen</label>
+        <multiselect
+          v-model="Department"
+          :options="opsDepartment"
+          :allow-empty="false"
+          placeholder="Pilih Department"
+          label="Department"
+          track-by="Department"
+          @input="onChangeDept" />
+      </b-form-group>
+
+      <b-form-group class="col-md-2 float-right">
+        <label class="form-label">Tahun</label>
+        <multiselect
+          v-model="allYear"
+          :options="opsYear"
+          :allow-empty="false"
+          placeholder="Pilih Tahun"
+          selectLabel=""
+          deselectLabel=""
+          label="text"
+          track-by="text"
+          @input="onChangeAllYear" />
+      </b-form-group>
+    </b-form-row>
     <div class="row" v-if="idDepartment == 67 && accessTable[0]">
       <div class="col-4">
         <b-card no-body class="mb-4">
@@ -109,34 +136,6 @@
         </b-card>
       </div>
     </div>
-
-    <b-form-row v-if="idDepartment == 67 && accessTable[0]">
-      <b-form-group class="col-md-4 float-right">
-        <label class="form-label">Departemen</label>
-        <multiselect
-          v-model="Department"
-          :options="opsDepartment"
-          :allow-empty="false"
-          placeholder="Pilih Department"
-          label="Department"
-          track-by="Department"
-          @input="onChangeDept" />
-      </b-form-group>
-
-      <b-form-group class="col-md-2 float-right">
-        <label class="form-label">Tahun</label>
-        <multiselect
-          v-model="allYear"
-          :options="opsYear"
-          :allow-empty="false"
-          placeholder="Pilih Tahun"
-          selectLabel=""
-          deselectLabel=""
-          label="text"
-          track-by="text"
-          @input="onChangeAllYear" />
-      </b-form-group>
-    </b-form-row>
 
     <div class="row" v-if="idDepartment == 67 && accessTable[0]">
       <div class="col-4">
@@ -1317,6 +1316,7 @@ export default {
       this.getStatusNoeNod()
       this.getAvarageData()
       this.getDelayOntimeData()
+      this.getReportData()
       this.getStatusTimeNOD(this.allYear.value)
       this.getDeviationLevel(this.allYear.value)
      
@@ -1345,12 +1345,16 @@ export default {
       this.getStatusNoeNod()
       this.getAvarageData()
       this.getDelayOntimeData()
+      this.getReportData()
       this.getStatusTimeNOD(this.allYear.value)
       this.getDeviationLevel(this.allYear.value)
     },
 
     getReportData () {
-      axios.post('/AdminVue/dashboard-get-data-report')
+      axios.post('/AdminVue/dashboard-get-data-report', {
+        year : this.allYear,
+        department : this.Department.Id
+      })
       .then( function (res) {
         let response = res.data
         

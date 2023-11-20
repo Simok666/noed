@@ -40,6 +40,9 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         'value': '5',
         'text': 'unit lokasi 5'
+      }, {
+        'value': '6',
+        'text': 'lain - lain'
       }]
     };
   },

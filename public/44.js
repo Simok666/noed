@@ -625,6 +625,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
       this.getStatusNoeNod();
       this.getAvarageData();
       this.getDelayOntimeData();
+      this.getReportData();
       this.getStatusTimeNOD(this.allYear.value);
       this.getDeviationLevel(this.allYear.value);
     },
@@ -667,11 +668,15 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('bar-chart', {
       this.getStatusNoeNod();
       this.getAvarageData();
       this.getDelayOntimeData();
+      this.getReportData();
       this.getStatusTimeNOD(this.allYear.value);
       this.getDeviationLevel(this.allYear.value);
     },
     getReportData: function getReportData() {
-      axios.post('/AdminVue/dashboard-get-data-report').then(function (res) {
+      axios.post('/AdminVue/dashboard-get-data-report', {
+        year: this.allYear,
+        department: this.Department.Id
+      }).then(function (res) {
         var response = res.data;
         vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.dataNoe, 'total_laporan', response.dataNoe.total_laporan);
         vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(this.dataNoe, 'is_open_laporan', response.dataNoe.is_open_laporan);
@@ -829,7 +834,53 @@ var render = function render() {
     staticClass: "text-muted text-tiny mt-1"
   }, [_c("small", {
     staticClass: "font-weight-normal"
-  }, [_vm._v(_vm._s(_vm.date))])])])]), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("div", {
+  }, [_vm._v(_vm._s(_vm.date))])])])]), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("b-form-row", [_c("b-form-group", {
+    staticClass: "col-md-4 float-right"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Departemen")]), _vm._v(" "), _c("multiselect", {
+    attrs: {
+      options: _vm.opsDepartment,
+      "allow-empty": false,
+      placeholder: "Pilih Department",
+      label: "Department",
+      "track-by": "Department"
+    },
+    on: {
+      input: _vm.onChangeDept
+    },
+    model: {
+      value: _vm.Department,
+      callback: function callback($$v) {
+        _vm.Department = $$v;
+      },
+      expression: "Department"
+    }
+  })], 1), _vm._v(" "), _c("b-form-group", {
+    staticClass: "col-md-2 float-right"
+  }, [_c("label", {
+    staticClass: "form-label"
+  }, [_vm._v("Tahun")]), _vm._v(" "), _c("multiselect", {
+    attrs: {
+      options: _vm.opsYear,
+      "allow-empty": false,
+      placeholder: "Pilih Tahun",
+      selectLabel: "",
+      deselectLabel: "",
+      label: "text",
+      "track-by": "text"
+    },
+    on: {
+      input: _vm.onChangeAllYear
+    },
+    model: {
+      value: _vm.allYear,
+      callback: function callback($$v) {
+        _vm.allYear = $$v;
+      },
+      expression: "allYear"
+    }
+  })], 1)], 1) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-4"
@@ -984,53 +1035,7 @@ var render = function render() {
       dataformat: _vm.dataFormat,
       dataSource: _vm.dataSource
     }
-  })], 1)], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("b-form-row", [_c("b-form-group", {
-    staticClass: "col-md-4 float-right"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Departemen")]), _vm._v(" "), _c("multiselect", {
-    attrs: {
-      options: _vm.opsDepartment,
-      "allow-empty": false,
-      placeholder: "Pilih Department",
-      label: "Department",
-      "track-by": "Department"
-    },
-    on: {
-      input: _vm.onChangeDept
-    },
-    model: {
-      value: _vm.Department,
-      callback: function callback($$v) {
-        _vm.Department = $$v;
-      },
-      expression: "Department"
-    }
-  })], 1), _vm._v(" "), _c("b-form-group", {
-    staticClass: "col-md-2 float-right"
-  }, [_c("label", {
-    staticClass: "form-label"
-  }, [_vm._v("Tahun")]), _vm._v(" "), _c("multiselect", {
-    attrs: {
-      options: _vm.opsYear,
-      "allow-empty": false,
-      placeholder: "Pilih Tahun",
-      selectLabel: "",
-      deselectLabel: "",
-      label: "text",
-      "track-by": "text"
-    },
-    on: {
-      input: _vm.onChangeAllYear
-    },
-    model: {
-      value: _vm.allYear,
-      callback: function callback($$v) {
-        _vm.allYear = $$v;
-      },
-      expression: "allYear"
-    }
-  })], 1)], 1) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("div", {
+  })], 1)], 1)], 1)]) : _vm._e(), _vm._v(" "), _vm.idDepartment == 67 && _vm.accessTable[0] ? _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-4"
