@@ -109,6 +109,16 @@ return [
             'level' => 'debug',
 
         ],
+        'sendEmailCAPA' => [
+
+            'driver' => 'single',
+
+            'path' => storage_path('logs/CAPA.log'),
+
+            'level' => 'debug',
+
+        ]
+        
     ],
 
 ];
