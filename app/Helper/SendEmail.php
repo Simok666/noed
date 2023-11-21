@@ -3,6 +3,7 @@ namespace App;
 
 use App\Http\Controllers\BackEnd\HistoryControll;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 
 class Helper {
@@ -10,6 +11,7 @@ class Helper {
     public function __construct()
     {
         $this->History = new HistoryControll();
+        $this->logger = \Log::channel('customlog');
     }
     function sendEmail($item, $noeAnswer, $request, $itemMail, $Status)
     {
@@ -265,7 +267,10 @@ class Helper {
         } elseif ($statusCapa === 3) {
             $data['Subject'] = 'Pengajuan efektivitas CAPA - Approved';
             $data['Title'] = 'Pengajuan efektivitas CAPA telah disetujui dengan rincian sebagai berikut :';
-        } else if ($statusCapa === 4) {
+        } elseif($statusCapa === 5 && $item->is_correction === 1) {
+            $data['Subject'] = 'Pengkoreksian efektivitas CAPA - Correction';
+            $data['Title'] = 'Pengkoreksian efektivitas CAPA telah dikoreksi dengan rincian sebagai berikut :';
+        }else if ($statusCapa === 4) {
             $data['Subject'] = 'Pengajuan efektivitas CAPA - Rejected';
             $data['Title'] = 'Pengajuan efektivitas CAPA telah ditolak dengan rincian sebagai berikut :';
         }
@@ -284,6 +289,11 @@ class Helper {
             $dataMail['Deskripsi ditolak'] = $item->rejectdesc;
         }
         
+        if ($item->is_correction === 1) {
+            $efektivitasDesc = json_decode($item->verifikasi_efektifitas_capa);
+            $dataMail['Dekskripsi Perlu CAPA lain'] = $efektivitasDesc->efektifitasDesc;
+        }
+       
         if(count($itemMail)>0) { foreach ($itemMail as $key => $val) {
             $data['Employee'] = $val->Employee;
             $data['Email'] = $val->Email;
@@ -328,6 +338,35 @@ class Helper {
         
         $this->History->sendMailCareTaker($data, $dataMail, $dataObjectEmail = [], $groupCC);
         
+    }
+
+    function sendEmailCapa($item, $NODCA, $NODPA, $itemMail) {
+        $data['Subject'] = 'Reminder CAPA';
+        $data['Title'] = 'Reminder untuk CAPA yang sudah mendekati duedate realisasi dengan rincian sebagai berikut :';
+        
+        foreach($item as $keyItem => $valItem) {
+            $dataMail['Nomor NOD'] = $valItem->NODNumber;
+            $dataMail['Lokasi'] = $valItem->nameLocation;
+        }
+
+        if($NODPA == null) {
+            foreach($NODCA as $keyCa => $valCa) {      
+                $dataMail['Dekskripsi Corrective Action (CA) ' . ($keyCa + 1)] = $valCa->CADescription;
+            }
+        } elseif ($NODCA == null) {
+            foreach($NODPA as $keyPa => $valPa) {
+                $dataMail['Dekskripsi Corrective Action (PA) ' . ($keyPa + 1)] = $valPa->PADescription;
+            }
+        }
+        
+        $data['Footer'] = 'Jika CAPA sudah terealisasi mohon untuk dapat diinformasikan kepada dept. Quality Assurance';
+        
+        if(count($itemMail)>0) { foreach ($itemMail as $key => $val) {
+            $data['Employee'] = $val->Employee;
+            $data['Email'] = $val->Email;
+            
+            $this->History->sendMail($data, $dataMail, $dataObjectEmail=[]);
+        } }
     }
     
     function convertData($date) {

@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\updateCareTaker::class,
         Commands\updateDateEnd::class,
+        Commands\sendDueDateCapa::class,
     ];
 
     /**
@@ -28,6 +29,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('update:datestartcaretaker')
                  ->everyFiveMinutes();
         $schedule->command('update:dateendcaretaker')
+                 ->cron('23 59 * * *');
+        $schedule->command('sendemail:duedate', ['CA'])
+                 ->cron('23 59 * * *');
+        $schedule->command('sendemail:duedate', ['PA'])
                  ->cron('23 59 * * *');
     }
 
