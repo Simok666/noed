@@ -235,7 +235,7 @@ class VerifCAPAReportControll extends Controller
                     }
                     if($item->Status == 'Disetujui oleh Dept Head Terkait') $statusDeptTerkait = true;
                 }
-                if($item->Status == 'Disetujui Oleh QA Section Head' || $item->Status == 'Disetujui oleh Dept Head Terkait' || $item->Status == 'Disetujui oleh QA Dept.Head') {
+                if($item->Status == 'Disetujui Oleh QA Section Head' || $item->Status == 'Disetujui oleh Dept Head Terkait' || $item->Status == 'Disetujui oleh QA Dept.Head' || $item->Status == 'Direvisi') {
 
                     $getAnotherEffect = DB::table('another_effect as ane')
                                         ->select('ane.id_effect','ane.title_effect')
@@ -308,6 +308,7 @@ class VerifCAPAReportControll extends Controller
                     'status_capa'=> 1,
                     'user_entry'=> $request->input('userEntry'),
                     'is_approved'=> 0,
+                    'is_correction' => 0,
                     'actived' => 1,
                     'created_at'=> Carbon::now()->format('Y-m-d H:i:s'),
                     'updated_at'=> Carbon::now()->format('Y-m-d H:i:s')
@@ -513,7 +514,7 @@ class VerifCAPAReportControll extends Controller
                     }
                     if($item->Status == 'Disetujui oleh Dept Head Terkait') $statusDeptTerkait = true;
                 }
-                if($item->Status == 'Disetujui Oleh QA Section Head' || $item->Status == 'Disetujui oleh Dept Head Terkait' || $item->Status == 'Disetujui oleh QA Dept.Head') {
+                if($item->Status == 'Disetujui Oleh QA Section Head' || $item->Status == 'Disetujui oleh Dept Head Terkait' || $item->Status == 'Disetujui oleh QA Dept.Head' || $item->Status == 'Direvisi') {
 
                     $getAnotherEffect = DB::table('another_effect as ane')
                                         ->select('ane.id_effect','ane.title_effect')
@@ -521,7 +522,7 @@ class VerifCAPAReportControll extends Controller
 
                 }
             }
-
+       
         return json_encode(array(
             'status'=>true,
             'data'=>$item,
@@ -624,10 +625,15 @@ class VerifCAPAReportControll extends Controller
         }
 
         $isApproved = 0;
-        if(!empty(json_decode($request->input('verifikasiEfektivitasCapa')))) {
-            $isApproved = 1;
-        }
+        $isCorrectionCapa = 0;
+        $verifEfektifitasCapa = json_decode($request->input('verifikasiEfektivitasCapa'));
         
+        if(!empty($verifEfektifitasCapa) && $verifEfektifitasCapa->isEfektifitas === false) {
+            $isApproved = 1;
+        } else if ($verifEfektifitasCapa->isEfektifitas === true) {
+            $isCapaCorrection = 1;
+        }
+       
         DB::begintransaction();
         try{
             DB::table('verifikasi_capa_nod')
@@ -637,6 +643,7 @@ class VerifCAPAReportControll extends Controller
                 'another_attachment_capa' => $verifPAFile,
                 'verifikasi_efektifitas_capa' => $request->input('verifikasiEfektivitasCapa'),
                 'is_approved' => $isApproved,
+                'is_correction' => $isCapaCorrection,
                 'updated_at'=> Carbon::now()->format('Y-m-d H:i:s')
             ]);
 
@@ -744,11 +751,20 @@ class VerifCAPAReportControll extends Controller
 
     public function approve(Request $request) {
         $item = DB::table('verifikasi_capa_nod as vcn')
-                    ->select('*', 'nod.NODNumber')
+                    ->select('vcn.*', 'nod.*', 'pst.Id as deptHeadPelopor')
                     ->leftjoin('nod_report as nod','nod.Id','=','vcn.id_approved_nod')
+                    ->leftjoin('users as usr','usr.Id','=','nod.UserDept')
+                    ->leftjoin('employee as emp','emp.Id','=','usr.IdEmployee')
+                    ->leftjoin('position as pst','pst.Id','=','emp.IdPosition')
+                    // ->leftjoin('noe_report as noe','noe.Id','=','nod.IdNOEReport')
+                    // ->leftjoin('nod_relevant as nr', 'nr.IdNODReport','=','nod.Id')
                     ->where('vcn.id_approved_nod', $request->input('Id'))
                     ->first();
-        $valStatus = 3;
+        if($item->is_correction === 1) {
+            $valStatus = 5;
+        } else {
+            $valStatus = 3;
+        }
        
         $NODCA = DB::table('nod_report_action as nra')
             ->select(
@@ -782,30 +798,72 @@ class VerifCAPAReportControll extends Controller
 
         DB::begintransaction();
         try {
-            DB::table('verifikasi_capa_nod as vcn')
-                ->where('vcn.id_approved_nod', $request->input('Id'))
-                ->where('actived',1)
-                ->update([
-                    'vcn.status_capa' => $valStatus,
-                    'vcn.name_verfication'=> $request->input('deptHeadVerification'),
-                    'vcn.time_finished_verfication' => Carbon::now()->format('Y-m-d H:i:s')
-                ]);
-
-            DB::table('nod_report as nod')
-                ->where('nod.Id', $request->input('Id'))
-                ->where('nod.Actived', 1)
-                ->update([
-                    'nod.IsCapaVerified' => 1
-                ]);
+            if($item->is_correction === 1) {
+                DB::table('verifikasi_capa_nod as vcn')
+                    ->where('vcn.id_approved_nod', $request->input('Id'))
+                    ->where('actived',1)
+                    ->update([
+                        'vcn.status_capa' => $valStatus,
+                    ]);
+                    
+                DB::table('nod_report as nod')
+                    ->where('nod.Id', $request->input('Id'))
+                    ->where('nod.Actived', 1)
+                    ->update([
+                        'nod.Status' => 10,
+                        'nod.IsRevision' => 1
+                    ]);
+            } else {
+                DB::table('verifikasi_capa_nod as vcn')
+                    ->where('vcn.id_approved_nod', $request->input('Id'))
+                    ->where('actived',1)
+                    ->update([
+                        'vcn.status_capa' => $valStatus,
+                        'vcn.name_verfication'=> $request->input('deptHeadVerification'),
+                        'vcn.time_finished_verfication' => Carbon::now()->format('Y-m-d H:i:s')
+                    ]);
+    
+                DB::table('nod_report as nod')
+                    ->where('nod.Id', $request->input('Id'))
+                    ->where('nod.Actived', 1)
+                    ->update([
+                        'nod.IsCapaVerified' => 1
+                    ]);
+            }
 
             try {
-                
-                $itemPosition = DB::table('position')
+                if($item->is_correction === 1) {
+                    $getPeloporPosition = [];
+                    array_push($getPeloporPosition, $item->IdPosition);
+                    array_push($getPeloporPosition, $item->IdPublish);
+                    array_push($getPeloporPosition, $item->IdSectionPublish);
+                    array_push($getPeloporPosition, $item->deptHeadPelopor);
+                    
+                    $itemMailPelopor = $this->MainDB->table('employee as emp')
+                    ->select('emp.Name as Employee','emp.Email')
+                    ->leftjoin('position as pst','pst.Id','=','emp.IdPosition')
+                    ->whereIn('pst.Id', $getPeloporPosition)
+                    ->where('emp.IdDepartment', $item->IdDepartment)
+                    ->where('emp.Actived', 1)
+                    ->get();
+                    
+                    $this->Helper->sendEmailVerifiCapa($item, $NODCA, $NODPA, $itemMailPelopor, $valStatus);  
+
+                    $itemPosition = DB::table('position')
                         ->select('Id')
                         ->where('IdDepartment', 67) 
                         ->where('Id', $item->user_entry)
                         ->where('Actived', 1)
                         ->first();
+
+                } else {
+                    $itemPosition = DB::table('position')
+                        ->select('Id')
+                        ->where('IdDepartment', 67) 
+                        ->where('Id', $item->user_entry)
+                        ->where('Actived', 1)
+                        ->first();
+                }
                     
                 if($itemPosition!=null) $IdPosition = $itemPosition->Id;
                 else $IdPosition = 0;
@@ -816,7 +874,7 @@ class VerifCAPAReportControll extends Controller
                         ->where('emp.IdPosition', $IdPosition)
                         ->where('emp.Actived', 1)
                         ->get();
-                    
+                   
                     $this->Helper->sendEmailVerifiCapa($item, $NODCA, $NODPA, $itemMail, $valStatus);   
                 }
                 

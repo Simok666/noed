@@ -506,6 +506,11 @@
 								</td> </tr>
 							</table>
 							<span style="color: #FFF; display: none; font-size: 8px;"><%= rand(36**20).to_s(36) %></span>
+							@if(array_key_exists("Footer", $data))
+							<p><em>{{$data['Footer']}}</em></p>
+							@else
+							<p><em>This is an automated email. Please do not reply.</em></p>
+							@endif
 							<p>Terimakasih,<br>Web e-DMS | PT. Widatra Bhakti</p>
               <span style="color: #FFF; display: none; font-size: 8px;"><%= rand(36**20).to_s(36) %></span>
 						</div>

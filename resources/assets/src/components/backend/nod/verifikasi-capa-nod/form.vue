@@ -354,7 +354,7 @@
           
           <b-card class="mb-4" v-if="Position == 2 || Position == 4" header="Verifikasi Efektifitas CAPA" header-tag="h5">
             
-            <b-form-row v-if="(isShow == true || isEdit == true) && ((Position === 4 || Position === 2) && (valStatus === 2 || valStatus === 3 || valStatus === 4) && userDepartment === 67)">
+            <b-form-row v-if="(isShow == true || isEdit == true) && ((Position === 4 || Position === 2) && (valStatus === 2 || valStatus === 3 || valStatus === 4 || valStatus === 5) && userDepartment === 67)">
               <b-form-group class="col-md-12" >
                 <label v-if="isShow == false" class="form-label float-right text-danger">*Wajib Diisi</label>
                 <b-form-group > 
@@ -548,11 +548,13 @@
           if(this.selectedEfektifitasCapa === true) {
             collectedEfektivitas = {
               selected: this.selectedEfektifitasCapa,
+              isEfektifitas : true, // true if need more CAPA
               efektifitasDesc: this.field.selectedEfektifitasValue
             }
           } else {
             collectedEfektivitas = {
-              selected: this.selectedEfektifitasCapa
+              selected: this.selectedEfektifitasCapa,
+              isEfektifitas : false,
             }
           }
           
@@ -632,8 +634,8 @@
           if(this.field.Status == 'Disetujui oleh QA Section Head') this.valStatus = 2
           if(this.field.Status == 'Diverifikasi oleh QA Dept Head') this.valStatus = 3
           if(this.field.Status == 'ditolak') this.valStatus = 4
+          if(this.field.Status == 'perlu CAPA lain') this.valStatus = 5
           
-
           this.field.CAPAFile = []
           this.field.verifPAFile = []
 

@@ -150,11 +150,14 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         if (this.selectedEfektifitasCapa === true) {
           collectedEfektivitas = {
             selected: this.selectedEfektifitasCapa,
+            isEfektifitas: true,
+            // true if need more CAPA
             efektifitasDesc: this.field.selectedEfektifitasValue
           };
         } else {
           collectedEfektivitas = {
-            selected: this.selectedEfektifitasCapa
+            selected: this.selectedEfektifitasCapa,
+            isEfektifitas: false
           };
         }
         formData.append("verifikasiEfektivitasCapa", JSON.stringify(collectedEfektivitas));
@@ -222,6 +225,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         if (this.field.Status == 'Disetujui oleh QA Section Head') this.valStatus = 2;
         if (this.field.Status == 'Diverifikasi oleh QA Dept Head') this.valStatus = 3;
         if (this.field.Status == 'ditolak') this.valStatus = 4;
+        if (this.field.Status == 'perlu CAPA lain') this.valStatus = 5;
         this.field.CAPAFile = [];
         this.field.verifPAFile = [];
         this.field.FileCAPA = resp.data.fileCAPA;
@@ -1275,7 +1279,7 @@ var render = function render() {
       header: "Verifikasi Efektifitas CAPA",
       "header-tag": "h5"
     }
-  }, [(_vm.isShow == true || _vm.isEdit == true) && (_vm.Position === 4 || _vm.Position === 2) && (_vm.valStatus === 2 || _vm.valStatus === 3 || _vm.valStatus === 4) && _vm.userDepartment === 67 ? _c("b-form-row", [_c("b-form-group", {
+  }, [(_vm.isShow == true || _vm.isEdit == true) && (_vm.Position === 4 || _vm.Position === 2) && (_vm.valStatus === 2 || _vm.valStatus === 3 || _vm.valStatus === 4 || _vm.valStatus === 5) && _vm.userDepartment === 67 ? _c("b-form-row", [_c("b-form-group", {
     staticClass: "col-md-12"
   }, [_vm.isShow == false ? _c("label", {
     staticClass: "form-label float-right text-danger"
