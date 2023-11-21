@@ -348,16 +348,20 @@ class Helper {
             $dataMail['Nomor NOD'] = $valItem->NODNumber;
             $dataMail['Lokasi'] = $valItem->nameLocation;
         }
-
         if($NODPA == null) {
-            foreach($NODCA as $keyCa => $valCa) {      
-                $dataMail['Dekskripsi Corrective Action (CA) ' . ($keyCa + 1)] = $valCa->CADescription;
-            }
+            $dataMail['Dekskripsi Corrective Action (CA)'] = $NODCA;
         } elseif ($NODCA == null) {
-            foreach($NODPA as $keyPa => $valPa) {
-                $dataMail['Dekskripsi Corrective Action (PA) ' . ($keyPa + 1)] = $valPa->PADescription;
-            }
+            $dataMail['Dekskripsi Corrective Action (CA)'] = $NODPA;
         }
+        // if($NODPA == null) {
+        //     foreach($NODCA as $keyCa => $valCa) {      
+        //         $dataMail['Dekskripsi Corrective Action (CA) ' . ($keyCa + 1)] = $valCa->CADescription;
+        //     }
+        // } elseif ($NODCA == null) {
+        //     foreach($NODPA as $keyPa => $valPa) {
+        //         $dataMail['Dekskripsi Corrective Action (PA) ' . ($keyPa + 1)] = $valPa->PADescription;
+        //     }
+        // }
         
         $data['Footer'] = 'Jika CAPA sudah terealisasi mohon untuk dapat diinformasikan kepada dept. Quality Assurance';
         

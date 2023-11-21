@@ -29,11 +29,11 @@ class Kernel extends ConsoleKernel
         $schedule->command('update:datestartcaretaker')
                  ->everyFiveMinutes();
         $schedule->command('update:dateendcaretaker')
-                 ->cron('23 59 * * *');
+                 ->cron('23 * * * *');
         $schedule->command('sendemail:duedate', ['CA'])
-                 ->cron('23 59 * * *');
+                 ->hourly();
         $schedule->command('sendemail:duedate', ['PA'])
-                 ->cron('23 59 * * *');
+                 ->hourly();
     }
 
     /**
