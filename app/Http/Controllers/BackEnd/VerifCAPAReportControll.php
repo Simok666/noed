@@ -114,6 +114,7 @@ class VerifCAPAReportControll extends Controller
             
             ->whereNotNull('nve.IdPublish')
             ->where('noe.Id',$request->Id)
+            ->where('nod.Id',$request->IdNOD)
             ->where('noe.Actived',1)
             ->first();
         
@@ -179,7 +180,7 @@ class VerifCAPAReportControll extends Controller
                 if($item->DescAnotherEffect !== null) {
                     $anotherEffect = json_decode($item->DescAnotherEffect);
                     
-                    if($anotherEffect[0] === false) {
+                    if($anotherEffect[0] === 'false') {
                         array_push($dataAnotherEffect, $anotherEffect[0]);
                     } else {
                         foreach($anotherEffect as $key => $effect) {
@@ -458,7 +459,7 @@ class VerifCAPAReportControll extends Controller
                 if($item->DescAnotherEffect !== null) {
                     $anotherEffect = json_decode($item->DescAnotherEffect);
                     
-                    if($anotherEffect[0] === false) {
+                    if($anotherEffect[0] === 'false') {
                         array_push($dataAnotherEffect, $anotherEffect[0]);
                     } else {
                         foreach($anotherEffect as $key => $effect) {
@@ -760,6 +761,24 @@ class VerifCAPAReportControll extends Controller
                     // ->leftjoin('nod_relevant as nr', 'nr.IdNODReport','=','nod.Id')
                     ->where('vcn.id_approved_nod', $request->input('Id'))
                     ->first();
+
+        $itemNOEVerif = DB::table('noe_verif_evaluation')
+            ->select('RelevantDept')
+            ->where('IdNOEReport', $item->IdNOEReport)
+            ->where('TypeData',0)
+            ->where('Actived',1)
+            ->first();
+        
+        $RelevantDept = json_decode($itemNOEVerif->RelevantDept, true);
+        $resultDept = [];
+        if($RelevantDept) {
+            foreach ($RelevantDept as $key => $val) {
+                if($val['Id'] && $val['RelevantDept'] !== 'QA') {
+                    array_push($resultDept, $val['Id']);
+                }
+            }
+        }
+        
         if($item->is_correction === 1) {
             $valStatus = 5;
         } else {
@@ -848,6 +867,31 @@ class VerifCAPAReportControll extends Controller
                     ->get();
                     
                     $this->Helper->sendEmailVerifiCapa($item, $NODCA, $NODPA, $itemMailPelopor, $valStatus);  
+
+                    if(count($RelevantDept) > 0) {
+                        $getPosition = [];
+
+                        $getPositionRelevant = DB::table('position')
+                        ->select('Id')
+                        ->where('Code', 'like', '%'.'.dh')
+                        ->whereIn('IdDepartment', $resultDept)
+                        ->where('Actived', 1)
+                        ->get();
+                        
+                        foreach ($getPositionRelevant as $key => $val) {
+                            $getPosition[$key] = $val->Id;
+                        }
+                        
+                        $relevantItemMail = $this->MainDB->table('employee as emp')
+                        ->select('emp.Name as Employee','emp.Email')
+                        ->whereIn('emp.IdPosition', $getPosition)
+                        ->where('emp.Actived', 1)
+                        ->get();
+
+                        $this->Helper->sendEmailVerifiCapa($item, $NODCA, $NODPA, $relevantItemMail, $valStatus);  
+                    
+                        
+                    }
 
                     $itemPosition = DB::table('position')
                         ->select('Id')

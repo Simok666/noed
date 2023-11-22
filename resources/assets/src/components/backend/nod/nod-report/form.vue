@@ -174,7 +174,10 @@
                 </b-input-group>
               </template>
             </b-form-group>
+          </b-form-row>
 
+          <b-form-row>
+            <b-button variant="outline-primary">Resend Email CA</b-button>
           </b-form-row>
           <hr/>
           </template>
@@ -249,6 +252,9 @@
               </template>
             </b-form-group>
 
+          </b-form-row>
+          <b-form-row>
+            <b-button variant="outline-primary">Resend Email PA</b-button>
           </b-form-row>
           <hr/>
           </template>
@@ -332,7 +338,7 @@
             
             <b-btn v-if="isShow == true && Position < 3 && valStatus == 1" type="button" variant="primary" class="float-right ml-2" @click="onAction('publish')">Publish</b-btn>
             
-            <b-btn v-if="isShow == true && ( (valStatus == 2 && field.IdDepartment == userDepartment && Position == 1) || (valStatus == 3 && field.IdDepartment == userDepartment && Position == 2) || (valStatus == 4 && field.IdDepartment == userDepartment && (Position == 4 || isCaretaker == true)) || (valStatus == 5 && deptTerkait == true && statusDeptTerkait==false) || (userDepartment == 67 &&  ( (Position == 3 && valStatus == 6) || (Position == 4 && valStatus == 10) || (Position == 4 && valStatus == 10) || (Position == 2 && valStatus == 6) )) )"
+            <b-btn v-if="isShow == true  && ( (valStatus == 2 && field.IdDepartment == userDepartment && Position == 1) || (valStatus == 3 && field.IdDepartment == userDepartment && Position == 2) || (valStatus == 4 && field.IdDepartment == userDepartment && (Position == 4 || isCaretaker == true)) || (valStatus == 5 && deptTerkait == true && statusDeptTerkait==false) || (userDepartment == 67 &&  ( (Position == 3 && valStatus == 6) || (Position == 4 && valStatus == 10) || (Position == 4 && valStatus == 10) || (Position == 2 && valStatus == 6) )) )"
               type="button" variant="primary" class="float-right ml-2" @click="onAction('approve')">
             Setujui</b-btn>
 
@@ -634,6 +640,7 @@ export default {
       })
       .then( function (res) {
         var resp = res.data
+        // console.log(resp.data)
         this.Position = res.data.position
         this.userDepartment = res.data.department
         this.deptTerkait = res.data.deptTerkait

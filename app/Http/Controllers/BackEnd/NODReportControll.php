@@ -490,6 +490,7 @@ class NODReportControll extends Controller
             ->select(
                 'nrl.Id',
                 'emp.Name as IdUsers',
+                'nrl.IdNODReport',
                 'nrl.CreateAt'
             )
             ->leftjoin('users as usr','usr.Id','=','nrl.IdUsers')
@@ -499,7 +500,7 @@ class NODReportControll extends Controller
             ->where('nrl.Status','>',0)
             ->where('nrl.Actived','>',0)
             ->get();
-
+            
             $resultDeptTerkait = '';
             foreach ($itemDeptTerkait as $key => $val) {
                 if($val->IdUsers) {
@@ -510,13 +511,13 @@ class NODReportControll extends Controller
             
             foreach($getHistAppr as $key => $val)
             {
-                if($getHistAppr[$key]->IsRevision == 0)
+                if($getHistAppr[$key])
                 {
                     $getHistAppr[$key]->UserTerkait = $resultDeptTerkait;
                 }
                 else
                 {
-                    $getHistAppr[$key]->UserTerkait = '-';
+                    // $getHistAppr[$key]->UserTerkait = '-';
                 }
             }
         
@@ -1059,7 +1060,7 @@ class NODReportControll extends Controller
             $item->TypeUser = session('adminvue')->TypeUser;
             $item->IdDepartmentSession = session('adminvue')->IdDepartment;
             
-            if($item->DescAnotherEffect !== null) {
+            if($item->DescAnotherEffect !== null && count(json_decode($item->DescAnotherEffect)) > 0) {
                 $anotherEffect = json_decode($item->DescAnotherEffect);
                 
                 if($anotherEffect[0] == 'false') {
@@ -2185,6 +2186,14 @@ class NODReportControll extends Controller
                         $StatusTimeQA = 1;
                         if($diffDayQa>3) $StatusTimeQA = 2;
 
+                        
+                        $getIdNodRevisi = DB::table('nod_report as nod')
+                                ->select('nod.Id', 'nod.NODNumber')
+                                ->where('nod.NODNumber', $item->NODNumber)
+                                ->where('nod.Status', 10) // direvisi
+                                ->latest('nod.Id')
+                                ->first();
+                        
                         DB::table('nod_report')
                         ->where('Id', $request->input('Id'))
                         ->update([
@@ -2193,6 +2202,15 @@ class NODReportControll extends Controller
                             'DateQA'=>date('Y-m-d H:i:s'),
                             'UserQA'=>session('adminvue')->Id,
                             'StatusTimeQA' => $StatusTimeQA
+                        ]);
+                        
+                        DB::table('verifikasi_capa_nod')
+                        ->where('id_approved_nod', $getIdNodRevisi->Id)
+                        ->update([
+                            'id_approved_nod' => $request->input('Id'),
+                            'status_capa'=>1,
+                            'is_correction'=>0,
+                            'is_publish'=>0
                         ]);
                     }
                    
@@ -2213,7 +2231,7 @@ class NODReportControll extends Controller
                         if(strpos(strtolower($exp[1]), 'sch') !== false || strpos(strtolower($exp[1]), 'dh') !== false) {
                             $getEffectEmail = [];
                             $anotherEffectEmail = json_decode($item->DescAnotherEffect);
-                            if($anotherEffectEmail[0] === false) {
+                            if($anotherEffectEmail[0] === 'false') {
                                 array_push($getEffectEmail, $anotherEffectEmail[0]);
                             } else {
                                 foreach($anotherEffectEmail as $key => $effectEmail) {

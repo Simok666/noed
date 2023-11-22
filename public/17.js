@@ -498,7 +498,7 @@ var render = function render() {
       staticStyle: {
         "background-color": "white"
       }
-    }, [_c("td", [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.UserEntry) + " - " + _vm._s(_vm.formatDate(item.CreateAt)) + " "), item.IsRevision == 1 ? _c("b", [_vm._v("Revisi")]) : _vm._e()]), _vm._v(" "), _c("td", [_c("span", {}, [_vm._v(_vm._s(item.UserUnit) + " - " + _vm._s(_vm.formatDate(item.DateUnit)))]), _c("br"), _vm._v(" "), _c("span", {}, [_vm._v(_vm._s(item.UserSection) + " - " + _vm._s(_vm.formatDate(item.DateSection)))]), _c("br"), _vm._v("\n                        " + _vm._s(item.UserDept) + " - " + _vm._s(_vm.formatDate(item.DateDept)) + "\n                    ")]), _vm._v(" "), _c("td", {}, [_vm._v(_vm._s(item.UserTerkait))]), _vm._v(" "), _c("td", {
+    }, [_c("td", [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.UserEntry) + " - " + _vm._s(_vm.formatDate(item.CreateAt)) + " "), item.IsRevision == 1 ? _c("b", [_vm._v("Revisi")]) : _vm._e()]), _vm._v(" "), _c("td", [_c("span", [_vm._v(_vm._s(item.UserUnit) + " - " + _vm._s(_vm.formatDate(item.DateUnit)))]), _c("br"), _vm._v(" "), _c("span", [_vm._v(_vm._s(item.UserSection) + " - " + _vm._s(_vm.formatDate(item.DateSection)))]), _c("br"), _vm._v("\n                            " + _vm._s(item.UserDept) + " - " + _vm._s(_vm.formatDate(item.DateDept)) + "\n                    ")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.UserTerkait))]), _vm._v(" "), _c("td", {
       attrs: {
         colspan: "2"
       }
@@ -830,7 +830,7 @@ var render = function render() {
           }
         }, [_c("i", {
           staticClass: "ion ion-ios-eye"
-        }), _vm._v(" Tampilkan\n          ")]), _vm._v(" "), props.rowData.Status == "UnPublish" && props.rowData.IdUserEntry == _vm.idUser || props.rowData.Status == "Disetujui oleh Dept Head Terkait" && _vm.position == 2 || props.rowData.ReportDept == _vm.typeUser && props.rowData.IsUpadatedRevision != 1 ? _c("b-btn", {
+        }), _vm._v(" Tampilkan\n          ")]), _vm._v(" "), (props.rowData.Status == "UnPublish" || props.rowData.Status == "Direvisi" && props.rowData.IsUpadatedRevision === null) && props.rowData.IdUserEntry == _vm.idUser || props.rowData.Status == "Disetujui oleh Dept Head Terkait" && _vm.position == 2 ? _c("b-btn", {
           staticClass: "btn btn-outline-secondary btn-sm mr-1 mt-1",
           on: {
             click: function click($event) {
@@ -839,7 +839,7 @@ var render = function render() {
           }
         }, [_c("i", {
           staticClass: "ion ion-md-create"
-        }), _vm._v(" Ubah\n          ")]) : _vm._e(), _vm._v(" "), props.rowData.Status == "UnPublish" && props.rowData.IdUserEntry == _vm.idUser || props.rowData.ReportDept == _vm.typeUser && props.rowData.IsUpadatedRevision != 1 ? _c("b-btn", {
+        }), _vm._v(" Ubah\n          ")]) : _vm._e(), _vm._v(" "), (props.rowData.Status == "UnPublish" || props.rowData.Status == "Direvisi" && props.rowData.IsUpadatedRevision === null) && props.rowData.IdUserEntry == _vm.idUser ? _c("b-btn", {
           staticClass: "btn btn-outline-danger btn-sm mr-1 mt-1",
           on: {
             click: function click($event) {
@@ -848,7 +848,7 @@ var render = function render() {
           }
         }, [_c("i", {
           staticClass: "ion ion-md-trash"
-        }), _vm._v(" Hapus\n          ")]) : _vm._e(), _vm._v(" "), props.rowData.Status == "UnPublish" && props.rowData.IdUserEntry == _vm.idUser || props.rowData.ReportDept == _vm.typeUser && props.rowData.IsUpadatedRevision != 1 ? _c("b-btn", {
+        }), _vm._v(" Hapus\n          ")]) : _vm._e(), _vm._v(" "), (props.rowData.Status == "UnPublish" || props.rowData.Status == "Direvisi" && props.rowData.IsUpadatedRevision === null) && props.rowData.IdUserEntry == _vm.idUser ? _c("b-btn", {
           staticClass: "btn btn-outline-success btn-sm mr-1 mt-1",
           on: {
             click: function click($event) {

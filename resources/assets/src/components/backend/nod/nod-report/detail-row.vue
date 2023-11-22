@@ -16,15 +16,18 @@
                         <td colspan="7"><b>Tidak Ada Data</b></td>
                     </tr>
                     <tr v-for = "(item, index) in historyRevision" style="background-color:white" v-else>
-                        <td>{{index+1}}</td>
-                        <td>{{item.UserEntry}} - {{formatDate(item.CreateAt)}} <b v-if="item.IsRevision == 1">Revisi</b></td>
-                        <td>
-                            <span v-html="">{{item.UserUnit}} - {{formatDate(item.DateUnit)}}</span><br/>
-                            <span v-html="">{{item.UserSection}} - {{formatDate(item.DateSection)}}</span><br/>
-                            {{item.UserDept}} - {{formatDate(item.DateDept)}}
+        
+                        <td >{{index+1}}</td>
+                        
+                        <td >{{item.UserEntry}} - {{formatDate(item.CreateAt)}} <b v-if="item.IsRevision == 1">Revisi</b></td>
+                        <td >
+                            <span >{{item.UserUnit}} - {{formatDate(item.DateUnit)}}</span><br/>
+                            <span >{{item.UserSection}} - {{formatDate(item.DateSection)}}</span><br/>
+                                {{item.UserDept}} - {{formatDate(item.DateDept)}}
                         </td>
-                        <td v-html="">{{item.UserTerkait}}</td>
+                        <td>{{item.UserTerkait}}</td>
                         <td colspan="2" >{{item.UserQA}} - {{formatDate(item.DateQA)}}</td>
+                        
                         <td>
                             <div v-if="isData == true && item.IsRevision == 0 && (isPublishBy == true || isSectionPublish == true || isDept == true || isRelevantDept == true || Status == 'Disetujui oleh Dept Head Terkait' || Status == 'Disetujui Oleh QA Section Head')">
                                 <!-- <b-btn class="btn btn-outline-success btn-sm mr-1 mt-1"
