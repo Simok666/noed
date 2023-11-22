@@ -269,7 +269,7 @@ class Helper {
             $data['Title'] = 'Pengajuan efektivitas CAPA telah disetujui dengan rincian sebagai berikut :';
         } elseif($statusCapa === 5 && $item->is_correction === 1) {
             $data['Subject'] = 'Pengkoreksian efektivitas CAPA - Correction';
-            $data['Title'] = 'Pengkoreksian efektivitas CAPA telah dikoreksi dengan rincian sebagai berikut :';
+            $data['Title'] = 'Verifikasi efektivitas CAPA atas NOD dengan rincian sebagai berikut :';
         }else if ($statusCapa === 4) {
             $data['Subject'] = 'Pengajuan efektivitas CAPA - Rejected';
             $data['Title'] = 'Pengajuan efektivitas CAPA telah ditolak dengan rincian sebagai berikut :';
@@ -277,7 +277,15 @@ class Helper {
 
         $dataMail['Pelapor'] = session('adminvue')->Name .' | '. session('adminvue')->Position .' - '. session('adminvue')->Department;
         $dataMail['NOD Number'] = $item->NODNumber;
-
+        
+        if($statusCapa === 5 && $item->is_correction === 1) {
+            $dataMail['Man'] = $item->Man;
+            $dataMail['Machine'] = $item->Machine;
+            $dataMail['Method'] = $item->Method;
+            $dataMail['Material'] = $item->Material;
+            $dataMail['Milieu'] = $item->Milieu;
+        }
+        
         foreach($NODCA as $keyCa => $valCa) {      
             $dataMail['Dekskripsi Corrective Action (CA) ' . ($keyCa + 1)] = $valCa->CADescription;
         }
@@ -292,6 +300,8 @@ class Helper {
         if ($item->is_correction === 1) {
             $efektivitasDesc = json_decode($item->verifikasi_efektifitas_capa);
             $dataMail['Dekskripsi Perlu CAPA lain'] = $efektivitasDesc->efektifitasDesc;
+            $data['Footer'] = 'Belum mampu mengatasi kejadian yang dilaporkan, sehingga diperlukan investigasi dan penentuan CAPA baru.
+            Perlu CAPA lain, yaitu : ' . $efektivitasDesc->efektifitasDesc;
         }
        
         if(count($itemMail)>0) { foreach ($itemMail as $key => $val) {

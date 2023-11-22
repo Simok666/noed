@@ -483,7 +483,7 @@
 						  @elseif($key == 'AnotherEffect')
 						  	<strong>{{$key}} :</strong>  <br/>
 								@foreach($val as $key => $effect)
-									@if($effect === false)
+									@if($effect === 'false')
 										 Tidak Ada
 									@else
 										<label for="">{{$effect['title']}} :</label> {{$effect['text']}} <br>

@@ -271,6 +271,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         var _this3 = this;
         var resp = res.data;
+        // console.log(resp.data)
         this.Position = res.data.position;
         this.userDepartment = res.data.department;
         this.deptTerkait = res.data.deptTerkait;
@@ -989,7 +990,11 @@ var render = function render() {
       }, [_c("i", {
         staticClass: "fa fa-download"
       })])])], 1)];
-    })], 2) : _vm._e()], 1), _vm._v(" "), _c("hr")];
+    })], 2) : _vm._e()], 1), _vm._v(" "), _c("b-form-row", [_c("b-button", {
+      attrs: {
+        variant: "outline-primary"
+      }
+    }, [_vm._v("Resend Email CA")])], 1), _vm._v(" "), _c("hr")];
   }), _vm._v(" "), _vm.isShow == false ? _c("b-btn", {
     staticClass: "float-left btn-info",
     attrs: {
@@ -1133,7 +1138,11 @@ var render = function render() {
       }, [_c("i", {
         staticClass: "fa fa-download"
       })])])], 1)];
-    })], 2) : _vm._e()], 1), _vm._v(" "), _c("hr")];
+    })], 2) : _vm._e()], 1), _vm._v(" "), _c("b-form-row", [_c("b-button", {
+      attrs: {
+        variant: "outline-primary"
+      }
+    }, [_vm._v("Resend Email PA")])], 1), _vm._v(" "), _c("hr")];
   }), _vm._v(" "), _vm.isShow == false ? _c("b-btn", {
     staticClass: "float-left btn-info",
     attrs: {
