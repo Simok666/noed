@@ -235,6 +235,11 @@ class UnitLocationControll extends Controller
             }
         }
 
+        $prefix = $request->input('Prefix');
+        if(empty(json_decode($request->input('Prefix')))){
+            $prefix = null;
+        }
+        
         DB::begintransaction();
         try{
             $this->MainDB->table('location')
@@ -243,7 +248,7 @@ class UnitLocationControll extends Controller
                 'Code'=>$request->input('Code'),
                 'Name'=>$request->input('Name'),
                 'LocationColor' => $request->input('LocationColor'),
-                'Prefix'=>$request->input('Prefix')
+                'Prefix'=>$prefix
             ]);
 
             $this->History->store(22,2,json_encode($requestData));

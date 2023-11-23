@@ -20,7 +20,9 @@ __webpack_require__.r(__webpack_exports__);
       urlSubmit: '/AdminVue/unit-location-insert',
       headerCard: 'Lokasi',
       textBtnSubmit: 'Simpan',
-      field: {},
+      field: {
+        Prefix: null
+      },
       allErrors: [],
       isNotif: false,
       alertNotif: '',
