@@ -271,7 +271,6 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         var _this3 = this;
         var resp = res.data;
-        // console.log(resp.data)
         this.Position = res.data.position;
         this.userDepartment = res.data.department;
         this.deptTerkait = res.data.deptTerkait;

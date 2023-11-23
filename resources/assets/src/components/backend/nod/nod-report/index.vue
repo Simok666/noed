@@ -60,12 +60,6 @@
               :guide="false"
               :mask="datedmYMask" />
           </th>
-          <!-- <th>
-            <b-input v-model="paramData.search.noe__Event" placeholder="Uraian / Kondisi Ketidaksesuaian" v-on:keyup.enter="getFilters()" />
-          </th> -->
-          <!-- <th>
-            <b-input v-model="paramData.search.nod__ProperCondition" placeholder="Kondisi Seharusnya" v-on:keyup.enter="getFilters()" />
-          </th> -->
           <th>
             <b-input v-model="paramData.search.noe__BatchNo" placeholder="No. Kontrol / No. Bets" v-on:keyup.enter="getFilters()" />
           </th>
@@ -96,9 +90,6 @@
             @click="onAction('view-item', props.rowData, props.rowIndex)">
             <i class="ion ion-ios-eye"></i> Tampilkan
           </b-btn>
-          <!-- {{props.rowData.IdUserEntry}} -->
-          <!-- {{typeUser}}
-          {{props.rowData.IsUpadatedRevision}} -->
           <b-btn v-if="(((props.rowData.Status == 'UnPublish' || props.rowData.Status == 'Direvisi' && props.rowData.IsUpadatedRevision === null ) && props.rowData.IdUserEntry == idUser) || ( props.rowData.Status == 'Disetujui oleh Dept Head Terkait' && position == 2))" class="btn btn-outline-secondary btn-sm mr-1 mt-1"
             @click="onAction('edit-item', props.rowData, props.rowIndex)">
             <i class="ion ion-md-create"></i> Ubah
@@ -282,7 +273,7 @@ export default {
         {value: "Disetujui oleh Dept Head Terkait", text:"Disetujui oleh Dept Head Terkait"},
         {value: "Disetujui oleh QA Dept.Head", text:"Disetujui oleh QA Dept.Head"},
         {value: "Ditolak", text:"Ditolak"},
-        {value: "Direvisi Dept Head Terkait", text:"Direvisi Dept Head Terkait"},
+        {value: "Direvisi", text:"Direvisi"},
         {value: "Disetujui Oleh QA Section Head", text:"Disetujui Oleh QA Section Head"}
 
       ],

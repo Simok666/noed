@@ -752,7 +752,7 @@ class NOEVerificationControll extends Controller
             DB::table('noe_report')
                 ->where('Id', $request->input('Id'))
                 ->update($arrNOE);
-                
+            
             try{
                
                 if($statusNOE==5) {
@@ -760,6 +760,14 @@ class NOEVerificationControll extends Controller
                     $parent = json_decode(session('adminvue')->ParentPosition);
                     $IdPosition = $parent[0]->Id;
                 } else {
+                    
+                    DB::table('noe_verif_evaluation')
+                    ->insert([
+                        'IdNOEReport'=>$request->input('Id'),
+                        'TypeData'=>1,
+                        'UserEntry'=>session('adminvue')->Id
+                    ]);
+
                     $itemPosition = DB::table('position')
                         ->select('Id')
                         ->where('Code', 'like', '%'.'.sch')
