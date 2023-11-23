@@ -311,7 +311,7 @@ class UnitLocationControll extends Controller
             'Code'=>'required',
             'Name'=>'required',
             'LocationColor' => 'required',
-            'Prefix'=>'required',
+            // 'Prefix'=>'required',
         ];
     }
 

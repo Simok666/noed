@@ -801,7 +801,7 @@ class NOEReportControll extends Controller
                 }
                 elseif (strlen($filterVal) == 7)
                 {
-                    $query->where('Prefix', '=', ''); 
+                    $query->whereNull('Prefix'); 
                 }
             })
             ->where('Actived',1)
