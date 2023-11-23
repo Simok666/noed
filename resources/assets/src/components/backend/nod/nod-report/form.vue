@@ -640,7 +640,7 @@ export default {
       })
       .then( function (res) {
         var resp = res.data
-        // console.log(resp.data)
+        
         this.Position = res.data.position
         this.userDepartment = res.data.department
         this.deptTerkait = res.data.deptTerkait

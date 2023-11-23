@@ -306,8 +306,8 @@ __webpack_require__.r(__webpack_exports__);
         value: "Ditolak",
         text: "Ditolak"
       }, {
-        value: "Direvisi Dept Head Terkait",
-        text: "Direvisi Dept Head Terkait"
+        value: "Direvisi",
+        text: "Direvisi"
       }, {
         value: "Disetujui Oleh QA Section Head",
         text: "Disetujui Oleh QA Section Head"

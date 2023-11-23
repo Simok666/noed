@@ -626,7 +626,7 @@ class VerifCAPAReportControll extends Controller
         }
 
         $isApproved = 0;
-        $isCorrectionCapa = 0;
+        $isCapaCorrection = 0;
         $verifEfektifitasCapa = json_decode($request->input('verifikasiEfektivitasCapa'));
         
         if(!empty($verifEfektifitasCapa) && $verifEfektifitasCapa->isEfektifitas === false) {

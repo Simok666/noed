@@ -133,7 +133,7 @@
             </td>
         </tr>
         @foreach($dataAnotherEffect as $key => $val)
-        @if($val !== false)
+        @if($val !== 'false')
         <tr>
             <th width="50%"></th>
             <td width="30%">

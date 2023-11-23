@@ -2204,14 +2204,16 @@ class NODReportControll extends Controller
                             'StatusTimeQA' => $StatusTimeQA
                         ]);
                         
-                        DB::table('verifikasi_capa_nod')
-                        ->where('id_approved_nod', $getIdNodRevisi->Id)
-                        ->update([
-                            'id_approved_nod' => $request->input('Id'),
-                            'status_capa'=>1,
-                            'is_correction'=>0,
-                            'is_publish'=>0
-                        ]);
+                        if($getIdNodRevisi !== null) {
+                            DB::table('verifikasi_capa_nod')
+                            ->where('id_approved_nod', $getIdNodRevisi->Id)
+                            ->update([
+                                'id_approved_nod' => $request->input('Id'),
+                                'status_capa'=>1,
+                                'is_correction'=>0,
+                                'is_publish'=>0
+                            ]);    
+                        }
                     }
                    
                     try{
@@ -2920,7 +2922,7 @@ class NODReportControll extends Controller
             if($itemReport->Status == "Disetujui Oleh QA Section Head" || $itemReport->Status == "Disetujui oleh Dept Head Terkait" || $itemReport->Status == "Disetujui oleh QA Dept.Head") {
                 $anotherEffect = json_decode($itemReport->DescAnotherEffect);
                 if($anotherEffect !== null) {
-                    if($anotherEffect[0] === false) {
+                    if($anotherEffect[0] === 'false') {
                         array_push($dataAnotherEffect, $anotherEffect[0]);
                         $setSelectedFalse = true;
                     } else {
