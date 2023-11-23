@@ -695,7 +695,7 @@
           IdNOD:IdNOD
         })
         .then( function (res) {
-          
+
           this.Position = res.data.position
           this.field.BatchNo = res.data.data.BatchNo
           this.field.IdProduct = res.data.data.Product
@@ -765,7 +765,7 @@
           
           if(selectedAnotherEffect) {
             selectedAnotherEffect.forEach((item, index) => {
-              if(item !== false) {
+              if(item !== 'false') {
                 this.selected = item.selected
                 this.checkedEffect[item.id_effect] = item.id_effect
                 this.text[item.id_effect] = item.text

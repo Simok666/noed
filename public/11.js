@@ -341,7 +341,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         var selectedAnotherEffect = Object.values(res.data.selectedAnotherEffect);
         if (selectedAnotherEffect) {
           selectedAnotherEffect.forEach(function (item, index) {
-            if (item !== false) {
+            if (item !== 'false') {
               _this2.selected = item.selected;
               _this2.checkedEffect[item.id_effect] = item.id_effect;
               _this2.text[item.id_effect] = item.text;
