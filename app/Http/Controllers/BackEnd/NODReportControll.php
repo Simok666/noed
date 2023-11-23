@@ -2965,7 +2965,9 @@ class NODReportControll extends Controller
                 }
                 $nameVerificationCAPA = $itemReport->name_verfication;
                 $timeVerificationCAPA = $itemReport->time_finished_verfication;
-                $timeVerificationCAPA = \DateTime::createFromFormat('Y-m-d H:i:s',$timeVerificationCAPA )->format('d.m.y');
+                if ($timeVerificationCAPA != null) {
+                    $timeVerificationCAPA = \DateTime::createFromFormat('Y-m-d H:i:s',$timeVerificationCAPA )->format('d.m.y');
+                }
             }
         }     
         

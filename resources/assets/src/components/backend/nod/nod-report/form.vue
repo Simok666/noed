@@ -176,9 +176,9 @@
             </b-form-group>
           </b-form-row>
 
-          <b-form-row>
+          <!-- <b-form-row>
             <b-button variant="outline-primary">Resend Email CA</b-button>
-          </b-form-row>
+          </b-form-row> -->
           <hr/>
           </template>
 
@@ -253,9 +253,9 @@
             </b-form-group>
 
           </b-form-row>
-          <b-form-row>
+          <!-- <b-form-row>
             <b-button variant="outline-primary">Resend Email PA</b-button>
-          </b-form-row>
+          </b-form-row> -->
           <hr/>
           </template>
 
