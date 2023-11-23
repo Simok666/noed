@@ -120,12 +120,14 @@ __webpack_require__.r(__webpack_exports__);
     formatLocation: function formatLocation(value) {
       if (value !== '') {
         var dataLocation = JSON.parse(value);
-        var result = '';
-        dataLocation.forEach(function (value, index) {
-          if (value.text) {
-            result += value.text + "; ";
-          }
-        });
+        if (dataLocation !== null) {
+          var result = '';
+          dataLocation.forEach(function (value, index) {
+            if (value.text) {
+              result += value.text + "; ";
+            }
+          });
+        }
       } else {
         var result = '';
       }
@@ -377,6 +379,23 @@ var render = function render() {
               _vm.$set(_vm.paramData.search, "lct__Name", $$v);
             },
             expression: "paramData.search.lct__Name"
+          }
+        })], 1), _vm._v(" "), _c("th", [_c("b-input", {
+          attrs: {
+            placeholder: "Warna Lokasi"
+          },
+          on: {
+            keyup: function keyup($event) {
+              if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
+              return _vm.getFilters();
+            }
+          },
+          model: {
+            value: _vm.paramData.search.lct__LocationColor,
+            callback: function callback($$v) {
+              _vm.$set(_vm.paramData.search, "lct__LocationColor", $$v);
+            },
+            expression: "paramData.search.lct__LocationColor"
           }
         })], 1), _vm._v(" "), _c("th", [_c("b-input", {
           attrs: {

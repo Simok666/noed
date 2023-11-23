@@ -85,8 +85,7 @@ export default {
         {'value':'2','text':'unit lokasi 2'},
         {'value':'3','text':'unit lokasi 3'},
         {'value':'4','text':'unit lokasi 4'},
-        {'value':'5','text':'unit lokasi 5'},
-        {'value':'6','text':'lain - lain'},
+        {'value':'5','text':'unit lokasi 5'}
       ],
     }
   },

@@ -51,6 +51,9 @@
             <b-input v-model="paramData.search.lct__Name" placeholder="Lokasi Kejadian" v-on:keyup.enter="getFilters()" />
           </th>
           <th>
+            <b-input v-model="paramData.search.lct__LocationColor" placeholder="Warna Lokasi" v-on:keyup.enter="getFilters()" />
+          </th>
+          <th>
             <b-input v-model="paramData.search.lct__Prefix" placeholder="Unit" v-on:keyup.enter="getFilters()" />
           </th>
           <th>
@@ -211,12 +214,15 @@ export default {
       if(value !== '')
       {
         let dataLocation = JSON.parse(value)
-        var result = ''
-        dataLocation.forEach((value,index) => {
-          if(value.text){
-            result += value.text+"; "
-          }
-        });
+        
+        if(dataLocation !== null) {
+          var result = ''
+          dataLocation.forEach((value,index) => {
+            if(value.text){
+              result += value.text+"; "
+            }
+          });
+        }
       }
       else
       {

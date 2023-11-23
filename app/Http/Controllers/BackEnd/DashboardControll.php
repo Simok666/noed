@@ -1398,7 +1398,7 @@ class DashboardControll extends Controller
             } elseif ( $value->DeviationLevelQA === 'Major' ) {
                 array_push($major, $value->DeviationLevelQA);
             } elseif ( $value->DeviationLevelQA === 'Critical' ) {
-                array_push($major, $value->DeviationLevelQA);
+                array_push($critical, $value->DeviationLevelQA);
             }
         }
         
