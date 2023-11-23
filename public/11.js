@@ -94,7 +94,12 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       dataAnotherEffect: [],
       OldCAPAFile: [],
       OldVerifPAFile: [],
-      deptHeadVerification: ''
+      deptHeadVerification: '',
+      anotherEffectFile: [],
+      fileAnotherEffect: [],
+      fileAnotherEffectDownload: [],
+      oldFileAnotherEffect: [],
+      fileResponseAnotherEffect: []
     };
   },
   created: function created() {
@@ -102,6 +107,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
     // Initialize the 'text' object with default values for each 'title_effect'
     this.getAnotherEffect.forEach(function (item) {
       _this.text[item.id_effect] = '';
+      _this.anotherEffectFile[item.id_effect] = [];
     });
   },
   watch: {
@@ -109,16 +115,16 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       handler: function handler() {
         // Ketika checkbox diubah, perbarui nilai textarea sesuai dengan checkbox yang dicentang
         for (var key in this.checkedEffect) {
-          if (this.checkedEffect[key]) {
+          if (this.checkedEffect[key] || !this.anotherEffectFile[key]) {
             if (!this.text[key]) {
               this.text[key] = ''; // Inisialisasi nilai textarea jika belum ada
             }
           } else {
             delete this.text[key]; // Hapus nilai textarea jika checkbox tidak dicentang
+            delete this.anotherEffectFile[key];
           }
         }
       },
-
       deep: true
     }
   },
@@ -159,6 +165,35 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
             selected: this.selectedEfektifitasCapa,
             isEfektifitas: false
           };
+        }
+        var collected = [];
+        if (this.selected == true) {
+          for (var idEffect in this.checkedEffect) {
+            if (this.checkedEffect[idEffect]) {
+              if (this.anotherEffectFile[idEffect] !== undefined) {
+                for (var i = 0; i < this.anotherEffectFile[idEffect].length; i++) {
+                  var _file2 = this.anotherEffectFile[idEffect][i];
+                  formData.append('anotherEffectFile[' + idEffect + '][' + i + ']', _file2);
+                }
+              }
+              if (this.oldFileAnotherEffect[idEffect] !== undefined) {
+                for (var i = 0; i < this.oldFileAnotherEffect[idEffect].length; i++) {
+                  var oldfile = this.oldFileAnotherEffect[idEffect][i];
+                  formData.append('oldEffectFile[' + idEffect + '][' + i + ']', oldfile);
+                }
+              }
+              collected[idEffect] = {
+                id_effect: idEffect,
+                selected: this.selected,
+                text: this.text[idEffect] || ''
+              };
+            }
+          }
+        } else {
+          collected.push(this.selected);
+        }
+        if (this.Position == 2 || this.Position == 4) {
+          formData.append("DescAnotherEffect", JSON.stringify(collected));
         }
         formData.append("verifikasiEfektivitasCapa", JSON.stringify(collectedEfektivitas));
         var config = {
@@ -341,10 +376,24 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         var selectedAnotherEffect = Object.values(res.data.selectedAnotherEffect);
         if (selectedAnotherEffect) {
           selectedAnotherEffect.forEach(function (item, index) {
+            _this2.anotherEffectFile[item.id_effect] = [];
+            _this2.oldFileAnotherEffect[item.id_effect] = [];
             if (item !== 'false') {
               _this2.selected = item.selected;
               _this2.checkedEffect[item.id_effect] = item.id_effect;
               _this2.text[item.id_effect] = item.text;
+              _this2.fileResponseAnotherEffect[item.id_effect] = item.namefile;
+              _this2.fileAnotherEffectDownload[item.id_effect] = item.filedownload;
+              if (_this2.fileResponseAnotherEffect[item.id_effect] != '') {
+                var countFileAnotherEffect = _this2.fileResponseAnotherEffect[item.id_effect].length;
+                for (var i = 0; i < countFileAnotherEffect; i++) {
+                  _this2.oldFileAnotherEffect[item.id_effect].push(_this2.fileResponseAnotherEffect[item.id_effect][i]);
+                  _this2.anotherEffectFile[item.id_effect].push("/" + _this2.fileResponseAnotherEffect[item.id_effect][i]);
+                }
+              }
+              if (_this2.anotherEffectFile[item.id_effect] == '') {
+                _this2.oldFileAnotherEffect[item.id_effect] = '';
+              }
             } else {
               _this2.selected = item;
             }
@@ -370,17 +419,33 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         this.opsPAPIC = [];
       }.bind(this));
     },
+    handleAnotherEffectFile: function handleAnotherEffectFile(files, checkedKey) {
+      this.anotherEffectFile[checkedKey] = files.map(function (files) {
+        return files.file;
+      });
+    },
+    handleRemoveEffectFile: function handleRemoveEffectFile(error, files) {
+      var _this3 = this;
+      var replace = files.source.replace('/clouds', 'clouds');
+      this.oldFileAnotherEffect.forEach(function (val, k) {
+        val.forEach(function (v, i) {
+          if (v == replace) {
+            _this3.oldFileAnotherEffect[k].splice(i, 1);
+          }
+        });
+      });
+    },
     handleFileCA: function handleFileCA(files, index) {
       this.field.NODCA[index].CAFile = files.map(function (files) {
         return files.file;
       });
     },
     handleRemoveCA: function handleRemoveCA(error, files) {
-      var _this3 = this;
+      var _this4 = this;
       this.OldCAFile.forEach(function (val, k) {
         val.forEach(function (v, i) {
           if (v == files.source) {
-            _this3.OldCAFile[k].splice(i, 1);
+            _this4.OldCAFile[k].splice(i, 1);
           }
         });
       });
@@ -391,11 +456,11 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       });
     },
     handleRemovePA: function handleRemovePA(error, files) {
-      var _this4 = this;
+      var _this5 = this;
       this.OldPAFile.forEach(function (val, k) {
         val.forEach(function (v, i) {
           if (v == files.source) {
-            _this4.OldPAFile[k].splice(i, 1);
+            _this5.OldPAFile[k].splice(i, 1);
           }
         });
       });
@@ -1238,17 +1303,13 @@ var render = function render() {
     }
   }, [_vm._v("Ada, yaitu ...")]), _vm._v(" "), _vm.allErrors.selected ? _c("span", {
     staticClass: "text-danger"
-  }, [_vm._v(_vm._s(_vm.allErrors.selected[0]))]) : _vm._e()], 1), _vm._v(" "), _vm.selected === true ? _c("b-form-group", {
-    attrs: {
-      disabled: ""
-    }
-  }, _vm._l(_vm.getAnotherEffect, function (item, index) {
+  }, [_vm._v(_vm._s(_vm.allErrors.selected[0]))]) : _vm._e()], 1), _vm._v(" "), _vm.selected === true ? _c("b-form-group", _vm._l(_vm.getAnotherEffect, function (item, index) {
     return _c("li", {
       key: index
     }, [_c("b-form-checkbox", {
       attrs: {
         value: item.id_effect,
-        disabled: _vm.isShow
+        disabled: ""
       },
       model: {
         value: _vm.checkedEffect[item.id_effect],
@@ -1272,7 +1333,61 @@ var render = function render() {
         },
         expression: "text[item.id_effect]"
       }
-    })], 1) : _vm._e()], 1);
+    }), _vm._v(" "), _c("b-form-row", [_c("b-form-group", {
+      staticClass: "col-md-12"
+    }, [_c("label", {
+      staticClass: "form-label"
+    }, [_vm._v("Lampiran sistem lain yang terdampak")]), _vm._v(" "), _c("label", {
+      staticClass: "form-label float-right text-danger"
+    }, [_vm._v("(Max. 50 MB)")]), _vm._v(" "), _c("file-pond", {
+      ref: "pondMyFile",
+      refInFor: true,
+      attrs: {
+        name: "anotherEffectFile",
+        "label-idle": "Lampiran : 1.Data Batch Record; 2.Buku Kronik; 3.Dokumentasi before/after perbaikan; 4.Lain-lain;",
+        "allow-multiple": true,
+        files: _vm.anotherEffectFile[item.id_effect],
+        "accepted-file-types": "application/*, image/*, video/*",
+        maxTotalFileSize: "50MB"
+      },
+      on: {
+        updatefiles: function updatefiles($event) {
+          return _vm.handleAnotherEffectFile($event, item.id_effect);
+        },
+        removefile: _vm.handleRemoveEffectFile
+      }
+    })], 1), _vm._v(" "), _c("b-card", {
+      staticClass: "mb-3",
+      attrs: {
+        header: "Lampiran Another Effect",
+        "header-tag": "h5"
+      }
+    }, [_c("b-form-row", _vm._l(_vm.fileAnotherEffectDownload[item.id_effect], function (itemFile, indexFile) {
+      return _c("b-form-group", {
+        key: indexFile,
+        staticClass: "col-md-12"
+      }, [_c("b-input-group", [_c("b-form-input", {
+        attrs: {
+          name: "FileVerifPADownload",
+          readonly: ""
+        },
+        model: {
+          value: itemFile[0],
+          callback: function callback($$v) {
+            _vm.$set(itemFile, 0, $$v);
+          },
+          expression: "itemFile[0]"
+        }
+      }), _vm._v(" "), _c("b-input-group-append", [_c("a", {
+        staticClass: "input-group-text btn-outline-success",
+        attrs: {
+          href: _vm.BaseUrl + itemFile[1],
+          target: "_blank"
+        }
+      }, [_c("i", {
+        staticClass: "fa fa-download"
+      })])])], 1)], 1);
+    }), 1)], 1)], 1)], 1) : _vm._e()], 1);
   }), 0) : _vm._e()], 1) : _vm._e(), _vm._v(" "), _vm.Position == 2 || _vm.Position == 4 ? _c("b-card", {
     staticClass: "mb-4",
     attrs: {

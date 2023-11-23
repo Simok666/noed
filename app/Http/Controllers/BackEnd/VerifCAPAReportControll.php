@@ -177,22 +177,39 @@ class VerifCAPAReportControll extends Controller
                 $item->TypeUser = session('adminvue')->TypeUser;
                 $item->IdDepartmentSession = session('adminvue')->IdDepartment;
     
-                if($item->DescAnotherEffect !== null) {
+                if($item->DescAnotherEffect !== null && count(json_decode($item->DescAnotherEffect)) > 0) {
                     $anotherEffect = json_decode($item->DescAnotherEffect);
-                    
-                    if($anotherEffect[0] === 'false') {
+                
+                    if($anotherEffect[0] == 'false') {
                         array_push($dataAnotherEffect, $anotherEffect[0]);
                     } else {
                         foreach($anotherEffect as $key => $effect) {
+                            $anotherEffectFileDownload = [];
+                            
                             if($effect !== null) {
-                                $dataAnotherEffect[$key] = 
-        
-                                    [ 
-                                        'id_effect' => $effect->id_effect, 
-                                        'selected'  => $effect->selected,
-                                        'text'      => $effect->text
-                                    ];
+                                $effectFileName = $effect->namefile;
+
+                                $effect->namefile = $effect->namefile;
                                 
+                                foreach($effectFileName as $keyFile => $valFile) {
+                                
+                                    if($valFile) {
+                                        $resultFile = explode("/", $valFile);  
+                                    } else {
+                                        $resultFile = [];
+                                    }
+
+                                    if(!empty($resultFile)){
+
+                                        $anotherEffectFileDownload[] = [$resultFile[count($resultFile) - 1], $valFile];
+                                    } else {
+                                        $anotherEffectFileDownload[] = [];
+                                    }
+                                }
+
+                                $effect->filedownload = $anotherEffectFileDownload;
+
+                                $dataAnotherEffect[] = $effect;
                             }
                         }   
                     }
@@ -298,7 +315,81 @@ class VerifCAPAReportControll extends Controller
         } else {
             $verifPAFile = json_encode($verifPAFile);
         }
-    
+
+        $anotherEffectFile = [];
+        if($request->has('anotherEffectFile') && $request->file('anotherEffectFile')!=null) {
+            $arrFile = $request->file('anotherEffectFile');
+            foreach($arrFile as $keyFile => $valFile) {
+                foreach($valFile as $subKey => $valSubKey) {
+                    if(pathinfo($valSubKey->getClientOriginalName(), PATHINFO_EXTENSION)) {
+                        $anotherEffectFile[$keyFile][$subKey] = $this->UploadFile->uploadFile($valSubKey, 5);
+                    }
+                }
+            }
+        }
+        
+        
+        $oldAnotherEffectFile = $request->input('oldEffectFile');
+        if($oldAnotherEffectFile !== null) {
+            foreach($oldAnotherEffectFile as $key => $val){
+                if (array_key_exists($key, $anotherEffectFile)) {
+                    $anotherEffectFile[$key] = array_merge($anotherEffectFile[$key], $val);
+                } else {
+                    $anotherEffectFile[$key] = $val;
+                }
+            }
+        }
+         
+        if(count($anotherEffectFile) > 0) {
+            $anotherEffectFile = json_encode($anotherEffectFile);
+        } else {
+            $anotherEffectFile = json_encode($anotherEffectFile);
+        }
+
+        $dataDescAnotherEffect = [];
+        if($request->has('DescAnotherEffect')) {
+            $anotherEffectValidation = json_decode($request->input('DescAnotherEffect'));
+            
+            foreach($anotherEffectValidation as $key => $val) {
+
+                if($val !== null && $val !== false) {
+                    if(!empty(json_decode($anotherEffectFile))) {
+                        $foundMatchingFile = false;
+                        foreach(json_decode($anotherEffectFile) as $keyFile => $valFile) {
+                            if($key == $keyFile) {
+                                $foundMatchingFile = true;
+                                foreach($valFile as $subKey => $subVal) {
+                                    $val->namefile[$subKey] = $subVal; 
+                                }
+                            }
+                        }
+
+                        if (!$foundMatchingFile) {
+                            $val->namefile = [];
+                        }
+                        
+                    } else {
+                        $val->namefile[$key] = [];  
+                    }
+                       array_push($dataDescAnotherEffect, $val);
+                }
+
+                if($val === false) {
+                    $val = 'false';
+                    array_push($dataDescAnotherEffect, $val);
+                }
+
+                if(empty($val) && $val !== null) {
+                    return response()->json([
+                        'status'=>false,
+                        'message'=>'Silahkan lengkapi kolom Sistem Lain Yang Terdampak',
+                        'validation' => 'required' 
+                    ]);
+                }
+            }
+            
+        }
+        
         DB::begintransaction();
         try{
             DB::table('verifikasi_capa_nod')
@@ -313,6 +404,12 @@ class VerifCAPAReportControll extends Controller
                     'actived' => 1,
                     'created_at'=> Carbon::now()->format('Y-m-d H:i:s'),
                     'updated_at'=> Carbon::now()->format('Y-m-d H:i:s')
+                ]);
+            
+            DB::table('nod_report')
+                ->where('Id', $request->input('NODAccNumber'))
+                ->update([
+                    'DescAnotherEffect'=>json_encode($dataDescAnotherEffect),
                 ]);
 
             $this->History->store(24,1,json_encode($requestData));
@@ -456,22 +553,39 @@ class VerifCAPAReportControll extends Controller
                 $item->TypeUser = session('adminvue')->TypeUser;
                 $item->IdDepartmentSession = session('adminvue')->IdDepartment;
 
-                if($item->DescAnotherEffect !== null) {
+                if($item->DescAnotherEffect !== null && count(json_decode($item->DescAnotherEffect)) > 0) {
                     $anotherEffect = json_decode($item->DescAnotherEffect);
                     
-                    if($anotherEffect[0] === 'false') {
+                    if($anotherEffect[0] == 'false') {
                         array_push($dataAnotherEffect, $anotherEffect[0]);
                     } else {
                         foreach($anotherEffect as $key => $effect) {
+                            $anotherEffectFileDownload = [];
+                            
                             if($effect !== null) {
-                                $dataAnotherEffect[$key] = 
-        
-                                    [ 
-                                        'id_effect' => $effect->id_effect, 
-                                        'selected'  => $effect->selected,
-                                        'text'      => $effect->text
-                                    ];
+                                $effectFileName = $effect->namefile;
+    
+                                $effect->namefile = $effect->namefile;
                                 
+                                foreach($effectFileName as $keyFile => $valFile) {
+                                
+                                    if($valFile) {
+                                        $resultFile = explode("/", $valFile);  
+                                    } else {
+                                        $resultFile = [];
+                                    }
+    
+                                    if(!empty($resultFile)){
+    
+                                        $anotherEffectFileDownload[] = [$resultFile[count($resultFile) - 1], $valFile];
+                                    } else {
+                                        $anotherEffectFileDownload[] = [];
+                                    }
+                                }
+    
+                                $effect->filedownload = $anotherEffectFileDownload;
+    
+                                $dataAnotherEffect[] = $effect;
                             }
                         }   
                     }
@@ -625,6 +739,81 @@ class VerifCAPAReportControll extends Controller
             $verifPAFile = '';
         }
 
+        $anotherEffectFile = [];
+        if($request->has('anotherEffectFile') && $request->file('anotherEffectFile')!=null) {
+            $arrFile = $request->file('anotherEffectFile');
+            foreach($arrFile as $keyFile => $valFile) {
+                foreach($valFile as $subKey => $valSubKey) {
+                    if(pathinfo($valSubKey->getClientOriginalName(), PATHINFO_EXTENSION)) {
+                        $anotherEffectFile[$keyFile][$subKey] = $this->UploadFile->uploadFile($valSubKey, 5);
+                    }
+                }
+            }
+        }
+        
+        
+        $oldAnotherEffectFile = $request->input('oldEffectFile');
+        if($oldAnotherEffectFile !== null) {
+            foreach($oldAnotherEffectFile as $key => $val){
+                if (array_key_exists($key, $anotherEffectFile)) {
+                    $anotherEffectFile[$key] = array_merge($anotherEffectFile[$key], $val);
+                } else {
+                    $anotherEffectFile[$key] = $val;
+                }
+            }
+        }
+         
+        if(count($anotherEffectFile) > 0) {
+            $anotherEffectFile = json_encode($anotherEffectFile);
+        } else {
+            $anotherEffectFile = json_encode($anotherEffectFile);
+        }
+
+        $dataDescAnotherEffect = [];
+        if($request->has('DescAnotherEffect')) {
+            $anotherEffectValidation = json_decode($request->input('DescAnotherEffect'));
+            
+            foreach($anotherEffectValidation as $key => $val) {
+                $dateQa = Carbon::now();
+
+                if($val !== null && $val !== false) {
+                    if(!empty(json_decode($anotherEffectFile))) {
+                        $foundMatchingFile = false;
+                        foreach(json_decode($anotherEffectFile) as $keyFile => $valFile) {
+                            if($key == $keyFile) {
+                                $foundMatchingFile = true;
+                                foreach($valFile as $subKey => $subVal) {
+                                    $val->namefile[$subKey] = $subVal; 
+                                }
+                            }
+                        }
+
+                        if (!$foundMatchingFile) {
+                            $val->namefile = [];
+                        }
+                        
+                    } else {
+                        $val->namefile[$key] = [];  
+                    }
+                       array_push($dataDescAnotherEffect, $val);
+                }
+
+                if($val === false) {
+                    $val = 'false';
+                    array_push($dataDescAnotherEffect, $val);
+                }
+
+                if(empty($val) && $val !== null) {
+                    return response()->json([
+                        'status'=>false,
+                        'message'=>'Silahkan lengkapi kolom Sistem Lain Yang Terdampak',
+                        'validation' => 'required' 
+                    ]);
+                }
+            }
+            
+        }
+
         $isApproved = 0;
         $isCapaCorrection = 0;
         $verifEfektifitasCapa = json_decode($request->input('verifikasiEfektivitasCapa'));
@@ -647,6 +836,12 @@ class VerifCAPAReportControll extends Controller
                 'is_correction' => $isCapaCorrection,
                 'updated_at'=> Carbon::now()->format('Y-m-d H:i:s')
             ]);
+
+            DB::table('nod_report')
+                ->where('Id', $request->input('NODAccNumber'))
+                ->update([
+                    'DescAnotherEffect'=>json_encode($dataDescAnotherEffect),
+                ]);
 
             $this->History->store(24,2,json_encode($requestData));
             DB::commit();
